@@ -34,8 +34,11 @@ public class DiscoService {
     public void cadastrarDisco(Integer fk){
         DecimalFormat df = new DecimalFormat("0.00");
         df.setDecimalFormatSymbols(new DecimalFormatSymbols(java.util.Locale.US));
+
         this.dadosDiscos = con.query("SELECT * FROM componente WHERE fk_usuario = %d AND tipo = 'DISCO'".formatted(fk), new BeanPropertyRowMapper<>(Componente.class));
+
         this.listaDiscos = looca.getGrupoDeDiscos().getDiscos();
+
         if(this.listaDiscos.size() != this.dadosDiscos.size()) {
             for (int i = dadosDiscos.size(); i < listaDiscos.size(); i++) {
                 componente.setTipo("DISCO");
@@ -76,7 +79,7 @@ public class DiscoService {
             Long bytesEscrInicio = disco.getBytesDeEscritas();
 
             try {
-                Thread.sleep(5000); // Espera 1 segundo
+                Thread.sleep(1000); // Espera 1 segundo
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -107,7 +110,7 @@ public class DiscoService {
 
             Long tamanhoTotal = disco.getTamanho();
 
-            Long espacoEmUso = bytesLidosFim + bytesEscrFim;
+            Long espacoEmUso = bytesEscrFim;
 
             Long espacoDisponivel = tamanhoTotal - espacoEmUso;
 

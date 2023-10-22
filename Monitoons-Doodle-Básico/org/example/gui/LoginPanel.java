@@ -25,6 +25,7 @@ public class LoginPanel extends TelaPanel {
         txtLogin.setBounds(440, 205, 300, 35);
         txtLogin.setForeground(Color.decode("#dcdcdc"));
         txtLogin.setFont(new Font("Montserrat", Font.BOLD, 20));
+
         campoEmail = new JTextField();
         campoEmail.setFont(new Font("Montserrat", Font.PLAIN, 18));
         campoEmail.setBounds(450, 250, 300, 35);
@@ -60,16 +61,13 @@ public class LoginPanel extends TelaPanel {
     public void executarBotao(ActionEvent e){
        if(logar()){
            trocarTela("Tela Principal");
-           ComponenteService componenteService = new ComponenteService(1);
-           componenteService.cadastrarPecas();
-           componenteService.comecarCaptura();
        }else{
            textoAlerta.setVisible(true);
        };
     }
     public Boolean logar(){
-        if(campoEmail.getText().equals("1")
-                && campoSenha.getText().equals("1")){
+        if(campoEmail.getText().equals("monitoons@monitoons.com")
+                && campoSenha.getText().equals("12345678")){
             return true;
         } else {
             return false;

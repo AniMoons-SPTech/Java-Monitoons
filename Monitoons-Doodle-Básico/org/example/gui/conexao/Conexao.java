@@ -6,14 +6,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class Conexao {
 
     private JdbcTemplate conexaoDoBanco;
+
     public Conexao() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUrl("jdbc:h2:file:./teste_banco");
-        dataSource.setUsername("sa");
-        dataSource.setPassword("");
-
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/monitoons");
+        dataSource.setUsername("animoons");
+        dataSource.setPassword("animoons");
         conexaoDoBanco = new JdbcTemplate(dataSource);
+
     }
 
     public JdbcTemplate getConexaoDoBanco() {
