@@ -111,6 +111,14 @@ public class Registro {
         this.dataHora = dataHora;
     }
 
+    public Double getTemperatura() {
+        return temperatura;
+    }
+
+    public void setTemperatura(Double temperatura) {
+        this.temperatura = temperatura;
+    }
+
     @Override
     public String toString() {
         return "Registro{" +

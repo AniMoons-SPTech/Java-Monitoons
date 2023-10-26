@@ -38,18 +38,17 @@ public class test {
         Processador cpu =new Processador();
         Gpu gpu = new Gpu();
         List<GraphicsCard> listaGPU = gpu.getListaGPU();
-
-        System.out.println("Bem vindo ao Monitoons!!");
-        System.out.print("Insira seu email: ");
-        String email = inp.nextLine();
-        System.out.print("Insira sua senha: ");
-        String senha = inp.nextLine();
-
         while(true) {
+            System.out.println("Bem vindo ao Monitoons!!");
+            System.out.print("Insira seu email: ");
+            String email = inp.nextLine();
+            System.out.print("Insira sua senha: ");
+            String senha = inp.nextLine();
 
             String senhaCerta = con.queryForObject("SELECT senha FROM usuario WHERE email = ?",String.class,email);
 
             if (senhaCerta.equals(senha)){
+                System.out.println("Login efetuado com sucesso!!!");
                 //Gravar informações localmente
                 Integer idUsuario = con.queryForObject("SELECT idUsuario FROM usuario WHERE email = ?",Integer.class,email);
                 List<String> Componentes = new ArrayList<>();
@@ -122,12 +121,49 @@ public class test {
                         Double cpuFrequencia = Double.valueOf(cpu.getFrequencia()) / 1000000000;
                         String cpuNome = cpu.getNome();
 
+
+
     //                  System.out.println("--CPU--\nCpu Uso: %.2f%%\nFrequencia cpu: %.2fGHz".formatted(cpuUso,cpuFrequencia));
 
-                        Componente componente01 = new Componente("cpu", cpuNucleos, null, cpuFrequencia, cpuNome);
-                        Componente componente02 = new Componente("mem", null, memTotal, cpuFrequencia, memNome);
-                        Componente componente03 = new Componente("disco", null, discoTotal, cpuFrequencia, discoNome);
-                        Componente componente04 = new Componente("gpu", null, gpuTotal, cpuFrequencia, gpuNome);
+                        Componente componente01 = new Componente("CPU", cpuNucleos, null, cpuFrequencia, cpuNome);
+                        Componente componente02 = new Componente("RAM", null, memTotal, null, memNome);
+                        Componente componente03 = new Componente("DISCO", null, discoTotal, null, discoNome);
+                        Componente componente04 = new Componente("CPU", null, gpuTotal, null, gpuNome);
+
+                        List<String> nomesComponentes = con.queryForList("SELECT nomeComponente FROM componente", String.class);
+                        Boolean componente1Existe = false;
+                        Boolean componente2Existe = false;
+                        Boolean componente3Existe = false;
+                        Boolean componente4Existe = false;
+                        for (int i = 0; i < nomesComponentes.size(); i++) {
+                            if(nomesComponentes.get(i).equals(componente01.getNome())){
+                                System.out.println(nomesComponentes.get(i));
+                                System.out.println("JaExiste");
+                                componente1Existe = true;
+                            }if (nomesComponentes.get(i).equals(componente02.getNome())){
+                                System.out.println(nomesComponentes.get(i));
+                                System.out.println("JaExiste");
+                                componente2Existe = true;
+                            }if (nomesComponentes.get(i).equals(componente03.getNome())) {
+                                System.out.println(nomesComponentes.get(i));
+                                System.out.println("JaExiste");
+                                componente3Existe = true;
+                            }if (nomesComponentes.get(i).equals(componente04.getNome())) {
+                                System.out.println(nomesComponentes.get(i));
+                                System.out.println("JaExiste");
+                                componente4Existe = true;
+                            }
+                        }
+                        if (componente1Existe.equals(false)){
+                            con.update("INSERT INTO componente VALUES (null,?,?,?,?,?)",componente01.getTipo(),componente01.getNumNucleo(),componente01.getCapacidade(),componente01.getVelocidade(),componente01.getNome());
+                        }if (componente2Existe.equals(false)) {
+                            con.update("INSERT INTO componente VALUES (null,?,?,?,?,?)",componente02.getTipo(),componente01.getNumNucleo(),componente02.getCapacidade(),componente02.getVelocidade(),componente02.getNome());
+                        }if (componente3Existe.equals(false)) {
+                            con.update("INSERT INTO componente VALUES (null,?,?,?,?,?)",componente03.getTipo(),componente03.getNumNucleo(),componente03.getCapacidade(),componente03.getVelocidade(),componente03.getNome());
+                        }if (componente4Existe.equals(false)) {
+                            con.update("INSERT INTO componente VALUES (null,?,?,?,?,?)",componente04.getTipo(),componente04.getNumNucleo(),componente04.getCapacidade(),componente04.getVelocidade(),componente04.getNome());
+
+                        }
 
     //                  System.out.println(componente01);
     //                  System.out.println(componente02);
@@ -136,9 +172,14 @@ public class test {
 
 
                         Registro registro01 =new Registro(componente01,cpuUso,null,null,cpuFrequencia,null,null,temperatura);
-                        Registro registro02 =new Registro(componente02,memUso,null,null,cpuFrequencia,memUso,memDisp,temperatura);
-                        Registro registro03 =new Registro(componente03,discoUso,velGrav,velLeit,cpuFrequencia,discoUso,discoDisp,temperatura);
-                        Registro registro04 =new Registro(componente04,videoPorcetUso,null,null,cpuFrequencia,gpuMemUso,gpuMemDisp,temperatura);
+                        Registro registro02 =new Registro(componente02,memUso,null,null,null,memUso,memDisp,temperatura);
+                        Registro registro03 =new Registro(componente03,discoUso,velGrav,velLeit,null,discoUso,discoDisp,temperatura);
+                        Registro registro04 =new Registro(componente04,videoPorcetUso,null,null,null,gpuMemUso,gpuMemDisp,temperatura);
+
+                        con.update("INSERT INTO registro VALUE (null,?,?,?,?,?,?,?,?,?);", componente01.getId_componente(),registro01.getUso(),registro01.getVelGrav(),registro01.getVelLeit(),registro01.getVelCpu(),registro01.getMemUso(),registro01.getMemDisp(),registro01.getDataHora(),registro01.getTemperatura());
+                        con.update("INSERT INTO registro VALUE (null,?,?,?,?,?,?,?,?,?);", componente02.getId_componente(),registro02.getUso(),registro02.getVelGrav(),registro02.getVelLeit(),registro02.getVelCpu(),registro02.getMemUso(),registro02.getMemDisp(),registro02.getDataHora(),registro02.getTemperatura());
+                        con.update("INSERT INTO registro VALUE (null,?,?,?,?,?,?,?,?,?);", componente03.getId_componente(),registro03.getUso(),registro03.getVelGrav(),registro03.getVelLeit(),registro03.getVelCpu(),registro03.getMemUso(),registro03.getMemDisp(),registro03.getDataHora(),registro03.getTemperatura());
+                        con.update("INSERT INTO registro VALUE (null,?,?,?,?,?,?,?,?,?);", componente04.getId_componente(),registro04.getUso(),registro04.getVelGrav(),registro04.getVelLeit(),registro04.getVelCpu(),registro04.getMemUso(),registro04.getMemDisp(),registro04.getDataHora(),registro04.getTemperatura());
 
                         System.out.println(registro01);
                         System.out.println(registro02);

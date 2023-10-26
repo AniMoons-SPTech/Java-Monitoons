@@ -4,14 +4,14 @@ public class Componente {
 
     private String tipo;
     private String nome;
-    private Integer num_nucleo;
+    private Integer numNucleo;
     private Long capacidade;
     private Double velocidade;
 
-    public Componente( String tipo, Integer num_nucleo,Long capacidade, Double velocidade,String nome) {
+    public Componente( String tipo, Integer numNucleo,Long capacidade, Double velocidade,String nome) {
         this.id_componente = null;
         this.tipo = tipo;
-        this.num_nucleo = num_nucleo;
+        this.numNucleo = numNucleo;
         this.capacidade = capacidade;
         this.velocidade = velocidade;
         this.nome = nome;
@@ -41,12 +41,12 @@ public class Componente {
         this.nome = nome;
     }
 
-    public Integer getNum_nucleo() {
-        return num_nucleo;
+    public Integer getNumNucleo() {
+        return numNucleo;
     }
 
-    public void setNum_nucleo(Integer num_nucleo) {
-        this.num_nucleo = num_nucleo;
+    public void setNumNucleo(Integer numNucleo) {
+        this.numNucleo = numNucleo;
     }
 
     public Long getCapacidade() {
@@ -71,7 +71,7 @@ public class Componente {
                 "id_componente=" + id_componente +
                 ", tipo='" + tipo + '\'' +
                 ", nome='" + nome + '\'' +
-                ", num_nucleo=" + num_nucleo +
+                ", numNucleo=" + numNucleo +
                 ", capacidade=" + capacidade +
                 ", velocidade=" + velocidade +
                 '}';
