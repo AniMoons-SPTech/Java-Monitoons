@@ -17,8 +17,8 @@ public class LoginPanel extends TelaPanel {
 
     public LoginPanel(JPanel telas, JFrame janela) {
         super(telas, janela);
-
-        ImageIcon imagemIcon = new ImageIcon("images/logo2.png");
+//;
+        ImageIcon imagemIcon = new ImageIcon(getClass().getResource("/assets/logo2.png"));
         JLabel imagemLabel = new JLabel(imagemIcon);
         imagemLabel.setBounds(440, 105, 300, 100);
         JLabel txtLogin = new JLabel("Insira seu Email:");
