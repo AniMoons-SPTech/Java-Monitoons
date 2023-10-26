@@ -1,15 +1,6 @@
 package org.example.gui.components;
 
-import com.github.britooo.looca.api.core.Looca;
-import com.github.britooo.looca.api.group.janelas.Janela;
-import com.github.britooo.looca.api.group.janelas.JanelaGrupo;
-import com.github.britooo.looca.api.group.processos.Processo;
-import com.github.britooo.looca.api.group.processos.ProcessoGrupo;
-
-import java.util.ArrayList;
-import java.util.List;
-
-public class Aplicativo2 {
+public class Aplicativo {
     private Integer PID;
     private String titulo;
     private String comando;
@@ -19,7 +10,7 @@ public class Aplicativo2 {
 //    private String usoGPU;
     private String dataHora;
 
-    public Aplicativo2(Integer PID, String titulo, String comando, String usoCPU, String usoMemoria, String dataHora) {
+    public Aplicativo(Integer PID, String titulo, String comando, String usoCPU, String usoMemoria, String dataHora) {
         this.PID = PID;
         this.titulo = titulo;
         this.comando = comando;
@@ -27,7 +18,7 @@ public class Aplicativo2 {
         this.usoMemoria = usoMemoria;
         this.dataHora = dataHora;
     }
-    public Aplicativo2(){}
+    public Aplicativo(){}
 
     public Integer getPID() {
         return PID;
