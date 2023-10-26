@@ -1,14 +1,3 @@
-package org.example.gui.components;
-
-import com.github.britooo.looca.api.core.Looca;
-import com.github.britooo.looca.api.group.janelas.Janela;
-import com.github.britooo.looca.api.group.janelas.JanelaGrupo;
-import com.github.britooo.looca.api.group.processos.Processo;
-import com.github.britooo.looca.api.group.processos.ProcessoGrupo;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Aplicativo2 {
     private Integer PID;
     private String titulo;
@@ -96,7 +85,7 @@ public class Aplicativo2 {
     @Override
     public String toString() {
         return """ 
-                Aplicativo2: 
+                Aplicativo: 
                 PID: %d 
                 Titulo: %s
                 Comando: %s
