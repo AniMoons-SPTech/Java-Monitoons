@@ -16,11 +16,9 @@ public class LoginPanel extends TelaPanel {
     private JPasswordField campoSenha;
     private JLabel textoAlerta;
 
-    private Boolean logou;
 
     public LoginPanel(JPanel telas, JFrame janela) {
         super(telas, janela);
-        logou = false;
 //;
         ImageIcon imagemIcon = new ImageIcon(getClass().getResource("/assets/logo2.png"));
         JLabel imagemLabel = new JLabel(imagemIcon);
@@ -63,58 +61,16 @@ public class LoginPanel extends TelaPanel {
         this.add(textoAlerta);
     }
 
-    public void actionPerformed(ActionEvent e){
-        executarBotao();
-    }
+    public void executarBotao(ActionEvent e){
+        Usuario usuario = new Usuario(campoEmail.getText(), campoSenha.getText());
 
-    public Boolean executarBotao(){
-        if(!this.logou){
-            Usuario usuario = new Usuario(campoEmail.getText(), campoSenha.getText());
-
-            if(usuario.logar()){
-                trocarTela("Tela Principal");
-                this.logou = true;
-            }else{
-                textoAlerta.setVisible(true);
-                this.logou = false;
-            }
-        } else {
-            this.logou = true;
+        if(usuario.logar()){
+            trocarTela("Tela Principal");
+        }else{
+            textoAlerta.setVisible(true);
         }
-        return this.logou;
-    }
-    public Boolean logar(){
-        if(campoEmail.getText().equals("monitoons@monitoons.com")
-                && campoSenha.getText().equals("12345678")){
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public JTextField getCampoEmail() {
-        return campoEmail;
-    }
-
-    public void setCampoEmailText(String email) {
-        this.campoEmail.setText(email);
-    }
-
-    public JPasswordField getCampoSenha() {
-        return campoSenha;
-    }
-
-    public void setCampoSenhaText(String senha) {
-        this.campoSenha.setText(senha);
-    }
-
-    public Boolean getLogou() {
-        return logou;
-    }
-
-    public void setLogou(Boolean logou) {
-        this.logou = logou;
     }
 }
+
 
 
