@@ -25,6 +25,7 @@ public class AppTeste {
 
                 if (usuario.logar()) {
                     System.out.println("Seja bem vindo!");
+                    logou = true;
                 } else {
                     System.out.println("Usuario ou senha incorretos!");
                 }
