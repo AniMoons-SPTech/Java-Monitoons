@@ -32,6 +32,8 @@ public class AppTeste {
             }while(!logou);
             if(logou){
                 ComponenteService componenteService = new ComponenteService(1);
+                componenteService.cadastrarPecas();
+                componenteService.comecarCaptura();
             }
         } else {
             App app = new App();
