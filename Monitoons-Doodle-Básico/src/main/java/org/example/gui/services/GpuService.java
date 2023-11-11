@@ -34,8 +34,10 @@ public class GpuService {
         DecimalFormat df = new DecimalFormat("0.00");
         df.setDecimalFormatSymbols(new DecimalFormatSymbols(java.util.Locale.US));
         this.dadosGPU = con.query("SELECT * FROM componente WHERE fk_usuario = %d AND tipo = 'GPU'".formatted(fk), new BeanPropertyRowMapper<>(Componente.class));
+
         Gpu gpu = new Gpu();
         listaGPUs = gpu.getListaGPU();
+
         if(this.listaGPUs.size() != dadosGPU.size()) {
             for (int i = dadosGPU.size(); i < listaGPUs.size(); i++) {
                 componente.setTipo("GPU");

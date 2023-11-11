@@ -59,7 +59,7 @@ public class ComponenteService {
                 CREATE TABLE aplicativos_abertos(
                     id_aplicativo INT PRIMARY KEY AUTO_INCREMENT,
                     pid INT,
-                    titulo varchar(50),
+                    titulo varchar(255),
                     comando varchar(255),
                     usoCPU DOUBLE,
                     usoMemoria DOUBLE,

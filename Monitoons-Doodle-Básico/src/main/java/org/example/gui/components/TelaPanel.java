@@ -24,34 +24,11 @@ public class TelaPanel extends JPanel implements ActionListener {
     }
 
     protected void executarBotao(ActionEvent e) {
-
     }
 
     protected void trocarTela(String identificador) {
         controleTela.show(telas,identificador);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
