@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="teste-looca" />
         <module name="Monitoons-Sketch-Pro (2)" />
+        <module name="Monitoons-Networks" />
         <module name="Monitoons-Sketch-Pro (1)" />
       </profile>
     </annotationProcessing>
