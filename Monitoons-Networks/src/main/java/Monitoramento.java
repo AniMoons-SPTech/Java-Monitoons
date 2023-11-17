@@ -3,19 +3,31 @@ import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Disco;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
-import com.github.britooo.looca.api.group.temperatura.Temperatura;
 import org.springframework.jdbc.core.JdbcTemplate;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Monitoramento {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        // Desabilitar consultas para informações específicas do processador
+        System.setProperty("oshi.util.platform.windows.PerfCounterWildcardQuery", "false");
+
         // Inicialização dos objetos necessários
         Scanner scanner = new Scanner(System.in);
         Looca looca = new Looca();
         Conexao conexao = new Conexao();
         JdbcTemplate jdbcTemplate = conexao.getConexaoDoBanco();
+        InetAddress inetAddress = null;
+
+        try {
+            // Obtém o endereço IP da máquina local
+            inetAddress = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 
         Integer idUsuario;
         String nomeUsuario;
@@ -35,7 +47,17 @@ public class Monitoramento {
             // Obter informações do usuário
             idUsuario = jdbcTemplate.queryForObject("SELECT idUsuario FROM usuario WHERE email = ?", Integer.class, email);
             nomeUsuario = jdbcTemplate.queryForObject("SELECT nomeUsuario FROM usuario WHERE email = ?", String.class, email);
-            idComputador = jdbcTemplate.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuario);
+
+            Boolean existeComputador = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computador WHERE fkUsuario = ?", Integer.class, idUsuario) > 0;
+            if (!existeComputador) {
+                // Cadastrar computador no banco de dados
+                jdbcTemplate.update("INSERT INTO computador (fkUsuario, nome) VALUES (?, ?)", idUsuario, inetAddress.getHostName());
+                idComputador = jdbcTemplate.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuario);
+            } else {
+                // Obter ID do computador
+                idComputador = jdbcTemplate.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuario);
+            }
+
             System.out.println("Bem vindo, " + nomeUsuario + "!");
         } else {
             System.out.println("Senha incorreta!");
@@ -62,7 +84,6 @@ public class Monitoramento {
         List<Disco> discos = grupoDeDiscos.getDiscos();
         Memoria memoria = looca.getMemoria();
         Processador processador = looca.getProcessador();
-        Temperatura temperatura = looca.getTemperatura();
 
         // Calcular e formatar informações da memória
         Long memoriaTotal = memoria.getTotal() / (1024 * 1024 * 1024);
@@ -215,22 +236,17 @@ public class Monitoramento {
 
             // Obter e adicionar registros de uso da CPU e temperatura à lista
             Double usoCpu = processador.getUso();
-            Double temperaturaCpu = temperatura.getTemperatura();
             registros.add(new Registro(idCompHasCompProcessador, "Uso da CPU", usoCpu));
-            registros.add(new Registro(idCompHasCompProcessador, "Temperatura da CPU", temperaturaCpu));
 
             // Iterar sobre os registros e inserir no banco de dados
             for (Registro registro : registros) {
                 jdbcTemplate.update("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dataHora) VALUES (?, ?, ?, NOW())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor());
             }
 
-            try {
                 // Limpar a lista de registros e aguardar por 5 segundos antes da próxima iteração
                 registros.clear();
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+                Thread.sleep(50);
+
         }
     }
 }
