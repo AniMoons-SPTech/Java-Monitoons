@@ -242,11 +242,14 @@ public class Monitoramento {
             for (Registro registro : registros) {
                 jdbcTemplate.update("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dataHora) VALUES (?, ?, ?, NOW())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor());
             }
-
+            System.out.println("Registros inseridos com sucesso!");
+            try {
                 // Limpar a lista de registros e aguardar por 5 segundos antes da próxima iteração
                 registros.clear();
-                Thread.sleep(50);
-
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
