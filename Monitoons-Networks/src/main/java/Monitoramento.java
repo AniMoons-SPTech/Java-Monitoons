@@ -19,8 +19,6 @@ import java.util.Scanner;
 
 public class Monitoramento {
     public static void main(String[] args) throws InterruptedException, IOException {
-        // Desabilitar consultas para informações específicas do processador
-        System.setProperty("oshi.util.platform.windows.PerfCounterWildcardQuery", "false");
 
         // Inicialização dos objetos necessários
         Scanner scanner = new Scanner(System.in);
@@ -99,20 +97,14 @@ public class Monitoramento {
         List<GraphicsCard> gpus = hardware.getGraphicsCards();
 
         // Calcular e formatar informações da memória
-        Long memoriaTotal = memoria.getTotal() / (1024 * 1024 * 1024);
-        String memoriaNome = "Memoria de " + memoriaTotal.toString() + " GB";
+        Long memoriaTotal = memoria.getTotal();
+        String memoriaNome = "Memoria de " + Utilitarios.formatBytes(memoriaTotal);
 
         // Calcular e formatar informações do processador
-        Long processadorFrequencia = processador.getFrequencia() / (1000 * 1000 * 1000);
+        Long processadorFrequencia = processador.getFrequencia();
         String processadorNome = processador.getNome();
         Integer processadorNucleosFisicos = processador.getNumeroCpusFisicas();
         Integer processadorNucleosLogicos = processador.getNumeroCpusLogicas();
-
-        // Calcular e formatar informações das placas de vídeo
-        List<String> placasDeVideoNomes = new ArrayList<>();
-
-        // Exibir componentes cadastrados
-        System.out.println("Componentes cadastrados: " + componentesCadastrados);
 
         // Verificar se a memória está cadastrada no banco de dados
         Boolean existeMemoria = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Memoria' AND nome = ?", Integer.class, memoriaNome) > 0;
@@ -122,12 +114,10 @@ public class Monitoramento {
             jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Memoria", memoriaNome);
             Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
 
-            Integer memoriaToralInt = (int) Math.ceil((double) memoriaTotal);
-
             // Relacionar memória ao computador
             jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
             componentesCadastrados.add(new Componente(idComponente, "Memória", memoriaNome, List.of(
-                    new Especificacao(idComponente, "Memória Total", memoriaToralInt.toString() + " GB")
+                    new Especificacao(idComponente, "Memória Total", Utilitarios.formatBytes(memoriaTotal))
             )));
 
             // Inserir especificações da memória
@@ -156,12 +146,10 @@ public class Monitoramento {
             jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Processador", processadorNome);
             Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);
 
-            Double processadorFrequenciaDouble = processadorFrequencia.doubleValue();
-
             // Relacionar processador ao computador
             jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
             componentesCadastrados.add(new Componente(idComponente, "Processador", processadorNome, List.of(
-                    new Especificacao(idComponente, "Frequência", processadorFrequenciaDouble + " GHz"),
+                    new Especificacao(idComponente, "Frequência", Utilitarios.formatFrequency(processadorFrequencia)),
                     new Especificacao(idComponente, "Núcleos Físicos", processadorNucleosFisicos.toString()),
                     new Especificacao(idComponente, "Núcleos Lógicos", processadorNucleosLogicos.toString())
             )));
@@ -186,7 +174,7 @@ public class Monitoramento {
 
         // Iterar sobre os discos e verificar se estão cadastrados no banco de dados
         for (Disco disco : discos) {
-            Long discoTamanho = disco.getTamanho() / (1024 * 1024 * 1024);
+            Long discoTamanho = disco.getTamanho();
             String discoModelo = disco.getModelo();
 
             // Verificar se o disco está cadastrado no banco de dados
@@ -200,8 +188,8 @@ public class Monitoramento {
                 // Relacionar disco ao computador
                 jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                 componentesCadastrados.add(new Componente(idComponente, "Disco", discoModelo, List.of(
-                        new Especificacao(idComponente, "Tamanho", discoTamanho.toString())
-                )));
+                        new Especificacao(idComponente, "Tamanho", Utilitarios.formatBytes(discoTamanho)))
+                ));
 
                 // Inserir especificações do disco
                 for (Componente componenteCadastrado : componentesCadastrados) {
@@ -227,7 +215,7 @@ public class Monitoramento {
             String gpuNome = gpu.getName();
             String gpuFabricante = gpu.getVendor();
             String gpuVersao = gpu.getVersionInfo();
-            Long gpuVRAM = gpu.getVRam() / (1024 * 1024 * 1024);
+            Long gpuVRAM = gpu.getVRam();
             Long gpuMemoria = null;
             String line;
 
@@ -246,15 +234,13 @@ public class Monitoramento {
                 jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "GPU", gpuNome);
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
 
-                Integer gpuMemoriaInt = (int) Math.ceil((double) gpuMemoria / 1024);
-
                 // Relacionar placa de vídeo ao computador
                 jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                 componentesCadastrados.add(new Componente(idComponente, "GPU", gpuNome, List.of(
                         new Especificacao(idComponente, "Fabricante", gpuFabricante),
                         new Especificacao(idComponente, "Versão", gpuVersao),
-                        new Especificacao(idComponente, "VRAM", gpuVRAM.toString()),
-                        new Especificacao(idComponente, "Memória", gpuMemoriaInt.toString())
+                        new Especificacao(idComponente, "VRAM", Utilitarios.formatBytes(gpuVRAM)),
+                        new Especificacao(idComponente, "Memória", Utilitarios.formatBytes(gpuMemoria))
                 )));
 
                 // Inserir especificações da placa de vídeo
@@ -279,19 +265,58 @@ public class Monitoramento {
         while (true) {
             // Lista para armazenar os registros a serem inseridos no banco de dados
             List<Registro> registros = new ArrayList<>();
+            List<Alerta> alertas = new ArrayList<>();
 
             // Iterar sobre os discos para obter informações de leitura e escrita
             for (Disco disco : discos) {
-                Long velocidadeDeLeitura = disco.getBytesDeLeitura() / 1024;
-                Long velocidadeDeEscrita = disco.getBytesDeEscritas() / 1024;
+                Long velocidadeDeLeitura = disco.getBytesDeLeitura();
+                Long velocidadeDeEscrita = disco.getBytesDeEscritas();
 
                 // Obter IDs relacionados ao disco no banco de dados
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, disco.getModelo());
                 Integer idCompHasComp = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponente);
 
                 // Adicionar registros de velocidade de leitura e escrita à lista
-                registros.add(new Registro(idCompHasComp, "Velocidade de Leitura", velocidadeDeLeitura.doubleValue()));
-                registros.add(new Registro(idCompHasComp, "Velocidade de Escrita", velocidadeDeEscrita.doubleValue()));
+                registros.add(new Registro(idCompHasComp, "Velocidade de Leitura", Utilitarios.formatBytesToDouble(velocidadeDeLeitura / (1024 * 1204)), Utilitarios.formatBytesPerSecond(velocidadeDeLeitura / (1024 * 1204)), Utilitarios.getUnidadeBytes(velocidadeDeLeitura / (1024 * 1204))));
+                registros.add(new Registro(idCompHasComp, "Velocidade de Escrita", Utilitarios.formatBytesToDouble(velocidadeDeEscrita / (1024 * 1204)), Utilitarios.formatBytesPerSecond(velocidadeDeEscrita / (1024 * 1204)), Utilitarios.getUnidadeBytes(velocidadeDeEscrita / (1024 * 1204))));
+
+                // Obter índices dos registros de velocidade de leitura e escrita
+                Integer indexVelLeitura = 0;
+                Integer indexVelEscrita = 0;
+
+                for (Registro registro : registros) {
+                    if (registro.getTipo().equals("Velocidade de Leitura")) {
+                        indexVelLeitura = registros.indexOf(registro);
+                    }
+                    if (registro.getTipo().equals("Velocidade de Escrita")) {
+                        indexVelEscrita = registros.indexOf(registro);
+                    }
+                }
+
+                // Adicionar alertas de velocidade de leitura e escrita à lista
+                if ( velocidadeDeLeitura != null) {
+                    if (velocidadeDeLeitura > 1000000) {
+                        registros.get(indexVelLeitura).addAlerta(new Alerta("Alto", "Disco"));
+                    } else if (velocidadeDeLeitura > 100000) {
+                        registros.get(indexVelLeitura).addAlerta(new Alerta("Intemediário", "Disco"));
+                    } else if (velocidadeDeLeitura > 10000) {
+                        registros.get(indexVelLeitura).addAlerta(new Alerta("Médio", "Disco"));
+                    } else if (velocidadeDeLeitura > 1000) {
+                        registros.get(indexVelLeitura).addAlerta(new Alerta("Baixo", "Disco"));
+                    }
+                }
+
+                if (velocidadeDeEscrita != null) {
+                    if (velocidadeDeEscrita > 1000000) {
+                        registros.get(indexVelEscrita).addAlerta(new Alerta("Alto", "Disco"));
+                    } else if (velocidadeDeEscrita > 100000) {
+                        registros.get(indexVelEscrita).addAlerta(new Alerta("Intemediário", "Disco"));
+                    } else if (velocidadeDeEscrita > 10000) {
+                        registros.get(indexVelEscrita).addAlerta(new Alerta("Médio", "Disco"));
+                    } else if (velocidadeDeEscrita > 1000) {
+                        registros.get(indexVelEscrita).addAlerta(new Alerta("Baixo", "Disco"));
+                    }
+                }
             }
 
             //Iterar sobre as placas de vídeo para obter informações de uso da GPU
@@ -300,18 +325,18 @@ public class Monitoramento {
                 String gpuNome = gpu.getName();
                 String line;
                 Long gpuTotal = null;
-                Double gpuMemUso = null;
-                Double gpuMemDisp = null;
+                Long gpuMemUso = null;
+                Long gpuMemDisp = null;
                 Double videoPorcetUso = null;
                 while ((line = reader.readLine()) != null) {
                     String[] memoryInfo = line.trim().split(",");
                     videoPorcetUso = Double.parseDouble(memoryInfo[0].trim());
-                    gpuMemUso = Double.parseDouble(memoryInfo[1].trim());
-                    gpuMemDisp = Double.parseDouble(memoryInfo[2].trim());
+                    gpuMemUso = Long.parseLong(memoryInfo[1].trim());
+                    gpuMemDisp = Long.parseLong(memoryInfo[2].trim());
                     gpuTotal = (long) (gpuMemDisp + gpuMemUso);
                             System.out.println("Uso da Gpu: " + videoPorcetUso + "%");
-                            System.out.println("Memória de Vídeo em Uso: " + gpuMemUso + " Mib");
-                            System.out.println("Memória de Vídeo Disponível: " + gpuMemDisp + " Mib");
+                            System.out.println("Memória de Vídeo em Uso: " + Utilitarios.formatBytes(gpuMemUso));
+                            System.out.println("Memória de Vídeo Disponível: " + Utilitarios.formatBytes(gpuMemDisp));
                 }
 
                 // Obter IDs relacionados à placa de vídeo no banco de dados
@@ -319,9 +344,49 @@ public class Monitoramento {
                 Integer idCompHasComp = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponente);
 
                 // Adicionar registro de uso da GPU à lista
-                registros.add(new Registro(idCompHasComp, "Uso da GPU", videoPorcetUso));
-                registros.add(new Registro(idCompHasComp, "Memória de Vídeo em Uso", gpuMemUso));
-                registros.add(new Registro(idCompHasComp, "Memória de Vídeo Disponível", gpuMemDisp));
+
+                if (videoPorcetUso != null && gpuMemUso != null && gpuMemDisp != null) {
+                    registros.add(new Registro(idCompHasComp, "Uso da GPU", Utilitarios.formatPercentagetoDouble(videoPorcetUso), videoPorcetUso.toString(), "%"));
+                    registros.add(new Registro(idCompHasComp, "Memória de Vídeo em Uso", Utilitarios.formatBytesToDouble(gpuMemUso), Utilitarios.formatBytes(gpuMemUso), Utilitarios.getUnidadeBytes(gpuMemUso)));
+                    registros.add(new Registro(idCompHasComp, "Memória de Vídeo Disponível", Utilitarios.formatBytesToDouble(gpuMemDisp), Utilitarios.formatBytes(gpuMemDisp), Utilitarios.getUnidadeBytes(gpuMemDisp)));
+                }
+                // Obter índices dos registros de uso da GPU e de memória de vídeo disponível
+                Integer indexVideoUso = 0;
+                Integer indexVideoMemDisp = 0;
+
+                for (Registro registro : registros) {
+                    if (registro.getTipo().equals("Uso da GPU")) {
+                        indexVideoUso = registros.indexOf(registro);
+                    }
+                    if (registro.getTipo().equals("Memória de Vídeo Disponível")) {
+                        indexVideoMemDisp = registros.indexOf(registro);
+                    }
+                }
+
+                // Adicionar alertas de uso da GPU à lista
+                if (videoPorcetUso != null) {
+                    if (videoPorcetUso > 90) {
+                        registros.get(indexVideoUso).addAlerta(new Alerta("Alto", "GPU"));
+                    } else if (videoPorcetUso > 80) {
+                        registros.get(indexVideoUso).addAlerta(new Alerta("Intemediário", "GPU"));
+                    } else if (videoPorcetUso > 70) {
+                        registros.get(indexVideoUso).addAlerta(new Alerta("Médio", "GPU"));
+                    } else if (videoPorcetUso > 60) {
+                        registros.get(indexVideoUso).addAlerta(new Alerta("Baixo", "GPU"));
+                    }
+                }
+
+                if (gpuMemDisp != null) {
+                    if (gpuMemDisp < 1000) {
+                        registros.get(indexVideoMemDisp).addAlerta(new Alerta("Alto", "GPU"));
+                    } else if (gpuMemDisp < 2000) {
+                        registros.get(indexVideoMemDisp).addAlerta(new Alerta("Intemediário", "GPU"));
+                    } else if (gpuMemDisp < 3000) {
+                        registros.get(indexVideoMemDisp).addAlerta(new Alerta("Médio", "GPU"));
+                    } else if (gpuMemDisp < 4000) {
+                        registros.get(indexVideoMemDisp).addAlerta(new Alerta("Baixo", "GPU"));
+                    }
+                }
 
             }
 
@@ -330,10 +395,30 @@ public class Monitoramento {
             Integer idCompHasCompMemoria = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponenteMemoria);
 
             // Calcular e adicionar registros de memória disponível e em uso à lista
-            Long memoriaDisponivel = memoria.getDisponivel() / (1024 * 1024 * 1024);
-            Long memoriaEmUso = memoria.getEmUso() / (1024 * 1024 * 1024);
-            registros.add(new Registro(idCompHasCompMemoria, "Memória Disponível", memoriaDisponivel.doubleValue()));
-            registros.add(new Registro(idCompHasCompMemoria, "Memória em Uso", memoriaEmUso.doubleValue()));
+            Long memoriaDisponivel = memoria.getDisponivel();
+            Long memoriaEmUso = memoria.getEmUso();
+            registros.add(new Registro(idCompHasCompMemoria, "Memória Disponível", Utilitarios.formatBytesToDouble(memoriaDisponivel), Utilitarios.formatBytes(memoriaDisponivel), Utilitarios.getUnidadeBytes(memoriaDisponivel)));
+            registros.add(new Registro(idCompHasCompMemoria, "Memória em Uso", Utilitarios.formatBytesToDouble(memoriaEmUso), Utilitarios.formatBytes(memoriaEmUso), Utilitarios.getUnidadeBytes(memoriaEmUso)));
+
+            // Obter índice do registro de memória disponível
+            Integer indexMemDisp = 0;
+
+            for (Registro registro : registros) {
+                if (registro.getTipo().equals("Memória Disponível")) {
+                    indexMemDisp = registros.indexOf(registro);
+                }
+            }
+
+            // Adicionar alertas de memória disponível e em uso à lista
+            if (memoriaDisponivel < 1) {
+                registros.get(indexMemDisp).addAlerta(new Alerta("Alto", "Memória"));
+            } else if (memoriaDisponivel < 2) {
+                registros.get(indexMemDisp).addAlerta(new Alerta("Intemediário", "Memória"));
+            } else if (memoriaDisponivel < 3) {
+                registros.get(indexMemDisp).addAlerta(new Alerta("Médio", "Memória"));
+            } else if (memoriaDisponivel < 4) {
+                registros.get(indexMemDisp).addAlerta(new Alerta("Baixo", "Memória"));
+            }
 
             // Obter IDs relacionados ao processador no banco de dados
             Integer idComponenteProcessador = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);
@@ -341,14 +426,40 @@ public class Monitoramento {
 
             // Obter e adicionar registros de uso da CPU e temperatura à lista
             Double usoCpu = processador.getUso();
-            registros.add(new Registro(idCompHasCompProcessador, "Uso da CPU", usoCpu));
+            registros.add(new Registro(idCompHasCompProcessador, "Uso da CPU", Utilitarios.formatPercentagetoDouble(usoCpu), Utilitarios.formatPercentage(usoCpu), "%"));
 
-            // Iterar sobre os registros e inserir no banco de dados
+            // Obter índice do registro de uso da CPU
+            Integer indexUsoCpu = 0;
+
             for (Registro registro : registros) {
-                if (registro.getValor() != null) {
-                    jdbcTemplate.update("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dataHora) VALUES (?, ?, ?, NOW())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor());
+                if (registro.getTipo().equals("Uso da CPU")) {
+                    indexUsoCpu = registros.indexOf(registro);
                 }
             }
+
+            // Adicionar alertas de uso da CPU à lista
+            if (usoCpu != null) {
+                if (usoCpu > 90) {
+                    registros.get(indexUsoCpu).addAlerta(new Alerta("Alto", "CPU"));
+                } else if (usoCpu > 80) {
+                    registros.get(indexUsoCpu).addAlerta(new Alerta("Intemediário", "CPU"));
+                } else if (usoCpu > 70) {
+                    registros.get(indexUsoCpu).addAlerta(new Alerta("Médio", "CPU"));
+                } else if (usoCpu > 60) {
+                    registros.get(indexUsoCpu).addAlerta(new Alerta("Baixo", "CPU"));
+                }
+            }
+
+            // Iterar sobre os registros e alertas e inserir no banco de dados
+            for (Registro registro : registros) {
+                if (registro.getValor() != null) {
+                    Integer idRegistro = conexao.inserirERetornarIdGerado("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dadoFormatado, dadoUnidade, dataHora) VALUES (?, ?, ?, ?, ?, NOW())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor(), registro.getValorFormatado(), registro.getUnidade());
+                    if (registro.getAlerta() != null) {
+                        conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, NOW())", idRegistro, registro.getAlerta().getGrauAlerta(), registro.getAlerta().getTipoComponente());
+                    }
+                }
+            }
+
             System.out.println("Registros inseridos com sucesso!");
             try {
                 // Limpar a lista de registros e aguardar por 5 segundos antes da próxima iteração
@@ -359,4 +470,5 @@ public class Monitoramento {
             }
         }
     }
+
 }

@@ -52,7 +52,4 @@
             <version>0.12</version> <!-- Use a versão mais recente disponível -->
         </dependency>
     </dependencies>
-
-
-
 </project>

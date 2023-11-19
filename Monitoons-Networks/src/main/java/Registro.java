@@ -4,13 +4,32 @@ public class Registro {
     private Integer fkCompHasComp;
     private String tipo;
     private Double valor;
+    private String valorFormatado;
+    private String unidade;
     private LocalDateTime dataHora;
+    private  Alerta alerta;
 
-    public Registro(Integer fkCompHasComp, String tipo, Double valor) {
+    public Registro(Integer fkCompHasComp, String tipo, Double valor, String valorFormatado, String unidade, Alerta alerta) {
         this.fkCompHasComp = fkCompHasComp;
         this.tipo = tipo;
         this.valor = valor;
+        this.valorFormatado = valorFormatado;
+        this.unidade = unidade;
         this.dataHora = LocalDateTime.now();
+        this.alerta = alerta;
+    }
+
+    public Registro(Integer fkCompHasComp, String tipo, Double valor, String valorFormatado, String unidade) {
+        this.fkCompHasComp = fkCompHasComp;
+        this.tipo = tipo;
+        this.valor = valor;
+        this.valorFormatado = valorFormatado;
+        this.unidade = unidade;
+        this.dataHora = LocalDateTime.now();
+    }
+
+    public void addAlerta(Alerta alerta){
+        this.alerta = alerta;
     }
 
     public Integer getFkCompHasComp() {
@@ -41,18 +60,47 @@ public class Registro {
         this.dataHora = dataHora;
     }
 
+    public Alerta getAlerta() {
+        return alerta;
+    }
+    public void setAlerta(Alerta alerta) {
+        this.alerta = alerta;
+    }
+
+    public String getValorFormatado() {
+        return valorFormatado;
+    }
+
+    public void setValorFormatado(String valorFormatado) {
+        this.valorFormatado = valorFormatado;
+    }
+
+    public String getUnidade() {
+        return unidade;
+    }
+
+    public void setUnidade(String unidade) {
+        this.unidade = unidade;
+    }
+
     @Override
     public String toString(){
         return """
                 fkCompHasComp=%d,
                 tipo=%s,
-                valor=%f,
+                valor=%s,
+                valorFormatado=%s,
+                unidade=%s,
                 dataHora=%s
+                alerta=%s
                 """.formatted(
                 this.fkCompHasComp,
                 this.tipo,
                 this.valor,
-                this.dataHora
+                this.valorFormatado,
+                this.unidade,
+                this.dataHora,
+                this.alerta
         );
     }
 }
