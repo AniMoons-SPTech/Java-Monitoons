@@ -5,8 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="32ae009c-eb8e-4220-842c-ab234efc1e16" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../Monitoons-Sketch-Pro/target/classes/Registro.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Sketch-Pro/target/classes/Registro.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Monitoons-Sketch-Pro/target/classes/test.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Sketch-Pro/target/classes/test.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/LoginPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/LoginPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/components/Componente.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/components/Componente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/components/Gpu.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/components/GrupoGpu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/components/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/components/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/services/DiscoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/services/DiscoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/services/GpuService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/src/main/java/org/example/gui/services/GpuService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/target/classes/org/example/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/target/classes/org/example/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/target/classes/org/example/gui/LoginPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/target/classes/org/example/gui/LoginPanel.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/target/classes/org/example/gui/services/DiscoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Doodle-Básico/target/classes/org/example/gui/services/DiscoService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Monitoons-Sketch-Pro/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Monitoons-Sketch-Pro/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,9 +26,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2XRMP829UfsP3x4OvhqHjbK9iZ5" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -29,7 +39,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/mat58/OneDrive/Documentos/GitHub/Java-Monitoons/Monitoons-Doodle-Básico"
+    "last_opened_file_path": "C:/Users/jpedr/Java-Monitoons/Monitoons-Ultimate"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

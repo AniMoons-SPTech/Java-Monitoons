@@ -1,19 +1,23 @@
-import org.example.gui.App;
-import org.example.gui.components.Usuario;
-import org.example.gui.services.ComponenteService;
 
-import javax.swing.*;
+
+import components.Monitoramento;
+import components.Usuario;
+import gui.App;
+
 import java.awt.*;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class AppTeste {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         Scanner scanner = new Scanner(System.in);
         Boolean logou = false;
 
         if (GraphicsEnvironment.isHeadless()) {
             System.out.println("Modo console");
+            String plano = "";
+            Usuario usuario;
             do {
                 System.out.println("Informe o seu email");
                 String email = scanner.nextLine();
@@ -21,9 +25,9 @@ public class AppTeste {
                 System.out.println("Informe a sua senha");
                 String senha = scanner.nextLine();
 
-                Usuario usuario = new Usuario(email, senha);
-
-                if (usuario.logar()) {
+                usuario = new Usuario(email, senha);
+                plano = usuario.logar();
+                if (plano != null) {
                     System.out.println("Seja bem vindo!");
                     logou = true;
                 } else {
@@ -31,9 +35,8 @@ public class AppTeste {
                 }
             }while(!logou);
             if(logou){
-                ComponenteService componenteService = new ComponenteService(1);
-                componenteService.cadastrarPecas();
-                componenteService.comecarCaptura();
+                Monitoramento monitoramento = new Monitoramento();
+                monitoramento.comecarMonitoramentoDoodle(usuario);
             }
         } else {
             App app = new App();
