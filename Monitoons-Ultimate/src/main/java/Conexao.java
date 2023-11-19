@@ -1,21 +1,40 @@
-import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.Objects;
 
 public class Conexao {
-    private JdbcTemplate conexaoDoBanco;
+    private JdbcTemplate jdbcTemplate;
 
-    public Conexao(){
+    public Conexao() {
         BasicDataSource dataSource = new BasicDataSource();
 
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://54.172.85.160:3306/animoons");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/monitoons");
         dataSource.setUsername("animoons");
         dataSource.setPassword("animoons");
 
-        conexaoDoBanco = new JdbcTemplate(dataSource);
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
     public JdbcTemplate getConexaoDoBanco() {
-        return conexaoDoBanco;
+        return this.jdbcTemplate;
     }
+
+    public int inserirERetornarIdGerado(String sql, Object... params) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            for (int i = 0; i < params.length; i++) {
+                ps.setObject(i + 1, params[i]);
+            }
+            return ps;
+        }, keyHolder);
+
+        return Objects.requireNonNull(keyHolder.getKey()).intValue();
+    }
+
 }
