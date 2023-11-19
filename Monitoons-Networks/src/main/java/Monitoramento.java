@@ -281,42 +281,42 @@ public class Monitoramento {
                 registros.add(new Registro(idCompHasComp, "Velocidade de Escrita", Utilitarios.formatBytesToDouble(velocidadeDeEscrita / (1024 * 1204)), Utilitarios.formatBytesPerSecond(velocidadeDeEscrita / (1024 * 1204)), Utilitarios.getUnidadeBytes(velocidadeDeEscrita / (1024 * 1204))));
 
                 // Obter índices dos registros de velocidade de leitura e escrita
-                Integer indexVelLeitura = 0;
-                Integer indexVelEscrita = 0;
-
-                for (Registro registro : registros) {
-                    if (registro.getTipo().equals("Velocidade de Leitura")) {
-                        indexVelLeitura = registros.indexOf(registro);
-                    }
-                    if (registro.getTipo().equals("Velocidade de Escrita")) {
-                        indexVelEscrita = registros.indexOf(registro);
-                    }
-                }
-
-                // Adicionar alertas de velocidade de leitura e escrita à lista
-                if ( velocidadeDeLeitura != null) {
-                    if (velocidadeDeLeitura > 1000000) {
-                        registros.get(indexVelLeitura).addAlerta(new Alerta("Alto", "Disco"));
-                    } else if (velocidadeDeLeitura > 100000) {
-                        registros.get(indexVelLeitura).addAlerta(new Alerta("Intemediário", "Disco"));
-                    } else if (velocidadeDeLeitura > 10000) {
-                        registros.get(indexVelLeitura).addAlerta(new Alerta("Médio", "Disco"));
-                    } else if (velocidadeDeLeitura > 1000) {
-                        registros.get(indexVelLeitura).addAlerta(new Alerta("Baixo", "Disco"));
-                    }
-                }
-
-                if (velocidadeDeEscrita != null) {
-                    if (velocidadeDeEscrita > 1000000) {
-                        registros.get(indexVelEscrita).addAlerta(new Alerta("Alto", "Disco"));
-                    } else if (velocidadeDeEscrita > 100000) {
-                        registros.get(indexVelEscrita).addAlerta(new Alerta("Intemediário", "Disco"));
-                    } else if (velocidadeDeEscrita > 10000) {
-                        registros.get(indexVelEscrita).addAlerta(new Alerta("Médio", "Disco"));
-                    } else if (velocidadeDeEscrita > 1000) {
-                        registros.get(indexVelEscrita).addAlerta(new Alerta("Baixo", "Disco"));
-                    }
-                }
+//                Integer indexVelLeitura = 0;
+//                Integer indexVelEscrita = 0;
+//
+//                for (Registro registro : registros) {
+//                    if (registro.getTipo().equals("Velocidade de Leitura")) {
+//                        indexVelLeitura = registros.indexOf(registro);
+//                    }
+//                    if (registro.getTipo().equals("Velocidade de Escrita")) {
+//                        indexVelEscrita = registros.indexOf(registro);
+//                    }
+//                }
+//
+//                // Adicionar alertas de velocidade de leitura e escrita à lista
+//                if ( velocidadeDeLeitura != null) {
+//                    if (velocidadeDeLeitura > 1000000) {
+//                        registros.get(indexVelLeitura).addAlerta(new Alerta("Alto", "Disco"));
+//                    } else if (velocidadeDeLeitura > 100000) {
+//                        registros.get(indexVelLeitura).addAlerta(new Alerta("Intemediário", "Disco"));
+//                    } else if (velocidadeDeLeitura > 10000) {
+//                        registros.get(indexVelLeitura).addAlerta(new Alerta("Médio", "Disco"));
+//                    } else if (velocidadeDeLeitura > 1000) {
+//                        registros.get(indexVelLeitura).addAlerta(new Alerta("Baixo", "Disco"));
+//                    }
+//                }
+//
+//                if (velocidadeDeEscrita != null) {
+//                    if (velocidadeDeEscrita > 1000000) {
+//                        registros.get(indexVelEscrita).addAlerta(new Alerta("Alto", "Disco"));
+//                    } else if (velocidadeDeEscrita > 100000) {
+//                        registros.get(indexVelEscrita).addAlerta(new Alerta("Intemediário", "Disco"));
+//                    } else if (velocidadeDeEscrita > 10000) {
+//                        registros.get(indexVelEscrita).addAlerta(new Alerta("Médio", "Disco"));
+//                    } else if (velocidadeDeEscrita > 1000) {
+//                        registros.get(indexVelEscrita).addAlerta(new Alerta("Baixo", "Disco"));
+//                    }
+//                }
             }
 
             //Iterar sobre as placas de vídeo para obter informações de uso da GPU
