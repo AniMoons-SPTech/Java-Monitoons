@@ -1,30 +1,33 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Componente {
-
-    private Integer id_componente;
-
+    private Integer idComponente;
     private String tipo;
     private String nome;
-    private Integer numNucleo;
-    private Long capacidade;
-    private Double velocidade;
+    private List<Especificacao> especificacoes;
 
-    public Componente( String tipo, Integer numNucleo,Long capacidade, Double velocidade,String nome) {
-        this.id_componente = null;
+    public Componente(Integer idComponente, String tipo, String nome, List<Especificacao> especificacoes) {
+        this.idComponente = idComponente;
         this.tipo = tipo;
-        this.numNucleo = numNucleo;
-        this.capacidade = capacidade;
-        this.velocidade = velocidade;
         this.nome = nome;
+        this.especificacoes = especificacoes;
     }
 
-    public Integer getId_componente() {
-        return id_componente;
+    public Componente(Integer idComponente, String tipo, String nome) {
+        this.idComponente = idComponente;
+        this.tipo = tipo;
+        this.nome = nome;
+        this.especificacoes = new ArrayList<>();
     }
 
-    public void setId_componente(Integer id_componente) {
-        this.id_componente = id_componente;
+    public void addEspecificacao(Especificacao especificacao){
+        this.especificacoes.add(especificacao);
     }
 
+    public Integer getIdComponente() {
+        return idComponente;
+    }
     public String getTipo() {
         return tipo;
     }
@@ -41,39 +44,28 @@ public class Componente {
         this.nome = nome;
     }
 
-    public Integer getNumNucleo() {
-        return numNucleo;
+    public List<Especificacao> getEspecificacoes() {
+        return especificacoes;
     }
 
-    public void setNumNucleo(Integer numNucleo) {
-        this.numNucleo = numNucleo;
-    }
-
-    public Long getCapacidade() {
-        return capacidade;
-    }
-
-    public void setCapacidade(Long capacidade) {
-        this.capacidade = capacidade;
-    }
-
-    public Double getVelocidade() {
-        return velocidade;
-    }
-
-    public void setVelocidade(Double velocidade) {
-        this.velocidade = velocidade;
+    public void setEspecificacoes(List<Especificacao> especificacoes) {
+        this.especificacoes = especificacoes;
     }
 
     @Override
-    public String toString() {
-        return "Componente{" +
-                "id_componente=" + id_componente +
-                ", tipo='" + tipo + '\'' +
-                ", nome='" + nome + '\'' +
-                ", numNucleo=" + numNucleo +
-                ", capacidade=" + capacidade +
-                ", velocidade=" + velocidade +
-                '}';
+    public String toString(){
+        return """
+                idComponente=%d,
+                tipo=%s,
+                nome=%s
+                especificacoes=%s
+                """.formatted(
+                this.idComponente,
+                this.tipo,
+                this.nome,
+                this.especificacoes
+        );
     }
+
 }
+
