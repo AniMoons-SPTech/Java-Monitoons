@@ -41,7 +41,16 @@
             <version>5.2.25.RELEASE</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.9.0</version> <!-- Use a versão mais recente disponível -->
+        </dependency>
+        <dependency>
+            <groupId>com.nativelibs4java</groupId>
+            <artifactId>jnaerator-runtime</artifactId>
+            <version>0.12</version> <!-- Use a versão mais recente disponível -->
+        </dependency>
     </dependencies>
 
 

@@ -75,7 +75,6 @@ public class test {
                         BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
                         String gpuNome = "";
-
                         String line;
                         Long gpuTotal = null;
                         Double gpuMemUso = null;
@@ -128,7 +127,7 @@ public class test {
                         Componente componente01 = new Componente("CPU", cpuNucleos, null, cpuFrequencia, cpuNome);
                         Componente componente02 = new Componente("RAM", null, memTotal, null, memNome);
                         Componente componente03 = new Componente("DISCO", null, discoTotal, null, discoNome);
-                        Componente componente04 = new Componente("CPU", null, gpuTotal, null, gpuNome);
+                        Componente componente04 = new Componente("GPU", null, gpuTotal, null, gpuNome);
 
                         List<String> nomesComponentes = con.queryForList("SELECT nomeComponente FROM componente", String.class);
                         Boolean componente1Existe = false;
