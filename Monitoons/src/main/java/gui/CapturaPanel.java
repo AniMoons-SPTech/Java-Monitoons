@@ -1,8 +1,11 @@
 package gui;
 
-import componentsDoodle.Monitoramento;
-import componentsSketchPro.MonitoramentoSketch;
-import componentsUltimate.MonitoramentoUltimate;
+import componentsDoodle.MonitoramentoDoodleMsSQL;
+import componentsDoodle.MonitoramentoDoodleMySQL;
+import componentsSketchPro.MonitoramentoSketchMsSQL;
+import componentsSketchPro.MonitoramentoSketchMySQL;
+import componentsUltimate.MonitoramentoUltimateMsSQL;
+import componentsUltimate.MonitoramentoUltimateMySQL;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,12 +38,20 @@ public class CapturaPanel extends TelaPanel {
     }
     public void iniciarCapturasDoodle(Usuario usuario) throws IOException, InterruptedException {
         Timer timer = new Timer();
-        Monitoramento monitoramento = new Monitoramento();
+        MonitoramentoDoodleMySQL monitoramentoDoodleMySQL = new MonitoramentoDoodleMySQL();
+        MonitoramentoDoodleMsSQL monitoramentoDoodleMsSQL = new MonitoramentoDoodleMsSQL();
         TimerTask tarefa = new TimerTask() {
             @Override
             public void run() {
                 try {
-                    monitoramento.comecarMonitoramentoDoodle(usuario);
+                    monitoramentoDoodleMySQL.comecarMonitoramentoDoodle(usuario);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    monitoramentoDoodleMsSQL.comecarMonitoramentoDoodle(usuario);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
@@ -53,17 +64,27 @@ public class CapturaPanel extends TelaPanel {
     }
     public void iniciarCapturasSketchPro(Usuario usuario) throws IOException, InterruptedException {
         Timer timer = new Timer();
-        MonitoramentoSketch monitoramentoSketch = new MonitoramentoSketch();
+        MonitoramentoSketchMySQL monitoramentoSketchMySQL = new MonitoramentoSketchMySQL();
+        MonitoramentoSketchMsSQL monitoramentoSketchMsSQL = new MonitoramentoSketchMsSQL();
         TimerTask tarefa = new TimerTask() {
             @Override
             public void run() {
                 try {
-                    monitoramentoSketch.comecarMonitoramentoSketchPro(usuario);
+                    monitoramentoSketchMySQL.comecarMonitoramentoSketchPro(usuario);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+
+                try {
+                    monitoramentoSketchMsSQL.comecarMonitoramentoSketchPro(usuario);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
         };
         timer.scheduleAtFixedRate(tarefa, 0, 5000);
@@ -71,12 +92,20 @@ public class CapturaPanel extends TelaPanel {
     }
     public void iniciarCapturasUltimate(Usuario usuario) throws IOException, InterruptedException {
         Timer timer = new Timer();
-        MonitoramentoUltimate monitoramentoUltimate = new MonitoramentoUltimate();
+        MonitoramentoUltimateMySQL monitoramentoUltimateMySQL = new MonitoramentoUltimateMySQL();
+        MonitoramentoUltimateMsSQL monitoramentoUltimateMsSQL = new MonitoramentoUltimateMsSQL();
         TimerTask tarefa = new TimerTask() {
             @Override
             public void run() {
                 try {
-                    monitoramentoUltimate.comecarMonitoramentoUltimate(usuario);
+                    monitoramentoUltimateMySQL.comecarMonitoramentoUltimate(usuario);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    monitoramentoUltimateMsSQL.comecarMonitoramentoUltimate(usuario);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {

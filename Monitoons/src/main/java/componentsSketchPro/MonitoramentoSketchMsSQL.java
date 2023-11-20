@@ -5,8 +5,11 @@ import com.github.britooo.looca.api.group.discos.Disco;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
-import gui.Usuario;
+import componentsDoodle.Componente;
+import componentsDoodle.Especificacao;
 import conexao.Conexao;
+import conexao.ConexaoSQLServer;
+import gui.Usuario;
 import org.springframework.jdbc.core.JdbcTemplate;
 import oshi.SystemInfo;
 import oshi.hardware.GraphicsCard;
@@ -15,220 +18,229 @@ import oshi.hardware.HardwareAbstractionLayer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MonitoramentoSketch {
+public class MonitoramentoSketchMsSQL {
+    private Integer contadorVerificacoes = 0;
+    private String processadorNome;
+    private List<Disco> discos;
+    private List<GraphicsCard> gpus;
+    private Memoria memoria;
+    private String memoriaNome;
+    private Processador processador;
+
+
     public void comecarMonitoramentoSketchPro(Usuario usuario) throws InterruptedException, IOException {
 
-        // Inicialização dos objetos necessário //
-        Integer idComputador = usuario.getIdComputador();
+        // Inicialização dos objetos necessários
+        Integer idComputador = usuario.getIdComputadorSQLServer();
         Looca looca = new Looca();
-        Conexao conexao = new Conexao();
+        ConexaoSQLServer conexao = new ConexaoSQLServer();
         JdbcTemplate jdbcTemplate = conexao.getConexaoDoBanco();
+        InetAddress inetAddress = null;
         SystemInfo systemInfo = new SystemInfo();
         HardwareAbstractionLayer hardware = systemInfo.getHardware();
 
-        // Obter componentes cadastrados no banco de dados
-        List<Componente> componentesCadastrados = jdbcTemplate.query("SELECT * FROM componente", (rs, rowNum) -> {
-            Integer idComponente = rs.getInt("idComponente");
-            String tipo = rs.getString("tipo");
-            String nome = rs.getString("nome");
-            List<Especificacao> especificacoes = jdbcTemplate.query("SELECT * FROM especificacoesComponente WHERE fkComponente = ?", (rs2, rowNum2) -> {
-                Integer idEspecificacaoComp = rs2.getInt("idEspecificacaoComp");
-                String tipoEspecificacao = rs2.getString("tipoEspecificacao");
-                String valor = rs2.getString("valor");
+        if (contadorVerificacoes < 1) {
+            // Obter componentes cadastrados no banco de dados
+            List<componentsDoodle.Componente> componentesCadastrados = jdbcTemplate.query("SELECT * FROM componente", (rs, rowNum) -> {
+                Integer idComponente = rs.getInt("idComponente");
+                String tipo = rs.getString("tipo");
+                String nome = rs.getString("nome");
+                List<componentsDoodle.Especificacao> especificacoes = jdbcTemplate.query("SELECT * FROM especificacoesComponente WHERE fkComponente = ?", (rs2, rowNum2) -> {
+                    Integer idEspecificacaoComp = rs2.getInt("idEspecificacaoComp");
+                    String tipoEspecificacao = rs2.getString("tipoEspecificacao");
+                    String valor = rs2.getString("valor");
 
-                return new Especificacao(idEspecificacaoComp, tipoEspecificacao, valor);
-            }, idComponente);
+                    return new componentsDoodle.Especificacao(idEspecificacaoComp, tipoEspecificacao, valor);
+                }, idComponente);
 
-            return new Componente(idComponente, tipo, nome, especificacoes);
-        });
+                return new componentsDoodle.Componente(idComponente, tipo, nome, especificacoes);
+            });
 
-        // Obter informações do sistema
-        DiscoGrupo grupoDeDiscos = looca.getGrupoDeDiscos();
-        List<Disco> discos = grupoDeDiscos.getDiscos();
-        Memoria memoria = looca.getMemoria();
-        Processador processador = looca.getProcessador();
-        List<GraphicsCard> gpus = hardware.getGraphicsCards();
+            // Obter informações do sistema
+            DiscoGrupo grupoDeDiscos = looca.getGrupoDeDiscos();
+            discos = grupoDeDiscos.getDiscos();
+            memoria = looca.getMemoria();
+            processador = looca.getProcessador();
+            gpus = hardware.getGraphicsCards();
 
-        // Calcular e formatar informações da memória
-        Long memoriaTotal = memoria.getTotal();
-        String memoriaNome = "Memoria de " + Utilitarios.formatBytes(memoriaTotal);
+            // Calcular e formatar informações da memória
+            Long memoriaTotal = memoria.getTotal();
+            memoriaNome = "Memoria de " + componentsDoodle.Utilitarios.formatBytes(memoriaTotal);
 
-        // Calcular e formatar informações do processador
-        Long processadorFrequencia = processador.getFrequencia();
-        String processadorNome = processador.getNome();
-        Integer processadorNucleosFisicos = processador.getNumeroCpusFisicas();
-        Integer processadorNucleosLogicos = processador.getNumeroCpusLogicas();
+            // Calcular e formatar informações do processador
+            Long processadorFrequencia = processador.getFrequencia();
+            processadorNome = processador.getNome();
+            Integer processadorNucleosFisicos = processador.getNumeroCpusFisicas();
+            Integer processadorNucleosLogicos = processador.getNumeroCpusLogicas();
 
-        // Verificar se a memória está cadastrada no banco de dados
-        Boolean existeMemoria = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Memoria' AND nome = ?", Integer.class, memoriaNome) > 0;
+            // Verificar se a memória está cadastrada no banco de dados
+            Boolean existeMemoria = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Memoria' AND nome = ?", Integer.class, memoriaNome) > 0;
 
-        if (!existeMemoria) {
-            // Cadastrar memória no banco de dados
-            jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Memoria", memoriaNome);
-            Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
-
-            // Relacionar memória ao computador
-            jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
-            componentesCadastrados.add(new Componente(idComponente, "Memória", memoriaNome, List.of(
-                    new Especificacao(idComponente, "Memória Total", Utilitarios.formatBytes(memoriaTotal))
-            )));
-
-            // Inserir especificações da memória
-            for (Componente componenteCadastrado : componentesCadastrados) {
-                for (Especificacao especificacao : componenteCadastrado.getEspecificacoes()) {
-                    if (especificacao.getFkComponente().equals(idComponente)) {
-                        jdbcTemplate.update("INSERT INTO especificacoesComponente (fkComponente, tipoEspecificacao, valor) VALUES (?, ?, ?)", idComponente, especificacao.getTipo(), especificacao.getValor());
-                    }
-                }
-            }
-        } else {
-            // Verificar se a relação entre computador e memória existe
-            Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome)) > 0;
-            if (!compHasCompExiste) {
-                // Se não existir, criar a relação
+            if (!existeMemoria) {
+                // Cadastrar memória no banco de dados
+                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Memoria", memoriaNome);
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
+
+                // Relacionar memória ao computador
                 jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
-            }
-        }
+                componentesCadastrados.add(new componentsDoodle.Componente(idComponente, "Memória", memoriaNome, List.of(
+                        new componentsDoodle.Especificacao(idComponente, "Memória Total", componentsDoodle.Utilitarios.formatBytes(memoriaTotal))
+                )));
 
-        // Verificar se o processador está cadastrado no banco de dados
-        Boolean existeProcessador = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Processador' AND nome = ?", Integer.class, processadorNome) > 0;
-
-        if (!existeProcessador) {
-            // Cadastrar processador no banco de dados
-            jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Processador", processadorNome);
-            Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);
-
-            // Relacionar processador ao computador
-            jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
-            componentesCadastrados.add(new Componente(idComponente, "Processador", processadorNome, List.of(
-                    new Especificacao(idComponente, "Frequência", Utilitarios.formatFrequency(processadorFrequencia)),
-                    new Especificacao(idComponente, "Núcleos Físicos", processadorNucleosFisicos.toString()),
-                    new Especificacao(idComponente, "Núcleos Lógicos", processadorNucleosLogicos.toString())
-            )));
-
-            // Inserir especificações do processador
-            for (Componente componenteCadastrado : componentesCadastrados) {
-                for (Especificacao especificacao : componenteCadastrado.getEspecificacoes()) {
-                    if (especificacao.getFkComponente().equals(idComponente)) {
-                        jdbcTemplate.update("INSERT INTO especificacoesComponente (fkComponente, tipoEspecificacao, valor) VALUES (?, ?, ?)", idComponente, especificacao.getTipo(), especificacao.getValor());
-                    }
-                }
-            }
-        } else {
-            // Verificar se a relação entre computador e processador existe
-            Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome)) > 0;
-            if (!compHasCompExiste) {
-                // Se não existir, criar a relação
-                Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);
-                jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
-            }
-        }
-
-        // Iterar sobre os discos e verificar se estão cadastrados no banco de dados
-
-        for (Disco disco : discos) {
-            Long discoTamanho = disco.getTamanho();
-            String discoModelo = disco.getModelo();
-
-            // Verificar se o disco está cadastrado no banco de dados
-            Boolean existeDisco = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Disco' AND nome = ?", Integer.class, discoModelo) > 0;
-
-            if (!existeDisco) {
-                // Cadastrar disco no banco de dados
-                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Disco", discoModelo);
-                Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo);
-
-                // Relacionar disco ao computador
-                jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
-                componentesCadastrados.add(new Componente(idComponente, "Disco", discoModelo, List.of(
-                        new Especificacao(idComponente, "Tamanho", Utilitarios.formatBytes(discoTamanho)))
-                ));
-
-                // Inserir especificações do disco
-                for (Componente componenteCadastrado : componentesCadastrados) {
-                    for (Especificacao especificacao : componenteCadastrado.getEspecificacoes()) {
+                // Inserir especificações da memória
+                for (componentsDoodle.Componente componenteCadastrado : componentesCadastrados) {
+                    for (componentsDoodle.Especificacao especificacao : componenteCadastrado.getEspecificacoes()) {
                         if (especificacao.getFkComponente().equals(idComponente)) {
                             jdbcTemplate.update("INSERT INTO especificacoesComponente (fkComponente, tipoEspecificacao, valor) VALUES (?, ?, ?)", idComponente, especificacao.getTipo(), especificacao.getValor());
                         }
                     }
                 }
             } else {
-                // Verificar se a relação entre computador e disco existe
-                boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo)) > 0;
+                // Verificar se a relação entre computador e memória existe
+                Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome)) > 0;
                 if (!compHasCompExiste) {
                     // Se não existir, criar a relação
-                    Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo);
+                    Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
                     jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                 }
             }
-        }
 
-        // Iterar sobre as placas de vídeo e verificar se estão cadastradas no banco de dados
+            // Verificar se o processador está cadastrado no banco de dados
+            Boolean existeProcessador = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Processador' AND nome = ?", Integer.class, processadorNome) > 0;
 
-        try {
-            Process process = Runtime.getRuntime().exec("nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.free --format=csv,noheader,nounits");
+            if (!existeProcessador) {
+                // Cadastrar processador no banco de dados
+                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Processador", processadorNome);
+                Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                // Relacionar processador ao computador
+                jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                componentesCadastrados.add(new componentsDoodle.Componente(idComponente, "Processador", processadorNome, List.of(
+                        new componentsDoodle.Especificacao(idComponente, "Frequência", componentsDoodle.Utilitarios.formatFrequency(processadorFrequencia)),
+                        new componentsDoodle.Especificacao(idComponente, "Núcleos Físicos", processadorNucleosFisicos.toString()),
+                        new componentsDoodle.Especificacao(idComponente, "Núcleos Lógicos", processadorNucleosLogicos.toString())
+                )));
 
-            for (GraphicsCard gpu : gpus) {
-                String gpuNome = gpu.getName();
-                String gpuFabricante = gpu.getVendor();
-                String gpuVersao = gpu.getVersionInfo();
-                Long gpuVRAM = gpu.getVRam();
-                Long gpuMemoria = null;
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    String[] memoryInfo = line.trim().split(",");
-                    Double gpuMemoriaUso = Double.parseDouble(memoryInfo[1].trim());
-                    Double gpuMemoriaDisponivel = Double.parseDouble(memoryInfo[2].trim());
-                    gpuMemoria = (long) (gpuMemoriaDisponivel + gpuMemoriaUso);
+                // Inserir especificações do processador
+                for (componentsDoodle.Componente componenteCadastrado : componentesCadastrados) {
+                    for (componentsDoodle.Especificacao especificacao : componenteCadastrado.getEspecificacoes()) {
+                        if (especificacao.getFkComponente().equals(idComponente)) {
+                            jdbcTemplate.update("INSERT INTO especificacoesComponente (fkComponente, tipoEspecificacao, valor) VALUES (?, ?, ?)", idComponente, especificacao.getTipo(), especificacao.getValor());
+                        }
+                    }
                 }
-
-                // Verificar se a placa de vídeo está cadastrada no banco de dados
-                Boolean existePlacaDeVideo = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'GPU' AND nome = ?", Integer.class, gpuNome) > 0;
-
-                if (!existePlacaDeVideo) {
-                    // Cadastrar placa de vídeo no banco de dados
-                    jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "GPU", gpuNome);
-                    Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
-
-                    // Relacionar placa de vídeo ao computador
+            } else {
+                // Verificar se a relação entre computador e processador existe
+                Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome)) > 0;
+                if (!compHasCompExiste) {
+                    // Se não existir, criar a relação
+                    Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);
                     jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
-                    componentesCadastrados.add(new Componente(idComponente, "GPU", gpuNome, List.of(
-                            new Especificacao(idComponente, "Fabricante", gpuFabricante),
-                            new Especificacao(idComponente, "Versão", gpuVersao),
-                            new Especificacao(idComponente, "VRAM", Utilitarios.formatBytes(gpuVRAM)),
-                            new Especificacao(idComponente, "Memória", Utilitarios.formatBytes(gpuMemoria))
-                    )));
+                }
+            }
 
-                    // Inserir especificações da placa de vídeo
-                    for (Componente componenteCadastrado : componentesCadastrados) {
-                        for (Especificacao especificacao : componenteCadastrado.getEspecificacoes()) {
+            // Iterar sobre os discos e verificar se estão cadastrados no banco de dados
+            for (Disco disco : discos) {
+                Long discoTamanho = disco.getTamanho();
+                String discoModelo = disco.getModelo();
+
+                // Verificar se o disco está cadastrado no banco de dados
+                Boolean existeDisco = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Disco' AND nome = ?", Integer.class, discoModelo) > 0;
+
+                if (!existeDisco) {
+                    // Cadastrar disco no banco de dados
+                    jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Disco", discoModelo);
+                    Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo);
+
+                    // Relacionar disco ao computador
+                    jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                    componentesCadastrados.add(new componentsDoodle.Componente(idComponente, "Disco", discoModelo, List.of(
+                            new componentsDoodle.Especificacao(idComponente, "Tamanho", componentsDoodle.Utilitarios.formatBytes(discoTamanho)))
+                    ));
+
+                    // Inserir especificações do disco
+                    for (componentsDoodle.Componente componenteCadastrado : componentesCadastrados) {
+                        for (componentsDoodle.Especificacao especificacao : componenteCadastrado.getEspecificacoes()) {
                             if (especificacao.getFkComponente().equals(idComponente)) {
                                 jdbcTemplate.update("INSERT INTO especificacoesComponente (fkComponente, tipoEspecificacao, valor) VALUES (?, ?, ?)", idComponente, especificacao.getTipo(), especificacao.getValor());
                             }
                         }
                     }
                 } else {
-                    // Verificar se a relação entre computador e placa de vídeo existe
-                    Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome)) > 0;
+                    // Verificar se a relação entre computador e disco existe
+                    boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo)) > 0;
                     if (!compHasCompExiste) {
                         // Se não existir, criar a relação
-                        Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
+                        Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo);
                         jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                     }
                 }
 
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                // Iterar sobre as placas de vídeo e verificar se estão cadastradas no banco de dados
+                try {
+                    Process process = Runtime.getRuntime().exec("nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.free --format=csv,noheader,nounits");
 
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    for (GraphicsCard gpu : gpus) {
+                        String gpuNome = gpu.getName();
+                        String gpuFabricante = gpu.getVendor();
+                        String gpuVersao = gpu.getVersionInfo();
+                        Long gpuVRAM = gpu.getVRam();
+                        Long gpuMemoria = null;
+                        String line;
+
+                        while ((line = reader.readLine()) != null) {
+                            String[] memoryInfo = line.trim().split(",");
+                            Double gpuMemoriaUso = Double.parseDouble(memoryInfo[1].trim());
+                            Double gpuMemoriaDisponivel = Double.parseDouble(memoryInfo[2].trim());
+                            gpuMemoria = (long) (gpuMemoriaDisponivel + gpuMemoriaUso);
+                        }
+
+                        // Verificar se a placa de vídeo está cadastrada no banco de dados
+                        Boolean existePlacaDeVideo = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'GPU' AND nome = ?", Integer.class, gpuNome) > 0;
+
+                        if (!existePlacaDeVideo) {
+                            // Cadastrar placa de vídeo no banco de dados
+                            jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "GPU", gpuNome);
+                            Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
+
+                            // Relacionar placa de vídeo ao computador
+                            jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                            componentesCadastrados.add(new componentsDoodle.Componente(idComponente, "GPU", gpuNome, List.of(
+                                    new componentsDoodle.Especificacao(idComponente, "Fabricante", gpuFabricante),
+                                    new componentsDoodle.Especificacao(idComponente, "Versão", gpuVersao),
+                                    new componentsDoodle.Especificacao(idComponente, "VRAM", componentsDoodle.Utilitarios.formatBytes(gpuVRAM)),
+                                    new componentsDoodle.Especificacao(idComponente, "Memória", componentsDoodle.Utilitarios.formatBytes(gpuMemoria))
+                            )));
+
+                            // Inserir especificações da placa de vídeo
+                            for (Componente componenteCadastrado : componentesCadastrados) {
+                                for (Especificacao especificacao : componenteCadastrado.getEspecificacoes()) {
+                                    if (especificacao.getFkComponente().equals(idComponente)) {
+                                        jdbcTemplate.update("INSERT INTO especificacoesComponente (fkComponente, tipoEspecificacao, valor) VALUES (?, ?, ?)", idComponente, especificacao.getTipo(), especificacao.getValor());
+                                    }
+                                }
+                            }
+                        } else {
+                            // Verificar se a relação entre computador e placa de vídeo existe
+                            Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome)) > 0;
+                            if (!compHasCompExiste) {
+                                // Se não existir, criar a relação
+                                Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
+                                jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            contadorVerificacoes++;
+        }
         // Lista para armazenar os registros a serem inseridos no banco de dados
         List<Registro> registros = new ArrayList<>();
         List<Alerta> alertas = new ArrayList<>();

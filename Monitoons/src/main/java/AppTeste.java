@@ -1,7 +1,7 @@
 
 
-import componentsDoodle.Monitoramento;
-import componentsSketchPro.MonitoramentoSketch;
+import componentsDoodle.MonitoramentoDoodleMySQL;
+import componentsSketchPro.MonitoramentoSketchMySQL;
 import gui.App;
 import gui.Usuario;
 
@@ -41,12 +41,12 @@ public class AppTeste {
                 Timer timer = new Timer();
                 Usuario finalUsuario = usuario;
                 if (plano.equals("Doodle")) {
-                    Monitoramento monitoramento = new Monitoramento();
+                    MonitoramentoDoodleMySQL monitoramentoDoodleMySQL = new MonitoramentoDoodleMySQL();
                     TimerTask tarefa = new TimerTask() {
                         @Override
                         public void run() {
                             try {
-                                monitoramento.comecarMonitoramentoDoodle(finalUsuario);
+                                monitoramentoDoodleMySQL.comecarMonitoramentoDoodle(finalUsuario);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             } catch (IOException e) {
@@ -56,12 +56,12 @@ public class AppTeste {
                     };
                     timer.scheduleAtFixedRate(tarefa, 0, 5000);
                 } else if (plano.equals("Sketch Pro")) {
-                    MonitoramentoSketch monitoramentoSketch = new MonitoramentoSketch();
+                    MonitoramentoSketchMySQL monitoramentoSketchMySQL = new MonitoramentoSketchMySQL();
                     TimerTask tarefa = new TimerTask() {
                         @Override
                         public void run() {
                             try {
-                                monitoramentoSketch.comecarMonitoramentoSketchPro(finalUsuario);
+                                monitoramentoSketchMySQL.comecarMonitoramentoSketchPro(finalUsuario);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             } catch (IOException e) {
@@ -71,12 +71,12 @@ public class AppTeste {
                     };
                     timer.scheduleAtFixedRate(tarefa, 0, 5000);
                 } else if (plano.equals("Ultimate")) {
-                    MonitoramentoSketch monitoramentoSketch = new MonitoramentoSketch();
+                    MonitoramentoSketchMySQL monitoramentoSketchMySQL = new MonitoramentoSketchMySQL();
                     TimerTask tarefa = new TimerTask() {
                         @Override
                         public void run() {
                             try {
-                                monitoramentoSketch.comecarMonitoramentoSketchPro(finalUsuario);
+                                monitoramentoSketchMySQL.comecarMonitoramentoSketchPro(finalUsuario);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             } catch (IOException e) {
