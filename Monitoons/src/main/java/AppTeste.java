@@ -1,9 +1,9 @@
 
 
 import componentsDoodle.Monitoramento;
-import componentsDoodle.Usuario;
 import componentsSketchPro.MonitoramentoSketch;
 import gui.App;
+import gui.Usuario;
 
 import java.awt.*;
 import java.io.IOException;
@@ -34,7 +34,7 @@ public class AppTeste {
                     System.out.println("Seja bem vindo!");
                     logou = true;
                 } else {
-                    System.out.println("Usuario ou senha incorretos!");
+                    System.out.println("gui.Usuario ou senha incorretos!");
                 }
             } while (!logou);
             if (logou) {

@@ -1,7 +1,6 @@
 package gui;
 
 import componentsDoodle.Botao;
-import componentsDoodle.Usuario;
 
 import javax.swing.*;
 import java.awt.*;

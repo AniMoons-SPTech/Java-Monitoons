@@ -5,7 +5,7 @@ import com.github.britooo.looca.api.group.discos.Disco;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
-import componentsDoodle.Usuario;
+import gui.Usuario;
 import conexao.Conexao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import oshi.SystemInfo;
@@ -16,7 +16,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -338,25 +337,21 @@ public class MonitoramentoUltimate {
                 // Adicionar alertas de uso da GPU à lista
                 if (videoPorcetUso != null) {
                     if (videoPorcetUso > 90) {
-                        registros.get(indexVideoUso).addAlerta(new Alerta("Alto", "GPU"));
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoUso).getTipo(), registros.get(indexVideoUso).getValor(), registros.get(indexVideoUso).getValorFormatado(), registros.get(indexVideoUso).getUnidade(), indexVideoUso,"CRITICO", "GPU"));
                     } else if (videoPorcetUso > 80) {
-                        registros.get(indexVideoUso).addAlerta(new Alerta("Intemediário", "GPU"));
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoUso).getTipo(), registros.get(indexVideoUso).getValor(), registros.get(indexVideoUso).getValorFormatado(), registros.get(indexVideoUso).getUnidade(), indexVideoUso,"INTERMEDIARIO", "GPU"));
                     } else if (videoPorcetUso > 70) {
-                        registros.get(indexVideoUso).addAlerta(new Alerta("Médio", "GPU"));
-                    } else if (videoPorcetUso > 60) {
-                        registros.get(indexVideoUso).addAlerta(new Alerta("Baixo", "GPU"));
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoUso).getTipo(), registros.get(indexVideoUso).getValor(), registros.get(indexVideoUso).getValorFormatado(), registros.get(indexVideoUso).getUnidade(), indexVideoUso,"MODERADO", "GPU"));
                     }
                 }
 
                 if (gpuMemDisp != null) {
                     if (gpuMemDisp < 1000) {
-                        registros.get(indexVideoMemDisp).addAlerta(new Alerta("Alto", "GPU"));
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "CRITICO", "GPU"));
                     } else if (gpuMemDisp < 2000) {
-                        registros.get(indexVideoMemDisp).addAlerta(new Alerta("Intemediário", "GPU"));
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp,"INTERMEDIARIO", "GPU"));
                     } else if (gpuMemDisp < 3000) {
-                        registros.get(indexVideoMemDisp).addAlerta(new Alerta("Médio", "GPU"));
-                    } else if (gpuMemDisp < 4000) {
-                        registros.get(indexVideoMemDisp).addAlerta(new Alerta("Baixo", "GPU"));
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp,"MODERADO", "GPU"));
                     }
                 }
 
@@ -386,13 +381,11 @@ public class MonitoramentoUltimate {
 
         // Adicionar alertas de memória disponível e em uso à lista
         if (memoriaDisponivel < 1) {
-            registros.get(indexMemDisp).addAlerta(new Alerta("Alto", "Memória"));
+            alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "CRITICO", "RAM"));
         } else if (memoriaDisponivel < 2) {
-            registros.get(indexMemDisp).addAlerta(new Alerta("Intemediário", "Memória"));
+            alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "INTERMEDIARIO", "RAM"));
         } else if (memoriaDisponivel < 3) {
-            registros.get(indexMemDisp).addAlerta(new Alerta("Médio", "Memória"));
-        } else if (memoriaDisponivel < 4) {
-            registros.get(indexMemDisp).addAlerta(new Alerta("Baixo", "Memória"));
+            alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(),indexMemDisp, "MODERADO", "RAM"));
         }
 
         // Obter IDs relacionados ao processador no banco de dados
@@ -415,24 +408,25 @@ public class MonitoramentoUltimate {
         // Adicionar alertas de uso da CPU à lista
         if (usoCpu != null) {
             if (usoCpu > 90) {
-                registros.get(indexUsoCpu).addAlerta(new Alerta("Alto", "CPU"));
+                alertas.add(new Alerta(idCompHasCompProcessador, registros.get(indexUsoCpu).getTipo(), registros.get(indexUsoCpu).getValor(), registros.get(indexUsoCpu).getValorFormatado(), registros.get(indexUsoCpu).getUnidade(), indexUsoCpu,"CRITICO", "CPU"));
             } else if (usoCpu > 80) {
-                registros.get(indexUsoCpu).addAlerta(new Alerta("Intemediário", "CPU"));
+                alertas.add(new Alerta(idCompHasCompProcessador, registros.get(indexUsoCpu).getTipo(), registros.get(indexUsoCpu).getValor(), registros.get(indexUsoCpu).getValorFormatado(), registros.get(indexUsoCpu).getUnidade(), indexUsoCpu,"INTERMEDIARIO", "CPU"));
             } else if (usoCpu > 70) {
-                registros.get(indexUsoCpu).addAlerta(new Alerta("Médio", "CPU"));
-            } else if (usoCpu > 60) {
-                registros.get(indexUsoCpu).addAlerta(new Alerta("Baixo", "CPU"));
+                alertas.add(new Alerta(idCompHasCompProcessador, registros.get(indexUsoCpu).getTipo(), registros.get(indexUsoCpu).getValor(), registros.get(indexUsoCpu).getValorFormatado(), registros.get(indexUsoCpu).getUnidade(), indexUsoCpu,"MODERADO", "CPU"));
             }
         }
         // Captura de aplicativos em execução
         app.capturarAplicativos(idComputador);
 
         // Iterar sobre os registros e alertas e inserir no banco de dados
-        for (Registro registro : registros) {
+        for (int i = 0; i < registros.size(); i++) {
+            Registro registro = registros.get(i);
             if (registro.getValor() != null) {
                 Integer idRegistro = conexao.inserirERetornarIdGerado("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dadoFormatado, dadoUnidade, dataHora) VALUES (?, ?, ?, ?, ?, NOW())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor(), registro.getValorFormatado(), registro.getUnidade());
-                if (registro.getAlerta() != null) {
-                    conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, NOW())", idRegistro, registro.getAlerta().getGrauAlerta(), registro.getAlerta().getTipoComponente());
+                for (int j = 0; j < alertas.size(); j++) {
+                    if (alertas.get(i).getIndexRegistro() == i ) {
+                        conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, NOW())", idRegistro, alertas.get(i).getGrauAlerta(), alertas.get(i).getTipoComponente());
+                    }
                 }
             }
         }

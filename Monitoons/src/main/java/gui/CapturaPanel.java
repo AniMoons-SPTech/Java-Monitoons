@@ -1,17 +1,13 @@
 package gui;
 
 import componentsDoodle.Monitoramento;
-import componentsDoodle.Usuario;
 import componentsSketchPro.MonitoramentoSketch;
 import componentsUltimate.MonitoramentoUltimate;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.IOException;
-import java.lang.management.MonitorInfo;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 

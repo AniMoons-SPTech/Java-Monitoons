@@ -2,15 +2,27 @@ package componentsDoodle;
 
 import java.time.LocalDateTime;
 
-public class Alerta {
+public class Alerta extends Registro{
+
+    private Integer indexRegistro;
     private String grauAlerta;
     private String tipoComponente;
     private LocalDateTime dataHora;
 
-    public Alerta(String grauAlerta, String tipoComponente) {
+    public Alerta(Integer fkCompHasComp, String tipo, Double valor, String valorFormatado, String unidade,Integer indexRegistro, String grauAlerta, String tipoComponente) {
+        super(fkCompHasComp, tipo, valor, valorFormatado, unidade);
+        this.indexRegistro = indexRegistro;
         this.grauAlerta = grauAlerta;
         this.tipoComponente = tipoComponente;
         this.dataHora = LocalDateTime.now();
+    }
+
+    public Integer getIndexRegistro() {
+        return indexRegistro;
+    }
+
+    public void setIndexRegistro(Integer indexRegistro) {
+        this.indexRegistro = indexRegistro;
     }
 
     public String getGrauAlerta() {
@@ -29,24 +41,16 @@ public class Alerta {
         this.tipoComponente = tipoComponente;
     }
 
-    public LocalDateTime getDataHora() {
-        return dataHora;
-    }
-
-    public void setDataHora(LocalDateTime dataHora) {
-        this.dataHora = dataHora;
-    }
-
     @Override
     public String toString(){
         return """
+                %s
                 grauAlerta=%s,
                 tipoComponente=%s,
                 dataHora=%s
                 """.formatted(
                 this.grauAlerta,
-                this.tipoComponente,
-                this.dataHora
+                this.tipoComponente
         );
     }
 }

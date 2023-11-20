@@ -1,4 +1,4 @@
-package componentsDoodle;
+package gui;
 
 import conexao.Conexao;
 import org.springframework.jdbc.core.JdbcTemplate;

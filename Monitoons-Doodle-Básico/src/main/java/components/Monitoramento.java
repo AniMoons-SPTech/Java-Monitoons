@@ -230,7 +230,6 @@ public class Monitoramento {
             e.printStackTrace();
         }
 
-        while (true) {
             // Lista para armazenar os registros a serem inseridos no banco de dados
             List<Registro> registros = new ArrayList<>();
             List<Alerta> alertas = new ArrayList<>();
@@ -438,4 +437,3 @@ public class Monitoramento {
             System.out.println("Registros inseridos com sucesso!");
         }
     }
-}
