@@ -16,7 +16,7 @@ public class ConexaoSQLServer {
         BasicDataSource dataSource = new BasicDataSource();
 
         dataSource.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        dataSource.setUrl("jdbc:sqlserver://3.209.58.184:8080;databaseName=monitoons");
+        dataSource.setUrl("jdbc:sqlserver://3.209.58.184:1433;databaseName=monitoons;encrypt=true;trustServerCertificate=true;");
         dataSource.setUsername("animoons");
         dataSource.setPassword("animoons");
 
