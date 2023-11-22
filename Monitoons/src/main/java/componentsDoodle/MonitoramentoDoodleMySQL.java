@@ -432,8 +432,8 @@ public class MonitoramentoDoodleMySQL {
             if (registro.getValor() != null) {
                 Integer idRegistro = conexao.inserirERetornarIdGerado("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dadoFormatado, dadoUnidade, dataHora) VALUES (?, ?, ?, ?, ?, NOW())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor(), registro.getValorFormatado(), registro.getUnidade());
                 for (int j = 0; j < alertas.size(); j++) {
-                    if (alertas.get(i).getIndexRegistro() == i) {
-                        conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, NOW())", idRegistro, alertas.get(i).getGrauAlerta(), alertas.get(i).getTipoComponente());
+                    if (alertas.get(j).getIndexRegistro() == i) {
+                        conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, NOW())", idRegistro, alertas.get(j).getGrauAlerta(), alertas.get(j).getTipoComponente());
                     }
                 }
             }
