@@ -21,9 +21,9 @@ public class LoginPanel extends TelaPanel {
         super(telas, janela);
         this.usuario = null;
 //;
-//        ImageIcon imagemIcon = new ImageIcon(getClass().getResource("/assets/logo2.png"));
-//        JLabel imagemLabel = new JLabel(imagemIcon);
-//        imagemLabel.setBounds(440, 105, 300, 100);
+        ImageIcon imagemIcon = new ImageIcon(getClass().getResource("/assets/logo2.png"));
+        JLabel imagemLabel = new JLabel(imagemIcon);
+        imagemLabel.setBounds(440, 105, 300, 100);
         JLabel txtLogin = new JLabel("Insira seu Email:");
         txtLogin.setBounds(440, 205, 300, 35);
         txtLogin.setForeground(Color.decode("#dcdcdc"));
