@@ -74,7 +74,7 @@ public class Monitoramento {
         }
 
         // Obter componentes cadastrados no banco de dados
-        List<Componente> componentesCadastrados = jdbcTemplate.query("SELECT * FROM componente", (rs, rowNum) -> {
+        List<Componente> componentesCadastrados = jdbcTemplate.query("SELECT * FROM componente", (rs, indice) -> {
             Integer idComponente = rs.getInt("idComponente");
             String tipo = rs.getString("tipo");
             String nome = rs.getString("nome");
@@ -223,7 +223,11 @@ public class Monitoramento {
                 String[] memoryInfo = line.trim().split(",");
                 Double gpuMemoriaUso = Double.parseDouble(memoryInfo[1].trim());
                 Double gpuMemoriaDisponivel = Double.parseDouble(memoryInfo[2].trim());
-                gpuMemoria = (long) (gpuMemoriaDisponivel + gpuMemoriaUso);
+                if (gpuMemoriaDisponivel != null && gpuMemoriaUso != null) {
+                    gpuMemoria = (long) (gpuMemoriaUso + gpuMemoriaDisponivel);
+                } else {
+                    gpuMemoria = 0L;
+                }
             }
 
             // Verificar se a placa de vídeo está cadastrada no banco de dados
@@ -271,6 +275,8 @@ public class Monitoramento {
             for (Disco disco : discos) {
                 Long velocidadeDeLeitura = disco.getBytesDeLeitura();
                 Long velocidadeDeEscrita = disco.getBytesDeEscritas();
+                Long testeLeitura = disco.getLeituras();
+                Long testeEscrita = disco.getEscritas();
 
                 // Obter IDs relacionados ao disco no banco de dados
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, disco.getModelo());
@@ -279,6 +285,8 @@ public class Monitoramento {
                 // Adicionar registros de velocidade de leitura e escrita à lista
                 registros.add(new Registro(idCompHasComp, "Velocidade de Leitura", Utilitarios.formatBytesToDouble(velocidadeDeLeitura / (1024 * 1204)), Utilitarios.formatBytesPerSecond(velocidadeDeLeitura / (1024 * 1204)), Utilitarios.getUnidadeBytesPerSecond(velocidadeDeLeitura / (1024 * 1204))));
                 registros.add(new Registro(idCompHasComp, "Velocidade de Escrita", Utilitarios.formatBytesToDouble(velocidadeDeEscrita / (1024 * 1204)), Utilitarios.formatBytesPerSecond(velocidadeDeEscrita / (1024 * 1204)), Utilitarios.getUnidadeBytesPerSecond(velocidadeDeEscrita / (1024 * 1204))));
+                registros.add(new Registro(idCompHasComp, "Teste de Leitura", Utilitarios.formatBytesToDouble(testeLeitura), Utilitarios.formatBytes(testeLeitura), Utilitarios.getUnidadeBytes(testeLeitura)));
+                registros.add(new Registro(idCompHasComp, "Teste de Escrita", Utilitarios.formatBytesToDouble(testeEscrita), Utilitarios.formatBytes(testeEscrita), Utilitarios.getUnidadeBytes(testeEscrita)));
 
                 // Obter índices dos registros de velocidade de leitura e escrita
 //                Integer indexVelLeitura = 0;
