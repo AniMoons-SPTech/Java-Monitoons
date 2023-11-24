@@ -435,7 +435,7 @@ public class MonitoramentoUltimateMsSQL {
         for (int i = 0; i < registros.size(); i++) {
             Registro registro = registros.get(i);
             if (registro.getValor() != null) {
-                Integer idRegistro = conexao.inserirERetornarIdGerado("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dadoFormatado, dadoUnidade, dataHora) VALUES (?, ?, ?, ?, ?, NOW())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor(), registro.getValorFormatado(), registro.getUnidade());
+                Integer idRegistro = conexao.inserirERetornarIdGerado("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dadoFormatado, dadoUnidade, dataHora) VALUES (?, ?, ?, ?, ?, GETDATE())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor(), registro.getValorFormatado(), registro.getUnidade());
                 for (int j = 0; j < alertas.size(); j++) {
                     Alerta alertaDaVez = alertas.get(j);
                     if (alertaDaVez.getIndexRegistro() == i) {

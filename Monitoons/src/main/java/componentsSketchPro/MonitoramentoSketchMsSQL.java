@@ -438,7 +438,6 @@ public class MonitoramentoSketchMsSQL {
                     if (alertaDaVez.getIndexRegistro() == i) {
                         conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, GETDATE())", idRegistro, alertaDaVez.getGrauAlerta(), alertaDaVez.getTipoComponente());
                         alertaDaVez.enviarAlertaSlack(usuario.getNome());
-
                     }
                 }
             }
