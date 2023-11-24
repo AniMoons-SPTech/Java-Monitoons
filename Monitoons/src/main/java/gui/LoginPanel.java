@@ -53,7 +53,7 @@ public class LoginPanel extends TelaPanel {
         textoAlerta.setBounds(495,470,250,60);
         textoAlerta.setVisible(false);
 
-//        this.add(imagemLabel);
+        this.add(imagemLabel);
         this.add(botaoLogin);
         this.add(txtLogin);
         this.add(campoEmail);

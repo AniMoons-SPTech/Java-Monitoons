@@ -1,6 +1,7 @@
 package gui;
 
-import components.Monitoramento;
+import components.MonitoramentoDoodleMsSQL;
+import components.MonitoramentoDoodleMySQL;
 import components.Usuario;
 
 import javax.swing.*;
@@ -34,12 +35,20 @@ public class CapturaPanel extends TelaPanel {
     }
     public void iniciarCapturasDoodle(Usuario usuario) throws IOException, InterruptedException {
         Timer timer = new Timer();
-        Monitoramento monitoramento = new Monitoramento();
+        MonitoramentoDoodleMySQL monitoramentoDoodleMySQL = new MonitoramentoDoodleMySQL();
+        MonitoramentoDoodleMsSQL monitoramentoDoodleMsSQL = new MonitoramentoDoodleMsSQL();
         TimerTask tarefa = new TimerTask() {
             @Override
             public void run() {
                 try {
-                    monitoramento.comecarMonitoramentoDoodle(usuario);
+                    monitoramentoDoodleMySQL.comecarMonitoramentoDoodle(usuario);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    monitoramentoDoodleMsSQL.comecarMonitoramentoDoodle(usuario);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 } catch (IOException e) {

@@ -58,5 +58,10 @@
             <artifactId>jnaerator-runtime</artifactId>
             <version>0.12</version> <!-- Use a versão mais recente disponível -->
         </dependency>
+        <dependency>
+            <groupId>com.slack.api</groupId>
+            <artifactId>slack-api-client</artifactId>
+            <version>1.36.1</version>
+        </dependency>
     </dependencies>
 </project>

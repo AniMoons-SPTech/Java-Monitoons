@@ -76,12 +76,11 @@ public class Registro {
     public String toString(){
         return """
                 fkCompHasComp=%d,
-                tipo=%s,
-                valor=%s,
-                valorFormatado=%s,
-                unidade=%s,
-                dataHora=%s
-                alerta=%s
+                tipo= %s,
+                valor= %s,
+                valorFormatado =%s,
+                unidade= %s,
+                dataHora= %s
                 """.formatted(
                 this.fkCompHasComp,
                 this.tipo,

@@ -17,8 +17,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import com.slack.api.Slack;
+import com.slack.api.methods.MethodsClient;
+import com.slack.api.methods.request.chat.ChatPostMessageRequest;
+import com.slack.api.methods.response.chat.ChatPostMessageResponse;
 
 public class MonitoramentoDoodleMsSQL {
 
@@ -68,7 +76,7 @@ public class MonitoramentoDoodleMsSQL {
 
             // Calcular e formatar informações da memória
             Long memoriaTotal = memoria.getTotal();
-            memoriaNome = "Memoria de " + Utilitarios.formatBytes(memoriaTotal);
+            memoriaNome = "Memoria RAM";
 
             // Calcular e formatar informações do processador
             Long processadorFrequencia = processador.getFrequencia();
@@ -77,11 +85,11 @@ public class MonitoramentoDoodleMsSQL {
             Integer processadorNucleosLogicos = processador.getNumeroCpusLogicas();
 
             // Verificar se a memória está cadastrada no banco de dados
-            Boolean existeMemoria = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Memoria' AND nome = ?", Integer.class, memoriaNome) > 0;
+            Boolean existeMemoria = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'RAM' AND nome = ?", Integer.class, memoriaNome) > 0;
 
             if (!existeMemoria) {
                 // Cadastrar memória no banco de dados
-                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Memoria", memoriaNome);
+                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "RAM", memoriaNome);
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
 
                 // Relacionar memória ao computador
@@ -109,11 +117,11 @@ public class MonitoramentoDoodleMsSQL {
             }
 
             // Verificar se o processador está cadastrado no banco de dados
-            Boolean existeProcessador = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Processador' AND nome = ?", Integer.class, processadorNome) > 0;
+            Boolean existeProcessador = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'CPU' AND nome = ?", Integer.class, processadorNome) > 0;
 
             if (!existeProcessador) {
                 // Cadastrar processador no banco de dados
-                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Processador", processadorNome);
+                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "CPU", processadorNome);
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);
 
                 // Relacionar processador ao computador
@@ -148,11 +156,11 @@ public class MonitoramentoDoodleMsSQL {
                 String discoModelo = disco.getModelo();
 
                 // Verificar se o disco está cadastrado no banco de dados
-                Boolean existeDisco = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Disco' AND nome = ?", Integer.class, discoModelo) > 0;
+                Boolean existeDisco = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'DISCO' AND nome = ?", Integer.class, discoModelo) > 0;
 
                 if (!existeDisco) {
                     // Cadastrar disco no banco de dados
-                    jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Disco", discoModelo);
+                    jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "DISCO", discoModelo);
                     Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo);
 
                     // Relacionar disco ao computador
@@ -235,7 +243,7 @@ public class MonitoramentoDoodleMsSQL {
                         }
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                   System.out.println("Não tem nvidia-smi");
                 }
             }
             contadorVerificacoes++;
@@ -346,6 +354,17 @@ public class MonitoramentoDoodleMsSQL {
                     }
                 }
 
+                if (gpuMemDisp != null) {
+                    Double gpuPorcetagemDisp = (double) gpuMemDisp / gpuTotal;
+                    if (gpuMemDisp < 1000) {
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "CRITICO", "GPU"));
+                    } else if (gpuMemDisp < 2000) {
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "INTERMEDIARIO", "GPU"));
+                    } else if (gpuMemDisp < 3000) {
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "MODERADO", "GPU"));
+                    }
+                }
+
                 // Adicionar alertas de uso da GPU à lista
                 if (videoPorcetUso != null) {
                     if (videoPorcetUso > 90) {
@@ -357,19 +376,12 @@ public class MonitoramentoDoodleMsSQL {
                     }
                 }
 
-                if (gpuMemDisp != null) {
-                    if (gpuMemDisp < 1000) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "CRITICO", "GPU"));
-                    } else if (gpuMemDisp < 2000) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "INTERMEDIARIO", "GPU"));
-                    } else if (gpuMemDisp < 3000) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "MODERADO", "GPU"));
-                    }
-                }
+
 
             }
+
         } catch (IOException e) {
-            e.printStackTrace();
+           System.out.println("Não tem nvidia-smi");
         }
         // Obter IDs relacionados à memória no banco de dados
         Integer idComponenteMemoria = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
@@ -390,11 +402,17 @@ public class MonitoramentoDoodleMsSQL {
             }
         }
         // Adicionar alertas de memória disponível e em uso à lista
-        if (memoriaDisponivel < 1) {
+        Double memoriaEmUsoEmGb = (double) (((memoriaEmUso /1024) / 1024 )/ 1024);
+        Double memoriaTotalEmGb = (double) ((((memoriaEmUso + memoriaDisponivel) / 1024) / 1024) / 1024);
+        Double porcentagemMemoriaEmUso = (memoriaEmUsoEmGb / memoriaTotalEmGb) * 100;
+        System.out.println("Memoria total" + memoriaTotalEmGb);
+        System.out.println("Porcentagem " + porcentagemMemoriaEmUso);
+
+        if (porcentagemMemoriaEmUso >= 90) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "CRITICO", "RAM"));
-        } else if (memoriaDisponivel < 2) {
+        } else if (porcentagemMemoriaEmUso >= 80) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "INTERMEDIARIO", "RAM"));
-        } else if (memoriaDisponivel < 3) {
+        } else if (porcentagemMemoriaEmUso >= 70) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "MODERADO", "RAM"));
         }
 
@@ -430,10 +448,14 @@ public class MonitoramentoDoodleMsSQL {
         for (int i = 0; i < registros.size(); i++) {
             Registro registro = registros.get(i);
             if (registro.getValor() != null) {
-                Integer idRegistro = conexao.inserirERetornarIdGerado("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dadoFormatado, dadoUnidade, dataHora) VALUES (?, ?, ?, ?, ?, NOW())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor(), registro.getValorFormatado(), registro.getUnidade());
+                Integer idRegistro = conexao.inserirERetornarIdGerado("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dadoFormatado, dadoUnidade, dataHora) VALUES (?, ?, ?, ?, ?, GETDATE())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor(), registro.getValorFormatado(), registro.getUnidade());
                 for (int j = 0; j < alertas.size(); j++) {
-                    if (alertas.get(j).getIndexRegistro() == i) {
-                        conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, NOW())", idRegistro, alertas.get(j).getGrauAlerta(), alertas.get(j).getTipoComponente());
+                    Alerta alertaDaVez = alertas.get(j);
+                    if (alertaDaVez.getIndexRegistro() == i) {
+                        System.out.println(alertaDaVez);
+                        conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, GETDATE())", idRegistro, alertaDaVez.getGrauAlerta(), alertaDaVez.getTipoComponente());
+                        alertaDaVez.enviarAlertaSlack(usuario.getNome());
+                        System.out.println("Inseri o alerta");
                     }
                 }
             }

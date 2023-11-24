@@ -2,10 +2,12 @@ package gui;
 
 import conexao.Conexao;
 import conexao.ConexaoSQLServer;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Map;
 
 public class Usuario {
     private Integer idUsuarioMySQL;
@@ -36,30 +38,64 @@ public class Usuario {
             e.printStackTrace();
         }
 
-        // Verificar se a senha está correta
-        String senhaCerta = jdbcTemplateMsSQL.queryForObject("SELECT senha FROM usuario WHERE email = ?", String.class, email);
+        Object nomeUsuario = null;
+        Object cargo= null;
+        Object cpfRne= null;
+        Object telefone= "";
+        Object senhaQuery= null;
+        Object planoQuery= null;
+
+        String senhaCerta;
+        try{
+            senhaCerta = jdbcTemplateMsSQL.queryForObject("SELECT senha FROM usuario WHERE email = ?", String.class, email);
+
+            Map<String, Object> result = jdbcTemplateMsSQL.queryForMap("SELECT * FROM usuario WHERE email = ?", email);
+
+            nomeUsuario = result.get("nomeUsuario");
+            cargo = result.get("cargo");
+            cpfRne = result.get("documento");
+            telefone = result.get("telefone");
+            senhaQuery = result.get("senha");
+            planoQuery = result.get("plano");
+
+        } catch (EmptyResultDataAccessException e ){
+            senhaCerta = null;
+        }
+
+
 
         if (senha.equals(senhaCerta)) {
             // Obter informações do usuário
+            String resultadoQueryEmail;
+            try{
+                resultadoQueryEmail = jdbcTemplateMySQL.queryForObject("SELECT senha FROM usuario WHERE email = ?", String.class, email);
+            } catch (EmptyResultDataAccessException e ){
+                resultadoQueryEmail = null;
+            }
+
+            if(resultadoQueryEmail == null){
+                jdbcTemplateMySQL.update("INSERT INTO usuario (nomeUsuario, cargo, cpfRne, telefone, email, senha, plano) VALUES (?, ?, ?, ?, ?, ?, ?)", nomeUsuario, cargo, cpfRne, telefone, email, senhaQuery, planoQuery);
+            }
+
             idUsuarioMySQL = jdbcTemplateMySQL.queryForObject("SELECT idUsuario FROM usuario WHERE email = ?", Integer.class, email);
             idUsuarioSQLServer = jdbcTemplateMsSQL.queryForObject("SELECT idUsuario FROM usuario WHERE email = ?", Integer.class, email);
             nome = jdbcTemplateMsSQL.queryForObject("SELECT nomeUsuario FROM usuario WHERE email = ?", String.class, email);
             plano = jdbcTemplateMsSQL.queryForObject("SELECT plano FROM usuario WHERE email = ?", String.class, email);
 
-            Boolean existeComputador = jdbcTemplateMsSQL.queryForObject("SELECT COUNT(*) FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioSQLServer) > 0;
+            Boolean existeComputador = jdbcTemplateMsSQL.queryForObject("SELECT COUNT(*) FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioSQLServer)> 0;
             if (!existeComputador) {
                 // Cadastrar computador no banco de dados
                 jdbcTemplateMsSQL.update("INSERT INTO computador (fkUsuario, nome) VALUES (?, ?)", idUsuarioSQLServer, inetAddress.getHostName());
                 idComputadorSQLServer = jdbcTemplateMsSQL.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioSQLServer);
 
                 jdbcTemplateMySQL.update("INSERT INTO computador (fkUsuario, nome) VALUES (?, ?)", idUsuarioMySQL, inetAddress.getHostName());
-                idComputadorMySQL = jdbcTemplateMsSQL.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioMySQL);
+                idComputadorMySQL = jdbcTemplateMySQL.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioMySQL);
 
             } else {
                 // Obter ID do computador
                 idComputadorSQLServer = jdbcTemplateMsSQL.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioSQLServer);
 
-                idComputadorMySQL = jdbcTemplateMsSQL.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioMySQL);
+                idComputadorMySQL = jdbcTemplateMySQL.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioMySQL);
             }
 
             return plano;

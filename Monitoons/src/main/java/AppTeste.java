@@ -19,7 +19,7 @@ public class AppTeste {
         Usuario usuario;
 
         if (GraphicsEnvironment.isHeadless()) {
-            System.out.println("Modo console");
+            System.out.println("Bem vindo ao Monitoons! \n");
             String plano = "";
             do {
                 System.out.println("Informe o seu email");

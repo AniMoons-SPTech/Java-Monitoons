@@ -11,7 +11,6 @@ import java.util.Objects;
 
 public class ConexaoSQLServer {
     private JdbcTemplate jdbcTemplate;
-
     public ConexaoSQLServer() {
         BasicDataSource dataSource = new BasicDataSource();
 

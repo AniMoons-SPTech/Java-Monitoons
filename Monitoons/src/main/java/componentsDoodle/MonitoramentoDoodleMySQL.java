@@ -68,7 +68,7 @@ public class MonitoramentoDoodleMySQL {
 
             // Calcular e formatar informações da memória
             Long memoriaTotal = memoria.getTotal();
-            memoriaNome = "Memoria de " + Utilitarios.formatBytes(memoriaTotal);
+            memoriaNome = "Memoria RAM";
 
             // Calcular e formatar informações do processador
             Long processadorFrequencia = processador.getFrequencia();
@@ -77,16 +77,16 @@ public class MonitoramentoDoodleMySQL {
             Integer processadorNucleosLogicos = processador.getNumeroCpusLogicas();
 
             // Verificar se a memória está cadastrada no banco de dados
-            Boolean existeMemoria = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Memoria' AND nome = ?", Integer.class, memoriaNome) > 0;
+            Boolean existeMemoria = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'RAM' AND nome = ?", Integer.class, memoriaNome) > 0;
 
             if (!existeMemoria) {
                 // Cadastrar memória no banco de dados
-                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Memoria", memoriaNome);
+                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "RAM", memoriaNome);
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
 
                 // Relacionar memória ao computador
                 jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
-                componentesCadastrados.add(new Componente(idComponente, "Memória", memoriaNome, List.of(
+                componentesCadastrados.add(new Componente(idComponente, "RAM", memoriaNome, List.of(
                         new Especificacao(idComponente, "Memória Total", Utilitarios.formatBytes(memoriaTotal))
                 )));
 
@@ -109,16 +109,16 @@ public class MonitoramentoDoodleMySQL {
             }
 
             // Verificar se o processador está cadastrado no banco de dados
-            Boolean existeProcessador = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Processador' AND nome = ?", Integer.class, processadorNome) > 0;
+            Boolean existeProcessador = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'CPU' AND nome = ?", Integer.class, processadorNome) > 0;
 
             if (!existeProcessador) {
                 // Cadastrar processador no banco de dados
-                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Processador", processadorNome);
+                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "CPU", processadorNome);
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);
 
                 // Relacionar processador ao computador
                 jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
-                componentesCadastrados.add(new Componente(idComponente, "Processador", processadorNome, List.of(
+                componentesCadastrados.add(new Componente(idComponente, "RAM", processadorNome, List.of(
                         new Especificacao(idComponente, "Frequência", Utilitarios.formatFrequency(processadorFrequencia)),
                         new Especificacao(idComponente, "Núcleos Físicos", processadorNucleosFisicos.toString()),
                         new Especificacao(idComponente, "Núcleos Lógicos", processadorNucleosLogicos.toString())
@@ -148,16 +148,16 @@ public class MonitoramentoDoodleMySQL {
                 String discoModelo = disco.getModelo();
 
                 // Verificar se o disco está cadastrado no banco de dados
-                Boolean existeDisco = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'Disco' AND nome = ?", Integer.class, discoModelo) > 0;
+                Boolean existeDisco = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'DISCO' AND nome = ?", Integer.class, discoModelo) > 0;
 
                 if (!existeDisco) {
                     // Cadastrar disco no banco de dados
-                    jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "Disco", discoModelo);
+                    jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "DISCO", discoModelo);
                     Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo);
 
                     // Relacionar disco ao computador
                     jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
-                    componentesCadastrados.add(new Componente(idComponente, "Disco", discoModelo, List.of(
+                    componentesCadastrados.add(new Componente(idComponente, "DISCO", discoModelo, List.of(
                             new Especificacao(idComponente, "Tamanho", Utilitarios.formatBytes(discoTamanho)))
                     ));
 
@@ -235,7 +235,7 @@ public class MonitoramentoDoodleMySQL {
                         }
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("Não tem nvidia-smi");
                 }
             }
             contadorVerificacoes++;
@@ -369,7 +369,7 @@ public class MonitoramentoDoodleMySQL {
 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Não tem nvidia-smi");
         }
         // Obter IDs relacionados à memória no banco de dados
         Integer idComponenteMemoria = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
