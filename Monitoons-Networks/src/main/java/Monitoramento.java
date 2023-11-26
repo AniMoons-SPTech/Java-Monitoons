@@ -535,7 +535,7 @@ public class Monitoramento {
             try {
                 // Limpar a lista de registros e aguardar por 5 segundos antes da próxima iteração
                 registros.clear();
-                Thread.sleep(4000);
+                Thread.sleep(14000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
