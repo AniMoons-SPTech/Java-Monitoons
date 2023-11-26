@@ -1,12 +1,9 @@
-import com.github.britooo.looca.api.group.discos.DiscoGrupo;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Disco;
 import com.github.britooo.looca.api.group.discos.Volume;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
 import com.github.britooo.looca.api.group.rede.RedeInterface;
-import com.github.britooo.looca.api.group.rede.RedeInterfaceGroup;
-import com.github.britooo.looca.api.group.rede.RedeParametros;
 import org.springframework.jdbc.core.JdbcTemplate;
 import oshi.SystemInfo;
 import oshi.hardware.GraphicsCard;
@@ -327,20 +324,40 @@ public class Monitoramento {
             // Lista para armazenar os registros a serem inseridos no banco de dados
             List<Registro> registros = new ArrayList<>();
 
+
+
             // Iterar sobre as interfaces de rede para obter informações de uso
             for (RedeInterface rede : redes) {
-                RedeParametros redeParametros = looca.getRede().getParametros();
                 String redeNome = rede.getNomeExibicao();
-                Long redeBytesRecebidos = rede.getPacotesRecebidos();
-                Long redeBytesEnviados = rede.getPacotesEnviados();
+                Long redeBytesRecebidos = rede.getBytesRecebidos();
+                Long redeBytesEnviados = rede.getBytesRecebidos();
+                Long tempoAntes = System.currentTimeMillis();
+
 
                 // Obter IDs relacionados à interface de rede no banco de dados
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'REDE'", Integer.class, redeNome);
                 Integer idCompHasComp = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponente);
 
-                // Adicionar registros de uso da interface de rede à lista
-                registros.add(new Registro(idCompHasComp, "Bytes Recebidos", Utilitarios.formatBytesToDouble(redeBytesRecebidos), Utilitarios.formatBytesPerSecond(redeBytesRecebidos), Utilitarios.getUnidadeBytesPerSecond(redeBytesRecebidos)));
-                registros.add(new Registro(idCompHasComp, "Bytes Enviados", Utilitarios.formatBytesToDouble(redeBytesEnviados), Utilitarios.formatBytesPerSecond(redeBytesEnviados), Utilitarios.getUnidadeBytesPerSecond(redeBytesEnviados)));
+                // Aguardar um segundo antes de calcular a taxa de transferência
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                Long bytesRecebidosAgora = rede.getBytesRecebidos();
+                Long bytesEnviadosAgora = rede.getBytesEnviados();
+                Long tempoAgora = System.currentTimeMillis();
+
+                Long bytesRecebidos = bytesRecebidosAgora - redeBytesRecebidos;
+                Long bytesEnviados = bytesEnviadosAgora - redeBytesEnviados;
+                Long tempoDecorrido = tempoAgora - tempoAntes;
+
+                Long taxaRecebida = bytesRecebidos / tempoDecorrido * 1000; // taxa em bytes por segundo
+                Long taxaEnviada = bytesEnviados / tempoDecorrido * 1000; // taxa em bytes por segundo
+
+                registros.add(new Registro(idCompHasComp, "Taxa de Transferência Recebida", Utilitarios.formatBytesToDouble(taxaRecebida), Utilitarios.formatBytesPerSecond(taxaRecebida), Utilitarios.getUnidadeBytesPerSecond(taxaRecebida)));
+                registros.add(new Registro(idCompHasComp, "Taxa de Transferência Enviada", Utilitarios.formatBytesToDouble(taxaEnviada), Utilitarios.formatBytesPerSecond(taxaEnviada), Utilitarios.getUnidadeBytesPerSecond(taxaEnviada)));
             }
 
             // Iterar sobre os discos para obter informações de leitura e escrita
@@ -518,7 +535,7 @@ public class Monitoramento {
             try {
                 // Limpar a lista de registros e aguardar por 5 segundos antes da próxima iteração
                 registros.clear();
-                Thread.sleep(5000);
+                Thread.sleep(4000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
