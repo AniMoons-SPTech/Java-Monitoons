@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Monitoons-Doodle-Basico/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Monitoons-Doodle-Basico/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Monitoons-Doodle-Básico/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Monitoons-Doodle-Básico/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Monitoons-Networks/src/main/java" charset="UTF-8" />
@@ -9,5 +11,7 @@
     <file url="file://$PROJECT_DIR$/Monitoons-Sketch-Pro/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Monitoons-Ultimate/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Monitoons-Ultimate/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Monitoons/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Monitoons/src/main/resources" charset="UTF-8" />
   </component>
 </project>

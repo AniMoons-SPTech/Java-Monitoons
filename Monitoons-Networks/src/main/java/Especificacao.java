@@ -1,19 +1,13 @@
 public class Especificacao {
-//    private Integer idEspecificacao;
     private Integer fkComponente;
     private String tipo;
     private String valor;
 
     public Especificacao(Integer fkComponente, String tipo, String valor) {
-//        this.idEspecificacao = null;
         this.fkComponente = fkComponente;
         this.tipo = tipo;
         this.valor = valor;
     }
-
-//    public Integer getIdEspecificacao() {
-//        return idEspecificacao;
-//    }
 
     public Integer getFkComponente() {
         return fkComponente;
@@ -43,14 +37,13 @@ public class Especificacao {
     @Override
     public String toString(){
         return """
-                 fkComponente=%d,
-                 tipo=%s,
-                 valor=%s
-                """.formatted(
-//                        this.idEspecificacao,
-                        this.fkComponente,
-                        this.tipo,
-                        this.valor
-                );
+             fkComponente=%d,
+             tipo=%s,
+             valor=%s
+            """.formatted(
+                this.fkComponente,
+                this.tipo,
+                this.valor
+            );
     }
 }

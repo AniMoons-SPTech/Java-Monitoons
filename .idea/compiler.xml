@@ -6,12 +6,15 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Monitoons-Doodle" />
+        <module name="Monitoons" />
         <module name="Monitoons-Sketch-Pro (2)" />
         <module name="Monitoons-Networks" />
         <module name="Monitoons-Sketch-Pro (1)" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Monitoons-Networks-Teste" target="17" />
       <module name="Monitoons-Sketch-Pro" target="17" />
       <module name="teste-looca" target="17" />
     </bytecodeTargetLevel>
