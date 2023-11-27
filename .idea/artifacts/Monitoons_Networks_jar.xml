@@ -2,9 +2,6 @@
   <artifact type="jar" name="Monitoons-Networks:jar">
     <output-path>$PROJECT_DIR$/Monitoons-Networks/out/artifacts/Monitoons_Networks_jar</output-path>
     <root id="archive" name="Monitoons-Networks.jar">
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/Monitoons-Networks/src/resources/META-INF/MANIFEST.MF" />
-      </element>
       <element id="module-output" name="Monitoons-Networks" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-dbcp2/2.5.0/commons-dbcp2-2.5.0.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/nativelibs4java/ochafik-util/0.12/ochafik-util-0.12.jar" path-in-jar="/" />
