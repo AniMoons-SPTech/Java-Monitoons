@@ -3,10 +3,12 @@ package componentsUltimate;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Disco;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
+import com.github.britooo.looca.api.group.discos.Volume;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
-import gui.Usuario;
 import conexao.Conexao;
+import conexao.ConexaoSQLServer;
+import gui.Usuario;
 import org.springframework.jdbc.core.JdbcTemplate;
 import oshi.SystemInfo;
 import oshi.hardware.GraphicsCard;
@@ -18,17 +20,16 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class MonitoramentoUltimateMySQL {
     private Integer contadorVerificacoes = 0;
     private String processadorNome;
-    private List<Disco> discos;
+    private Map<Disco, Volume> discoVolumeMap;
     private List<GraphicsCard> gpus;
     private Memoria memoria;
     private String memoriaNome;
     private Processador processador;
-
-
 
 
     public void comecarMonitoramentoUltimate(Usuario usuario) throws InterruptedException, IOException {
@@ -61,8 +62,7 @@ public class MonitoramentoUltimateMySQL {
             });
 
             // Obter informações do sistema
-            DiscoGrupo grupoDeDiscos = looca.getGrupoDeDiscos();
-            discos = grupoDeDiscos.getDiscos();
+            discoVolumeMap = Utilitarios.relacionarDiscosComVolumes();
             memoria = looca.getMemoria();
             processador = looca.getProcessador();
             gpus = hardware.getGraphicsCards();
@@ -144,9 +144,9 @@ public class MonitoramentoUltimateMySQL {
             }
 
             // Iterar sobre os discos e verificar se estão cadastrados no banco de dados
-            for (Disco disco : discos) {
-                Long discoTamanho = disco.getTamanho();
-                String discoModelo = disco.getModelo();
+            for (Map.Entry<Disco, Volume> entrada : discoVolumeMap.entrySet()) {
+                Long discoTamanho = entrada.getKey().getTamanho();
+                String discoModelo = entrada.getKey().getModelo().replace(" (Unidades de disco padrão)", "");
 
                 // Verificar se o disco está cadastrado no banco de dados
                 Boolean existeDisco = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'DISCO' AND nome = ?", Integer.class, discoModelo) > 0;
@@ -154,7 +154,7 @@ public class MonitoramentoUltimateMySQL {
                 if (!existeDisco) {
                     // Cadastrar disco no banco de dados
                     jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "DISCO", discoModelo);
-                    Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo);
+                    Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'DISCO'", Integer.class, discoModelo);
 
                     // Relacionar disco ao computador
                     jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
@@ -172,7 +172,7 @@ public class MonitoramentoUltimateMySQL {
                     }
                 } else {
                     // Verificar se a relação entre computador e disco existe
-                    boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo)) > 0;
+                    boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'DISCO'", Integer.class, discoModelo)) > 0;
                     if (!compHasCompExiste) {
                         // Se não existir, criar a relação
                         Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo);
@@ -241,61 +241,50 @@ public class MonitoramentoUltimateMySQL {
             }
             contadorVerificacoes++;
         }
-
         // Lista para armazenar os registros a serem inseridos no banco de dados
         List<Registro> registros = new ArrayList<>();
         List<Alerta> alertas = new ArrayList<>();
 
         // Iterar sobre os discos para obter informações de leitura e escrita
-        for (Disco disco : discos) {
-            Long velocidadeDeLeitura = disco.getBytesDeLeitura();
-            Long velocidadeDeEscrita = disco.getBytesDeEscritas();
+        for(Map.Entry<Disco, Volume> entrada :discoVolumeMap.entrySet()){
+            Long velocidadeDeLeitura = entrada.getKey().getBytesDeLeitura();
+            Long velocidadeDeEscrita = entrada.getKey().getBytesDeEscritas();
+            Long espacoDisponivel = entrada.getValue().getDisponivel();
+            Long espacoEmUso = entrada.getValue().getTotal() - entrada.getValue().getDisponivel();
+
 
             // Obter IDs relacionados ao disco no banco de dados
-            Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, disco.getModelo());
+            Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, entrada.getKey().getModelo().replace(" (Unidades de disco padrão)", ""));
             Integer idCompHasComp = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponente);
 
             // Adicionar registros de velocidade de leitura e escrita à lista
             registros.add(new Registro(idCompHasComp, "Velocidade de Leitura", Utilitarios.formatBytesToDouble(velocidadeDeLeitura / (1024 * 1204)), Utilitarios.formatBytesPerSecond(velocidadeDeLeitura / (1024 * 1204)), Utilitarios.getUnidadeBytesPerSecond(velocidadeDeLeitura / (1024 * 1204))));
             registros.add(new Registro(idCompHasComp, "Velocidade de Escrita", Utilitarios.formatBytesToDouble(velocidadeDeEscrita / (1024 * 1204)), Utilitarios.formatBytesPerSecond(velocidadeDeEscrita / (1024 * 1204)), Utilitarios.getUnidadeBytesPerSecond(velocidadeDeEscrita / (1024 * 1204))));
+            registros.add(new Registro(idCompHasComp, "Espaço Disponível", Utilitarios.formatBytesToDouble(espacoDisponivel), Utilitarios.formatBytes(espacoDisponivel), Utilitarios.getUnidadeBytes(espacoDisponivel)));
+            registros.add(new Registro(idCompHasComp, "Espaço em Uso", Utilitarios.formatBytesToDouble(espacoEmUso), Utilitarios.formatBytes(espacoEmUso), Utilitarios.getUnidadeBytes(espacoEmUso)));
 
-            // Obter índices dos registros de velocidade de leitura e escrita
-//                Integer indexVelLeitura = 0;
-//                Integer indexVelEscrita = 0;
-//
-//                for (Registro registro : registros) {
-//                    if (registro.getTipo().equals("Velocidade de Leitura")) {
-//                        indexVelLeitura = registros.indexOf(registro);
-//                    }
-//                    if (registro.getTipo().equals("Velocidade de Escrita")) {
-//                        indexVelEscrita = registros.indexOf(registro);
-//                    }
-//                }
-//
-//                // Adicionar alertas de velocidade de leitura e escrita à lista
-//                if ( velocidadeDeLeitura != null) {
-//                    if (velocidadeDeLeitura > 1000000) {
-//                        registros.get(indexVelLeitura).addAlerta(new Alerta("Alto", "Disco"));
-//                    } else if (velocidadeDeLeitura > 100000) {
-//                        registros.get(indexVelLeitura).addAlerta(new Alerta("Intemediário", "Disco"));
-//                    } else if (velocidadeDeLeitura > 10000) {
-//                        registros.get(indexVelLeitura).addAlerta(new Alerta("Médio", "Disco"));
-//                    } else if (velocidadeDeLeitura > 1000) {
-//                        registros.get(indexVelLeitura).addAlerta(new Alerta("Baixo", "Disco"));
-//                    }
-//                }
-//
-//                if (velocidadeDeEscrita != null) {
-//                    if (velocidadeDeEscrita > 1000000) {
-//                        registros.get(indexVelEscrita).addAlerta(new Alerta("Alto", "Disco"));
-//                    } else if (velocidadeDeEscrita > 100000) {
-//                        registros.get(indexVelEscrita).addAlerta(new Alerta("Intemediário", "Disco"));
-//                    } else if (velocidadeDeEscrita > 10000) {
-//                        registros.get(indexVelEscrita).addAlerta(new Alerta("Médio", "Disco"));
-//                    } else if (velocidadeDeEscrita > 1000) {
-//                        registros.get(indexVelEscrita).addAlerta(new Alerta("Baixo", "Disco"));
-//                    }
-//                }
+
+            // Obter índices dos registros armazenamento
+            Integer indexEspacoDisp = 0;
+
+            for (Registro registro : registros) {
+                if (registro.getTipo().equals("Espaço Disponível")) {
+                    indexEspacoDisp = registros.indexOf(registro);
+                }
+            }
+
+            Double porcentagemEspacoDisp = Utilitarios.calcPercent(Utilitarios.formatBytesToDouble(espacoDisponivel), Utilitarios.formatBytesToDouble(entrada.getKey().getTamanho()));
+
+
+            // Adicionar alertas de armazenamento
+            if (porcentagemEspacoDisp < 10) {
+                alertas.add(new Alerta(idCompHasComp, registros.get(indexEspacoDisp).getTipo(), registros.get(indexEspacoDisp).getValor(), registros.get(indexEspacoDisp).getValorFormatado(), registros.get(indexEspacoDisp).getUnidade(), indexEspacoDisp, "CRITICO", "DISCO"));
+            } else if (porcentagemEspacoDisp < 20) {
+                alertas.add(new Alerta(idCompHasComp, registros.get(indexEspacoDisp).getTipo(), registros.get(indexEspacoDisp).getValor(), registros.get(indexEspacoDisp).getValorFormatado(), registros.get(indexEspacoDisp).getUnidade(), indexEspacoDisp, "INTERMEDIARIO", "DISCO"));
+            } else if (porcentagemEspacoDisp < 30) {
+                alertas.add(new Alerta(idCompHasComp, registros.get(indexEspacoDisp).getTipo(), registros.get(indexEspacoDisp).getValor(), registros.get(indexEspacoDisp).getValorFormatado(), registros.get(indexEspacoDisp).getUnidade(), indexEspacoDisp, "MODERADO", "DISCO"));
+            }
+
         }
 
         //Iterar sobre as placas de vídeo para obter informações de uso da GPU
@@ -303,6 +292,7 @@ public class MonitoramentoUltimateMySQL {
             Process process = Runtime.getRuntime().exec("nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.free --format=csv,noheader,nounits");
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+
             for (GraphicsCard gpu : gpus) {
 
                 String gpuNome = gpu.getName();
@@ -372,6 +362,7 @@ public class MonitoramentoUltimateMySQL {
             e.printStackTrace();
         }
 
+
         // Obter IDs relacionados à memória no banco de dados
         Integer idComponenteMemoria = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
         Integer idCompHasCompMemoria = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponenteMemoria);
@@ -427,6 +418,7 @@ public class MonitoramentoUltimateMySQL {
                 alertas.add(new Alerta(idCompHasCompProcessador, registros.get(indexUsoCpu).getTipo(), registros.get(indexUsoCpu).getValor(), registros.get(indexUsoCpu).getValorFormatado(), registros.get(indexUsoCpu).getUnidade(), indexUsoCpu,"MODERADO", "CPU"));
             }
         }
+
         // Captura de aplicativos em execução
         app.capturarAplicativos(idComputador);
 
@@ -446,3 +438,4 @@ public class MonitoramentoUltimateMySQL {
         System.out.println("Registros inseridos com sucesso!");
     }
 }
+
