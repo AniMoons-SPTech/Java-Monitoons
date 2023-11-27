@@ -86,7 +86,7 @@ public class MonitoramentoDoodleMsSQL {
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
 
                 // Relacionar memória ao computador
-                jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                jdbcTemplate.update("INSERT INTO computadorHasComponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                 componentesCadastrados.add(new Componente(idComponente, "RAM", memoriaNome, List.of(
                         new Especificacao(idComponente, "Memória Total", Utilitarios.formatBytes(memoriaTotal))
                 )));
@@ -101,11 +101,11 @@ public class MonitoramentoDoodleMsSQL {
                 }
             } else {
                 // Verificar se a relação entre computador e memória existe
-                Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome)) > 0;
+                Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorHasComponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome)) > 0;
                 if (!compHasCompExiste) {
                     // Se não existir, criar a relação
                     Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
-                    jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                    jdbcTemplate.update("INSERT INTO computadorHasComponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                 }
             }
 
@@ -118,7 +118,7 @@ public class MonitoramentoDoodleMsSQL {
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);
 
                 // Relacionar processador ao computador
-                jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                jdbcTemplate.update("INSERT INTO computadorHasComponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                 componentesCadastrados.add(new Componente(idComponente, "CPU", processadorNome, List.of(
                         new Especificacao(idComponente, "Frequência", Utilitarios.formatFrequency(processadorFrequencia)),
                         new Especificacao(idComponente, "Núcleos Físicos", processadorNucleosFisicos.toString()),
@@ -135,11 +135,11 @@ public class MonitoramentoDoodleMsSQL {
                 }
             } else {
                 // Verificar se a relação entre computador e processador existe
-                Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome)) > 0;
+                Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorHasComponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome)) > 0;
                 if (!compHasCompExiste) {
                     // Se não existir, criar a relação
                     Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);
-                    jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                    jdbcTemplate.update("INSERT INTO computadorHasComponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                 }
             }
 
@@ -157,7 +157,7 @@ public class MonitoramentoDoodleMsSQL {
                     Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'DISCO'", Integer.class, discoModelo);
 
                     // Relacionar disco ao computador
-                    jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                    jdbcTemplate.update("INSERT INTO computadorHasComponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                     componentesCadastrados.add(new Componente(idComponente, "DISCO", discoModelo, List.of(
                             new Especificacao(idComponente, "Tamanho", Utilitarios.formatBytes(discoTamanho)))
                     ));
@@ -172,11 +172,11 @@ public class MonitoramentoDoodleMsSQL {
                     }
                 } else {
                     // Verificar se a relação entre computador e disco existe
-                    boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'DISCO'", Integer.class, discoModelo)) > 0;
+                    boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorHasComponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'DISCO'", Integer.class, discoModelo)) > 0;
                     if (!compHasCompExiste) {
                         // Se não existir, criar a relação
                         Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, discoModelo);
-                        jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                        jdbcTemplate.update("INSERT INTO computadorHasComponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                     }
                 }
 
@@ -210,7 +210,7 @@ public class MonitoramentoDoodleMsSQL {
                             Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
 
                             // Relacionar placa de vídeo ao computador
-                            jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                            jdbcTemplate.update("INSERT INTO computadorHasComponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                             componentesCadastrados.add(new Componente(idComponente, "GPU", gpuNome, List.of(
                                     new Especificacao(idComponente, "Fabricante", gpuFabricante),
                                     new Especificacao(idComponente, "Versão", gpuVersao),
@@ -228,11 +228,11 @@ public class MonitoramentoDoodleMsSQL {
                             }
                         } else {
                             // Verificar se a relação entre computador e placa de vídeo existe
-                            Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome)) > 0;
+                            Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorHasComponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome)) > 0;
                             if (!compHasCompExiste) {
                                 // Se não existir, criar a relação
                                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
-                                jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                                jdbcTemplate.update("INSERT INTO computadorHasComponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
                             }
                         }
                     }
@@ -257,7 +257,7 @@ public class MonitoramentoDoodleMsSQL {
 
             // Obter IDs relacionados ao disco no banco de dados
             Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, entrada.getKey().getModelo().replace(" (Unidades de disco padrão)", ""));
-            Integer idCompHasComp = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponente);
+            Integer idCompHasComp = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorHasComponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponente);
 
             // Adicionar registros de velocidade de leitura e escrita à lista
             registros.add(new Registro(idCompHasComp, "Velocidade de Leitura", Utilitarios.formatBytesToDouble(velocidadeDeLeitura / (1024 * 1204)), Utilitarios.formatBytesPerSecond(velocidadeDeLeitura / (1024 * 1204)), Utilitarios.getUnidadeBytesPerSecond(velocidadeDeLeitura / (1024 * 1204))));
@@ -318,7 +318,7 @@ public class MonitoramentoDoodleMsSQL {
 
                 // Obter IDs relacionados à placa de vídeo no banco de dados
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
-                Integer idCompHasComp = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponente);
+                Integer idCompHasComp = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorHasComponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponente);
 
                 // Adicionar registro de uso da GPU à lista
 
@@ -372,7 +372,7 @@ public class MonitoramentoDoodleMsSQL {
 
         // Obter IDs relacionados à memória no banco de dados
         Integer idComponenteMemoria = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
-        Integer idCompHasCompMemoria = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponenteMemoria);
+        Integer idCompHasCompMemoria = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorHasComponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponenteMemoria);
 
         // Calcular e adicionar registros de memória disponível e em uso à lista
         Long memoriaDisponivel = memoria.getDisponivel();
@@ -421,7 +421,7 @@ public class MonitoramentoDoodleMsSQL {
 
         // Obter IDs relacionados ao processador no banco de dados
         Integer idComponenteProcessador = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);
-        Integer idCompHasCompProcessador = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponenteProcessador);
+        Integer idCompHasCompProcessador = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorHasComponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponenteProcessador);
 
         // Obter e adicionar registros de uso da CPU e temperatura à lista
         Double usoCpu = processador.getUso();
