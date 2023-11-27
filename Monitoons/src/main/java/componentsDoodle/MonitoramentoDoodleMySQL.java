@@ -9,6 +9,7 @@ import com.github.britooo.looca.api.group.processador.Processador;
 import conexao.Conexao;
 import conexao.ConexaoSQLServer;
 import gui.Usuario;
+import jdk.jshell.execution.Util;
 import org.springframework.jdbc.core.JdbcTemplate;
 import oshi.SystemInfo;
 import oshi.hardware.GraphicsCard;
@@ -42,6 +43,8 @@ public class MonitoramentoDoodleMySQL {
         InetAddress inetAddress = null;
         SystemInfo systemInfo = new SystemInfo();
         HardwareAbstractionLayer hardware = systemInfo.getHardware();
+
+        discoVolumeMap = Utilitarios.relacionarDiscosComVolumes();
 
         if (contadorVerificacoes < 1) {
             // Obter componentes cadastrados no banco de dados
