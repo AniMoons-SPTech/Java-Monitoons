@@ -54,7 +54,7 @@ public class AppTeste {
                             }
                         }
                     };
-                    timer.scheduleAtFixedRate(tarefa, 0, 5000);
+                    timer.scheduleAtFixedRate(tarefa, 0, 15000);
                 } else if (plano.equals("Sketch Pro")) {
                     MonitoramentoSketchMySQL monitoramentoSketchMySQL = new MonitoramentoSketchMySQL();
                     TimerTask tarefa = new TimerTask() {
@@ -69,7 +69,7 @@ public class AppTeste {
                             }
                         }
                     };
-                    timer.scheduleAtFixedRate(tarefa, 0, 5000);
+                    timer.scheduleAtFixedRate(tarefa, 0, 15000);
                 } else if (plano.equals("Ultimate")) {
                     MonitoramentoSketchMySQL monitoramentoSketchMySQL = new MonitoramentoSketchMySQL();
                     TimerTask tarefa = new TimerTask() {
@@ -84,7 +84,7 @@ public class AppTeste {
                             }
                         }
                     };
-                    timer.scheduleAtFixedRate(tarefa, 0, 5000);
+                    timer.scheduleAtFixedRate(tarefa, 0, 15000);
                 }
             }
         } else {

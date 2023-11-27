@@ -59,7 +59,7 @@ public class CapturaPanel extends TelaPanel {
                 }
             }
         };
-        timer.scheduleAtFixedRate(tarefa, 0, 5000);
+        timer.scheduleAtFixedRate(tarefa, 0, 15000);
 
     }
     public void iniciarCapturasSketchPro(Usuario usuario) throws IOException, InterruptedException {
@@ -87,7 +87,7 @@ public class CapturaPanel extends TelaPanel {
 
             }
         };
-        timer.scheduleAtFixedRate(tarefa, 0, 5000);
+        timer.scheduleAtFixedRate(tarefa, 0, 15000);
 
     }
     public void iniciarCapturasUltimate(Usuario usuario) throws IOException, InterruptedException {
@@ -113,7 +113,7 @@ public class CapturaPanel extends TelaPanel {
                 }
             }
         };
-        timer.scheduleAtFixedRate(tarefa, 0, 5000);
+        timer.scheduleAtFixedRate(tarefa, 0, 15000);
 
     }
 }

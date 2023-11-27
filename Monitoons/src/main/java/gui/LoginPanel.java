@@ -78,6 +78,7 @@ public class LoginPanel extends TelaPanel {
             textoAlerta.setVisible(true);
         }
     }
+
     public Usuario getUsuario(){
         return this.usuario;
     }

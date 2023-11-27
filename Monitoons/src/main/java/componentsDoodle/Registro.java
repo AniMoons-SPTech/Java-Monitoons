@@ -80,14 +80,12 @@ public class Registro {
                 valor= %s,
                 valorFormatado =%s,
                 unidade= %s,
-                dataHora= %s
                 """.formatted(
                 this.fkCompHasComp,
                 this.tipo,
                 this.valor,
                 this.valorFormatado,
-                this.unidade,
-                this.dataHora
+                this.unidade
         );
     }
 }

@@ -439,9 +439,10 @@ public class MonitoramentoUltimateMsSQL {
                 for (int j = 0; j < alertas.size(); j++) {
                     Alerta alertaDaVez = alertas.get(j);
                     if (alertaDaVez.getIndexRegistro() == i) {
-                        conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, NOW())", idRegistro, alertaDaVez.getGrauAlerta(), alertaDaVez.getTipoComponente());
+                        System.out.println(alertaDaVez);
+                        conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, GETDATE())", idRegistro, alertaDaVez.getGrauAlerta(), alertaDaVez.getTipoComponente());
                         alertaDaVez.enviarAlertaSlack(usuario.getNome());
-
+                        System.out.println("Inseri o alerta");
                     }
                 }
             }

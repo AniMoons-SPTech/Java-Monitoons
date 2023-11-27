@@ -82,10 +82,26 @@ public class Usuario {
             nome = jdbcTemplateMsSQL.queryForObject("SELECT nomeUsuario FROM usuario WHERE email = ?", String.class, email);
             plano = jdbcTemplateMsSQL.queryForObject("SELECT plano FROM usuario WHERE email = ?", String.class, email);
 
-            Boolean existeComputador = jdbcTemplateMsSQL.queryForObject("SELECT COUNT(*) FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioSQLServer)> 0;
-            if (!existeComputador) {
+            Boolean existeComputador = jdbcTemplateMsSQL.queryForObject("SELECT COUNT(*) FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioSQLServer) > 0;
+            Boolean existeComputadorMySQL = jdbcTemplateMySQL.queryForObject("SELECT COUNT(*) FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioMySQL) > 0;
+
+            if (!existeComputador && !existeComputadorMySQL) {
                 // Cadastrar computador no banco de dados
                 jdbcTemplateMsSQL.update("INSERT INTO computador (fkUsuario, nome) VALUES (?, ?)", idUsuarioSQLServer, inetAddress.getHostName());
+                idComputadorSQLServer = jdbcTemplateMsSQL.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioSQLServer);
+
+                jdbcTemplateMySQL.update("INSERT INTO computador (fkUsuario, nome) VALUES (?, ?)", idUsuarioMySQL, inetAddress.getHostName());
+                idComputadorMySQL = jdbcTemplateMySQL.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioMySQL);
+
+            } else if (!existeComputador) {
+
+                idComputadorMySQL = jdbcTemplateMySQL.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioMySQL);
+
+                jdbcTemplateMsSQL.update("INSERT INTO computador (fkUsuario, nome) VALUES (?, ?)", idUsuarioSQLServer, inetAddress.getHostName());
+                idComputadorSQLServer = jdbcTemplateMsSQL.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioSQLServer);
+
+            } else if (!existeComputadorMySQL) {
+
                 idComputadorSQLServer = jdbcTemplateMsSQL.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioSQLServer);
 
                 jdbcTemplateMySQL.update("INSERT INTO computador (fkUsuario, nome) VALUES (?, ?)", idUsuarioMySQL, inetAddress.getHostName());
