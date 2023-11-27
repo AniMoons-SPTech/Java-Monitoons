@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 
 public class Utilitarios {
 
-    public static Double formatDouble(Double valor, int casasDecimais){
-        return Double.parseDouble(String.format("%."+casasDecimais+"f", valor).replace(",", "."));
+    public static Double formatDouble(Double valor, int casasDecimais) {
+        return Double.parseDouble(String.format("%." + casasDecimais + "f", valor).replace(",", "."));
     }
 
     public static String formatBytes(long bytes) {
@@ -106,7 +106,7 @@ public class Utilitarios {
         return formatDouble(percentage, 2);
     }
 
-    public static Double calcPercent(Double valor, Double total){
+    public static Double calcPercent(Double valor, Double total) {
         return formatDouble((valor * 100) / total, 2);
     }
 
@@ -126,11 +126,13 @@ public class Utilitarios {
         volumes.sort(comparadorVolume);
         discos.sort(comparadorDisco);
 
-        for (int i = 0; i < volumes.size(); i++) {
-            discoVolumeMap.put(discos.get(i), volumes.get(i));
+        if (!discoVolumeMap.isEmpty()) {
+            for (int i = 0; i < volumes.size(); i++) {
+                discoVolumeMap.put(discos.get(i), volumes.get(i));
+            }
+            return discoVolumeMap;
         }
-
-        return discoVolumeMap;
+        return null;
     }
 
     private static Volume of(OSFileStore volume) {

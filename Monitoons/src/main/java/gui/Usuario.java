@@ -62,8 +62,6 @@ public class Usuario {
             senhaCerta = null;
         }
 
-
-
         if (senha.equals(senhaCerta)) {
             // Obter informações do usuário
             String resultadoQueryEmail;
