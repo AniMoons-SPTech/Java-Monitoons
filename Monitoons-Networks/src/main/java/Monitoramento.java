@@ -20,10 +20,10 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Monitoramento {
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public void comecarMonitoramento(Usuario usuario) throws InterruptedException, IOException{
 
         // Inicialização dos objetos necessários
-        Scanner scanner = new Scanner(System.in);
+
         Looca looca = new Looca();
         Conexao conexao = new Conexao();
         JdbcTemplate jdbcTemplate = conexao.getConexaoDoBanco();
@@ -39,39 +39,9 @@ public class Monitoramento {
             e.printStackTrace();
         }
 
-        Integer idUsuario;
-        String nomeUsuario;
-        Integer idComputador = null;
-
-        // Solicitar credenciais do usuário
-        System.out.println("Insira seu email: ");
-        String email = scanner.nextLine();
-
-        System.out.println("Insira sua senha: ");
-        String senha = scanner.nextLine();
-
-        // Verificar se a senha está correta
-        String senhaCerta = jdbcTemplate.queryForObject("SELECT senha FROM usuario WHERE email = ?", String.class, email);
-
-        if (senha.equals(senhaCerta)) {
-            // Obter informações do usuário
-            idUsuario = jdbcTemplate.queryForObject("SELECT idUsuario FROM usuario WHERE email = ?", Integer.class, email);
-            nomeUsuario = jdbcTemplate.queryForObject("SELECT nomeUsuario FROM usuario WHERE email = ?", String.class, email);
-
-            Boolean existeComputador = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computador WHERE fkUsuario = ?", Integer.class, idUsuario) > 0;
-            if (!existeComputador) {
-                // Cadastrar computador no banco de dados
-                jdbcTemplate.update("INSERT INTO computador (fkUsuario, nome) VALUES (?, ?)", idUsuario, inetAddress.getHostName());
-                idComputador = jdbcTemplate.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuario);
-            } else {
-                // Obter ID do computador
-                idComputador = jdbcTemplate.queryForObject("SELECT idComputador FROM computador WHERE fkUsuario = ?", Integer.class, idUsuario);
-            }
-
-            System.out.println("Bem vindo, " + nomeUsuario + "!");
-        } else {
-            System.out.println("Senha incorreta!");
-        }
+        Integer idUsuario = usuario.getIdUsuarioMySQL();
+        String nomeUsuario = usuario.getNome();
+        Integer idComputador = usuario.getIdComputadorMySQL();
 
         // Obter componentes cadastrados no banco de dados
         List<Componente> componentesCadastrados = jdbcTemplate.query("SELECT * FROM componente", (rs, indice) -> {
@@ -326,7 +296,6 @@ public class Monitoramento {
             }
         }
 
-        while (true) {
             // Lista para armazenar os registros a serem inseridos no banco de dados
             List<Registro> registros = new ArrayList<>();
 
@@ -554,5 +523,3 @@ public class Monitoramento {
             }
         }
     }
-
-}
