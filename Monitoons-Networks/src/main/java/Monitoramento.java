@@ -30,8 +30,6 @@ public class Monitoramento {
         InetAddress inetAddress = null;
         SystemInfo systemInfo = new SystemInfo();
         HardwareAbstractionLayer hardware = systemInfo.getHardware();
-        Process process = Runtime.getRuntime().exec("nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.free --format=csv,noheader,nounits");
-        BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
 
         try {
@@ -214,59 +212,67 @@ public class Monitoramento {
         }
 
         // Iterar sobre as placas de vídeo e verificar se estão cadastradas no banco de dados
-        for (GraphicsCard gpu : gpus) {
-            String gpuNome = gpu.getName();
-            String gpuFabricante = gpu.getVendor();
-            String gpuVersao = gpu.getVersionInfo();
-            Long gpuVRAM = gpu.getVRam();
-            Long gpuMemoria = null;
-            String line;
+        try {
 
-            while ((line = reader.readLine()) != null) {
-                String[] memoryInfo = line.trim().split(",");
-                Double gpuMemoriaUso = Double.parseDouble(memoryInfo[1].trim());
-                Double gpuMemoriaDisponivel = Double.parseDouble(memoryInfo[2].trim());
-                if (gpuMemoriaDisponivel != null && gpuMemoriaUso != null) {
-                    gpuMemoria = (long) (gpuMemoriaUso + gpuMemoriaDisponivel);
-                } else {
-                    gpuMemoria = 0L;
-                }
-            }
+            Process process = Runtime.getRuntime().exec("nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.free --format=csv,noheader,nounits");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-            // Verificar se a placa de vídeo está cadastrada no banco de dados
-            Boolean existePlacaDeVideo = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'GPU' AND nome = ?", Integer.class, gpuNome) > 0;
+            for (GraphicsCard gpu : gpus) {
+                String gpuNome = gpu.getName();
+                String gpuFabricante = gpu.getVendor();
+                String gpuVersao = gpu.getVersionInfo();
+                Long gpuVRAM = gpu.getVRam();
+                Long gpuMemoria = null;
+                String line;
 
-            if (!existePlacaDeVideo) {
-                // Cadastrar placa de vídeo no banco de dados
-                jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "GPU", gpuNome);
-                Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'GPU'", Integer.class, gpuNome);
-
-                // Relacionar placa de vídeo ao computador
-                jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
-                componentesCadastrados.add(new Componente(idComponente, "GPU", gpuNome, List.of(
-                        new Especificacao(idComponente, "Fabricante", gpuFabricante),
-                        new Especificacao(idComponente, "Versão", gpuVersao),
-                        new Especificacao(idComponente, "VRAM", Utilitarios.formatBytes(gpuVRAM)),
-                        new Especificacao(idComponente, "Memória", Utilitarios.formatBytes(gpuMemoria))
-                )));
-
-                // Inserir especificações da placa de vídeo
-                for (Componente componenteCadastrado : componentesCadastrados) {
-                    for (Especificacao especificacao : componenteCadastrado.getEspecificacoes()) {
-                        if (especificacao.getFkComponente().equals(idComponente)) {
-                            jdbcTemplate.update("INSERT INTO especificacoesComponente (fkComponente, tipoEspecificacao, valor) VALUES (?, ?, ?)", idComponente, especificacao.getTipo(), especificacao.getValor());
-                        }
+                while ((line = reader.readLine()) != null) {
+                    String[] memoryInfo = line.trim().split(",");
+                    Double gpuMemoriaUso = Double.parseDouble(memoryInfo[1].trim());
+                    Double gpuMemoriaDisponivel = Double.parseDouble(memoryInfo[2].trim());
+                    if (gpuMemoriaDisponivel != null && gpuMemoriaUso != null) {
+                        gpuMemoria = (long) (gpuMemoriaUso + gpuMemoriaDisponivel);
+                    } else {
+                        gpuMemoria = 0L;
                     }
                 }
-            } else {
-                // Verificar se a relação entre computador e placa de vídeo existe
-                Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'GPU'", Integer.class, gpuNome)) > 0;
-                if (!compHasCompExiste) {
-                    // Se não existir, criar a relação
-                    Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
+
+                // Verificar se a placa de vídeo está cadastrada no banco de dados
+                Boolean existePlacaDeVideo = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM componente WHERE tipo = 'GPU' AND nome = ?", Integer.class, gpuNome) > 0;
+
+                if (!existePlacaDeVideo) {
+                    // Cadastrar placa de vídeo no banco de dados
+                    jdbcTemplate.update("INSERT INTO componente (tipo, nome) VALUES (?, ?)", "GPU", gpuNome);
+                    Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'GPU'", Integer.class, gpuNome);
+
+                    // Relacionar placa de vídeo ao computador
                     jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                    componentesCadastrados.add(new Componente(idComponente, "GPU", gpuNome, List.of(
+                            new Especificacao(idComponente, "Fabricante", gpuFabricante),
+                            new Especificacao(idComponente, "Versão", gpuVersao),
+                            new Especificacao(idComponente, "VRAM", Utilitarios.formatBytes(gpuVRAM)),
+                            new Especificacao(idComponente, "Memória", Utilitarios.formatBytes(gpuMemoria))
+                    )));
+
+                    // Inserir especificações da placa de vídeo
+                    for (Componente componenteCadastrado : componentesCadastrados) {
+                        for (Especificacao especificacao : componenteCadastrado.getEspecificacoes()) {
+                            if (especificacao.getFkComponente().equals(idComponente)) {
+                                jdbcTemplate.update("INSERT INTO especificacoesComponente (fkComponente, tipoEspecificacao, valor) VALUES (?, ?, ?)", idComponente, especificacao.getTipo(), especificacao.getValor());
+                            }
+                        }
+                    }
+                } else {
+                    // Verificar se a relação entre computador e placa de vídeo existe
+                    Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'GPU'", Integer.class, gpuNome)) > 0;
+                    if (!compHasCompExiste) {
+                        // Se não existir, criar a relação
+                        Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
+                        jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+                    }
                 }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         // Iterar sobre as interfaces de rede e verificar se estão cadastradas no banco de dados
@@ -403,66 +409,73 @@ public class Monitoramento {
             }
 
             //Iterar sobre as placas de vídeo para obter informações de uso da GPU
-            for (GraphicsCard gpu : gpus) {
+            try {
+                Process process = Runtime.getRuntime().exec("nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.free --format=csv,noheader,nounits");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-                String gpuNome = gpu.getName();
-                String line;
-                Long gpuMemUso = null;
-                Long gpuMemDisp = null;
-                Double videoPorcetUso = null;
+                for (GraphicsCard gpu : gpus) {
 
-                while ((line = reader.readLine()) != null) {
-                    String[] memoryInfo = line.trim().split(",");
-                    videoPorcetUso = Double.parseDouble(memoryInfo[0].trim());
-                    gpuMemUso = Long.parseLong(memoryInfo[1].trim());
-                    gpuMemDisp = Long.parseLong(memoryInfo[2].trim());
-                }
+                    String gpuNome = gpu.getName();
+                    String line;
+                    Long gpuMemUso = null;
+                    Long gpuMemDisp = null;
+                    Double videoPorcetUso = null;
 
-                // Obter IDs relacionados à placa de vídeo no banco de dados
-                Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
-                Integer idCompHasComp = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponente);
-
-                // Adicionar registro de uso da GPU à lista
-
-                if (videoPorcetUso != null && gpuMemUso != null && gpuMemDisp != null) {
-                    registros.add(new Registro(idCompHasComp, "Uso da GPU", Utilitarios.formatPercentagetoDouble(videoPorcetUso), videoPorcetUso.toString(), "%"));
-                    registros.add(new Registro(idCompHasComp, "Memória de Vídeo em Uso", Utilitarios.formatBytesToDouble(gpuMemUso), Utilitarios.formatBytes(gpuMemUso), Utilitarios.getUnidadeBytes(gpuMemUso)));
-                    registros.add(new Registro(idCompHasComp, "Memória de Vídeo Disponível", Utilitarios.formatBytesToDouble(gpuMemDisp), Utilitarios.formatBytes(gpuMemDisp), Utilitarios.getUnidadeBytes(gpuMemDisp)));
-                }
-                // Obter índices dos registros de uso da GPU e de memória de vídeo disponível
-                Integer indexVideoUso = 0;
-                Integer indexVideoMemDisp = 0;
-
-                for (Registro registro : registros) {
-                    if (registro.getTipo().equals("Uso da GPU")) {
-                        indexVideoUso = registros.indexOf(registro);
+                    while ((line = reader.readLine()) != null) {
+                        String[] memoryInfo = line.trim().split(",");
+                        videoPorcetUso = Double.parseDouble(memoryInfo[0].trim());
+                        gpuMemUso = Long.parseLong(memoryInfo[1].trim());
+                        gpuMemDisp = Long.parseLong(memoryInfo[2].trim());
                     }
-                    if (registro.getTipo().equals("Memória de Vídeo Disponível")) {
-                        indexVideoMemDisp = registros.indexOf(registro);
-                    }
-                }
 
-                // Adicionar alertas de uso da GPU à lista
-                if (videoPorcetUso != null) {
-                    if (videoPorcetUso > 90) {
-                        registros.get(indexVideoUso).addAlerta(new Alerta("CRITICO", "GPU"));
-                    } else if (videoPorcetUso > 80) {
-                        registros.get(indexVideoUso).addAlerta(new Alerta("INTERMEDIARIO", "GPU"));
-                    } else if (videoPorcetUso > 70) {
-                        registros.get(indexVideoUso).addAlerta(new Alerta("MODERADO", "GPU"));
-                    }
-                }
+                    // Obter IDs relacionados à placa de vídeo no banco de dados
+                    Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, gpuNome);
+                    Integer idCompHasComp = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponente);
 
-                if (gpuMemDisp != null) {
-                    if (gpuMemDisp < 1000) {
-                        registros.get(indexVideoMemDisp).addAlerta(new Alerta("CRITICO", "GPU"));
-                    } else if (gpuMemDisp < 2000) {
-                        registros.get(indexVideoMemDisp).addAlerta(new Alerta("INTERMEDIARIO", "GPU"));
-                    } else if (gpuMemDisp < 3000) {
-                        registros.get(indexVideoMemDisp).addAlerta(new Alerta("MODERADO", "GPU"));
-                    }
-                }
+                    // Adicionar registro de uso da GPU à lista
 
+                    if (videoPorcetUso != null && gpuMemUso != null && gpuMemDisp != null) {
+                        registros.add(new Registro(idCompHasComp, "Uso da GPU", Utilitarios.formatPercentagetoDouble(videoPorcetUso), videoPorcetUso.toString(), "%"));
+                        registros.add(new Registro(idCompHasComp, "Memória de Vídeo em Uso", Utilitarios.formatBytesToDouble(gpuMemUso), Utilitarios.formatBytes(gpuMemUso), Utilitarios.getUnidadeBytes(gpuMemUso)));
+                        registros.add(new Registro(idCompHasComp, "Memória de Vídeo Disponível", Utilitarios.formatBytesToDouble(gpuMemDisp), Utilitarios.formatBytes(gpuMemDisp), Utilitarios.getUnidadeBytes(gpuMemDisp)));
+                    }
+                    // Obter índices dos registros de uso da GPU e de memória de vídeo disponível
+                    Integer indexVideoUso = 0;
+                    Integer indexVideoMemDisp = 0;
+
+                    for (Registro registro : registros) {
+                        if (registro.getTipo().equals("Uso da GPU")) {
+                            indexVideoUso = registros.indexOf(registro);
+                        }
+                        if (registro.getTipo().equals("Memória de Vídeo Disponível")) {
+                            indexVideoMemDisp = registros.indexOf(registro);
+                        }
+                    }
+
+                    // Adicionar alertas de uso da GPU à lista
+                    if (videoPorcetUso != null) {
+                        if (videoPorcetUso > 90) {
+                            registros.get(indexVideoUso).addAlerta(new Alerta("CRITICO", "GPU"));
+                        } else if (videoPorcetUso > 80) {
+                            registros.get(indexVideoUso).addAlerta(new Alerta("INTERMEDIARIO", "GPU"));
+                        } else if (videoPorcetUso > 70) {
+                            registros.get(indexVideoUso).addAlerta(new Alerta("MODERADO", "GPU"));
+                        }
+                    }
+
+                    if (gpuMemDisp != null) {
+                        if (gpuMemDisp < 1000) {
+                            registros.get(indexVideoMemDisp).addAlerta(new Alerta("CRITICO", "GPU"));
+                        } else if (gpuMemDisp < 2000) {
+                            registros.get(indexVideoMemDisp).addAlerta(new Alerta("INTERMEDIARIO", "GPU"));
+                        } else if (gpuMemDisp < 3000) {
+                            registros.get(indexVideoMemDisp).addAlerta(new Alerta("MODERADO", "GPU"));
+                        }
+                    }
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
             // Obter IDs relacionados à memória no banco de dados
