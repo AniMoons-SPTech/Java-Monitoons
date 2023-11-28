@@ -126,10 +126,13 @@ public class Utilitarios {
         volumes.sort(comparadorVolume);
         discos.sort(comparadorDisco);
 
-        for (int i = 0; i < volumes.size(); i++) {
-            discoVolumeMap.put(discos.get(i), volumes.get(i));
+        if (!discos.isEmpty()) {
+            for (int i = 0; i < discos.size(); i++) {
+                discoVolumeMap.put(discos.get(i), volumes.get(i));
+            }
+        } else {
+            discoVolumeMap.put(discos.get(0), volumes.get(0));
         }
-
         return discoVolumeMap;
     }
 

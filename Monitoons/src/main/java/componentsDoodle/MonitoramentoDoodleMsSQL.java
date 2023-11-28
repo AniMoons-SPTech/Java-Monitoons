@@ -18,6 +18,7 @@ import oshi.hardware.HardwareAbstractionLayer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.IDN;
 import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,7 @@ public class MonitoramentoDoodleMsSQL {
 
             // Calcular e formatar informações da memória
             Long memoriaTotal = memoria.getTotal();
-            memoriaNome = "Memoria RAM";
+            memoriaNome = "Memoria RAM " + idComputador;
 
             // Calcular e formatar informações do processador
             Long processadorFrequencia = processador.getFrequencia();

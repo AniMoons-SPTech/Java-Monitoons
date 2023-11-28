@@ -70,7 +70,7 @@ public class MonitoramentoUltimateMsSQL {
 
             // Calcular e formatar informações da memória
             Long memoriaTotal = memoria.getTotal();
-            memoriaNome = "Memoria RAM";
+            memoriaNome = "Memoria RAM " + idComputador;
 
             // Calcular e formatar informações do processador
             Long processadorFrequencia = processador.getFrequencia();

@@ -71,7 +71,8 @@ public class MonitoramentoDoodleMySQL {
 
             // Calcular e formatar informações da memória
             Long memoriaTotal = memoria.getTotal();
-            memoriaNome = "Memoria RAM";
+            memoriaNome = "Memoria RAM " + idComputador;
+            System.out.println(Utilitarios.formatBytes(memoriaTotal));
 
             // Calcular e formatar informações do processador
             Long processadorFrequencia = processador.getFrequencia();
