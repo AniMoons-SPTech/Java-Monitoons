@@ -1,7 +1,11 @@
 
 
+import componentsDoodle.MonitoramentoDoodleMsSQL;
 import componentsDoodle.MonitoramentoDoodleMySQL;
+import componentsSketchPro.MonitoramentoSketchMsSQL;
 import componentsSketchPro.MonitoramentoSketchMySQL;
+import componentsUltimate.MonitoramentoUltimateMsSQL;
+import componentsUltimate.MonitoramentoUltimateMySQL;
 import gui.App;
 import gui.Usuario;
 
@@ -42,6 +46,7 @@ public class AppTeste {
                 Usuario finalUsuario = usuario;
                 if (plano.equals("Doodle")) {
                     MonitoramentoDoodleMySQL monitoramentoDoodleMySQL = new MonitoramentoDoodleMySQL();
+                    MonitoramentoDoodleMsSQL monitoramentoDoodleMsSQL = new MonitoramentoDoodleMsSQL();
                     TimerTask tarefa = new TimerTask() {
                         @Override
                         public void run() {
@@ -52,11 +57,20 @@ public class AppTeste {
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
+                            try {
+                                monitoramentoDoodleMsSQL.comecarMonitoramentoDoodle(finalUsuario);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     };
                     timer.scheduleAtFixedRate(tarefa, 0, 15000);
                 } else if (plano.equals("Sketch Pro")) {
+                } else if (plano.equals("Sketch Pro")) {
                     MonitoramentoSketchMySQL monitoramentoSketchMySQL = new MonitoramentoSketchMySQL();
+                    MonitoramentoSketchMsSQL monitoramentoSketchMsSQL = new MonitoramentoSketchMsSQL();
                     TimerTask tarefa = new TimerTask() {
                         @Override
                         public void run() {
@@ -67,16 +81,31 @@ public class AppTeste {
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
+                            try {
+                                monitoramentoSketchMsSQL.comecarMonitoramentoSketchPro(finalUsuario);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     };
                     timer.scheduleAtFixedRate(tarefa, 0, 15000);
                 } else if (plano.equals("Ultimate")) {
-                    MonitoramentoSketchMySQL monitoramentoSketchMySQL = new MonitoramentoSketchMySQL();
+                    MonitoramentoUltimateMySQL monitoramentoUltimateMySQL = new MonitoramentoUltimateMySQL();
+                    MonitoramentoUltimateMsSQL monitoramentoUltimateMsSQL = new MonitoramentoUltimateMsSQL();
                     TimerTask tarefa = new TimerTask() {
                         @Override
                         public void run() {
                             try {
-                                monitoramentoSketchMySQL.comecarMonitoramentoSketchPro(finalUsuario);
+                                monitoramentoUltimateMySQL.comecarMonitoramentoUltimate(finalUsuario);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            try {
+                                monitoramentoUltimateMsSQL.comecarMonitoramentoUltimate(finalUsuario);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             } catch (IOException e) {
