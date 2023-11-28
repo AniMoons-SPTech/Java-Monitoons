@@ -45,7 +45,7 @@ public class MonitoramentoDoodleMsSQL {
         SystemInfo systemInfo = new SystemInfo();
         HardwareAbstractionLayer hardware = systemInfo.getHardware();
 
-        if (contadorVerificacoesMsSQL == 1) {
+        if (contadorVerificacoesMsSQL != 1) {
             System.out.println("Entrei no loop de cadastro de peças");
             // Obter componentes cadastrados no banco de dados
             List<Componente> componentesCadastrados = jdbcTemplate.query("SELECT * FROM componente", (rs, rowNum) -> {
