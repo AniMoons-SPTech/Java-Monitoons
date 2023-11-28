@@ -133,9 +133,10 @@ public class Utilitarios {
             for (int i = 0; i < volumes.size(); i++) {
                 discoVolumeMap.put(discos.get(i), volumes.get(i));
             }
-            return discoVolumeMap;
+        } else {
+            discoVolumeMap.put(discos.get(0), volumes.get(0));
         }
-        return null;
+            return discoVolumeMap;
     }
 
     private static Volume of(OSFileStore volume) {
