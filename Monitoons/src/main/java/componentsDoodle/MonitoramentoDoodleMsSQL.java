@@ -35,13 +35,19 @@ public class MonitoramentoDoodleMsSQL {
 
 
     public void comecarMonitoramentoDoodle(Usuario usuario) throws InterruptedException, IOException {
-
+        System.out.println("EU ENTREI NO COMECO DO METODO");
         // Inicialização dos objetos necessários
         Integer idComputador = usuario.getIdComputadorSQLServer();
+        System.out.println("IDCOMPUTADOR");
         Looca looca = new Looca();
+        System.out.println("LOOCA");
         ConexaoSQLServer conexao = new ConexaoSQLServer();
+        System.out.println("CONEXAO");
         JdbcTemplate jdbcTemplate = conexao.getConexaoDoBanco();
+        System.out.println("JDBC");
         InetAddress inetAddress = null;
+        System.out.println("INET SLA");
+        System.out.println(contadorVerificacoesMsSQL);
 
         if (contadorVerificacoesMsSQL < 1) {
             System.out.println("Entrei no loop de cadastro de peças");
