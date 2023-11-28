@@ -5,11 +5,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Log {
+public class LogJSON {
     private LocalDateTime agora;
     private DateTimeFormatter formatado;
     private String dataFormatada;
@@ -17,7 +16,7 @@ public class Log {
     private String caminhoDiretorioLogs;
     private String caminhoArquivo ;
 
-    public Log(Boolean gui) {
+    public LogJSON(Boolean gui) {
         this.agora = LocalDateTime.now();
         this.formatado = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss");
         this.dataFormatada = agora.format(formatado);

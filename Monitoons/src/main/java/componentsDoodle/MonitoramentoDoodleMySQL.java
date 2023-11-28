@@ -1,16 +1,14 @@
 package componentsDoodle;
 
+import Log.GerarLog;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Disco;
-import com.github.britooo.looca.api.group.discos.DiscoGrupo;
 import com.github.britooo.looca.api.group.discos.Volume;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
 import conexao.Conexao;
-import conexao.ConexaoSQLServer;
-import gui.Log;
+import gui.LogJSON;
 import gui.Usuario;
-import jdk.jshell.execution.Util;
 import org.springframework.jdbc.core.JdbcTemplate;
 import oshi.SystemInfo;
 import oshi.hardware.GraphicsCard;
@@ -352,17 +350,6 @@ public class MonitoramentoDoodleMySQL {
                         alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoUso).getTipo(), registros.get(indexVideoUso).getValor(), registros.get(indexVideoUso).getValorFormatado(), registros.get(indexVideoUso).getUnidade(), indexVideoUso, "MODERADO", "GPU"));
                     }
                 }
-
-                if (gpuMemDisp != null) {
-                    if (gpuMemDisp < 1000) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "CRITICO", "GPU"));
-                    } else if (gpuMemDisp < 2000) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "INTERMEDIARIO", "GPU"));
-                    } else if (gpuMemDisp < 3000) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "MODERADO", "GPU"));
-                    }
-                }
-
             }
         } catch (IOException e) {
             System.out.println("Não tem placa de vídeo Nvidia");
@@ -426,12 +413,13 @@ public class MonitoramentoDoodleMySQL {
             }
         }
 
-        Log log = new Log(GraphicsEnvironment.isHeadless());
+        LogJSON logJSON = new LogJSON(GraphicsEnvironment.isHeadless());
         if (videoPorcetUso != null){
-            log.escreverLog(usoCpu, videoPorcetUso, porcentagemMemoriaRam);
+            logJSON.escreverLog(usoCpu, videoPorcetUso, porcentagemMemoriaRam);
         } else {
-            log.escreverLog(usoCpu, 0.0, porcentagemMemoriaRam);
+            logJSON.escreverLog(usoCpu, 0.0, porcentagemMemoriaRam);
         }
+        GerarLog gerarLog = new GerarLog();
 
         // Iterar sobre os registros e alertas e inserir no banco de dados
         for (int i = 0; i < registros.size(); i++) {
