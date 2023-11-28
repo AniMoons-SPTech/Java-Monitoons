@@ -238,7 +238,7 @@ public class MonitoramentoUltimateMsSQL {
                         }
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("Não tem placa de vídeo NVIDIA");
                 }
             }
             contadorVerificacoes++;
@@ -367,7 +367,7 @@ public class MonitoramentoUltimateMsSQL {
                 IOException e)
 
         {
-            e.printStackTrace();
+            System.out.println("Não tem placa de vídeo NVIDIA");
         }
 
 

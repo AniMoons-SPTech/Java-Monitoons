@@ -237,7 +237,7 @@ public class MonitoramentoDoodleMsSQL {
                         }
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("Não tem placa de vídeo NVIDIA");;
                 }
             }
             contadorVerificacoes++;
@@ -366,7 +366,7 @@ public class MonitoramentoDoodleMsSQL {
                 IOException e)
 
         {
-            e.printStackTrace();
+            System.out.println("Não tem placa de vídeo NVIDIA");;
         }
 
 

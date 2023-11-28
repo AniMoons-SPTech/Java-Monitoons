@@ -238,7 +238,7 @@ public class MonitoramentoDoodleMySQL {
                         }
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("Não tem placa de vídeo Nvidia");
                 }
             }
             contadorVerificacoes++;
@@ -361,7 +361,7 @@ public class MonitoramentoDoodleMySQL {
 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Não tem placa de vídeo Nvidia");
         }
 
 

@@ -235,7 +235,7 @@ public class MonitoramentoSketchMySQL {
                         }
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("Não tem placa de vídeo NVIDIA");
                 }
             }
             contadorVerificacoes++;
@@ -358,7 +358,7 @@ public class MonitoramentoSketchMySQL {
 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Não tem placa de vídeo NVIDIA");
         }
 
 
