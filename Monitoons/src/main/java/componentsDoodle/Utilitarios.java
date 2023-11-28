@@ -126,14 +126,17 @@ public class Utilitarios {
         volumes.sort(comparadorVolume);
         discos.sort(comparadorDisco);
 
-        System.out.println(volumes);
-        System.out.println(discos);
+//        System.out.println(volumes);
+//        System.out.println(discos);
 
-        for (int i = 0; i < volumes.size(); i++) {
-            discoVolumeMap.put(discos.get(i), volumes.get(i));
+        if (!discos.isEmpty()) {
+            for (int i = 0; i < discos.size(); i++) {
+                discoVolumeMap.put(discos.get(i), volumes.get(i));
+            }
+        } else {
+            discoVolumeMap.put(discos.get(0), volumes.get(0));
         }
-//        discoVolumeMap.put(discos.get(0), volumes.get(0));
-        return discoVolumeMap;
+            return discoVolumeMap;
     }
 
     private static Volume of(OSFileStore volume) {
