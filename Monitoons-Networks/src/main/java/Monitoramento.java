@@ -331,8 +331,12 @@ public class Monitoramento {
                 Long taxaRecebida = bytesRecebidos / tempoDecorrido * 1000; // taxa em bytes por segundo
                 Long taxaEnviada = bytesEnviados / tempoDecorrido * 1000; // taxa em bytes por segundo
 
-                registros.add(new Registro(idCompHasComp, "Taxa de Transferência Recebida", Utilitarios.formatBytesToDouble(taxaRecebida), Utilitarios.formatBytesPerSecond(taxaRecebida), Utilitarios.getUnidadeBytesPerSecond(taxaRecebida)));
-                registros.add(new Registro(idCompHasComp, "Taxa de Transferência Enviada", Utilitarios.formatBytesToDouble(taxaEnviada), Utilitarios.formatBytesPerSecond(taxaEnviada), Utilitarios.getUnidadeBytesPerSecond(taxaEnviada)));
+
+                if (taxaRecebida > 0 && taxaEnviada > 0) {
+                    // Adicionar registros de taxa de transferência à lista
+                    registros.add(new Registro(idCompHasComp, "Taxa de Transferência Recebida", Utilitarios.formatBytesToDouble(taxaRecebida), Utilitarios.formatBytesPerSecond(taxaRecebida), Utilitarios.getUnidadeBytesPerSecond(taxaRecebida)));
+                    registros.add(new Registro(idCompHasComp, "Taxa de Transferência Enviada", Utilitarios.formatBytesToDouble(taxaEnviada), Utilitarios.formatBytesPerSecond(taxaEnviada), Utilitarios.getUnidadeBytesPerSecond(taxaEnviada)));
+                }
             }
 
             // Iterar sobre os discos para obter informações de leitura e escrita

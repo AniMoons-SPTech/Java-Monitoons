@@ -40,7 +40,7 @@ public class MonitoramentoSQLServer {
 
         Integer idUsuario = usuario.getIdUsuarioMySQL();
         String nomeUsuario = usuario.getNome();
-        Integer idComputador = usuario.getIdComputadorMySQL();
+        Integer idComputador = usuario.getIdComputadorSQLServer();
 
         // Obter componentes cadastrados no banco de dados
         List<Componente> componentesCadastrados = jdbcTemplate.query("SELECT * FROM componente", (rs, indice) -> {
@@ -64,6 +64,8 @@ public class MonitoramentoSQLServer {
         Processador processador = looca.getProcessador();
         List<GraphicsCard> gpus = hardware.getGraphicsCards();
         List<RedeInterface> redes = looca.getRede().getGrupoDeInterfaces().getInterfaces();
+
+
 
         // Calcular e formatar informações da memória
         Long memoriaTotal = memoria.getTotal();
