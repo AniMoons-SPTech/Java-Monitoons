@@ -406,17 +406,12 @@ public class MonitoramentoUltimateMsSQL {
         }
 
         // Adicionar alertas de memória disponível e em uso à lista
-        if(memoriaDisponivel< 1)
-
-        {
+        Double porcentagemMemoriaRam = (Utilitarios.formatBytesToDouble(memoriaEmUso / (memoriaDisponivel+memoriaEmUso)) * 100);
+        if (porcentagemMemoriaRam > 90) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "CRITICO", "RAM"));
-        } else if(memoriaDisponivel< 2)
-
-        {
+        } else if (porcentagemMemoriaRam > 80) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "INTERMEDIARIO", "RAM"));
-        } else if(memoriaDisponivel< 3)
-
-        {
+        } else if (porcentagemMemoriaRam > 70) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "MODERADO", "RAM"));
         }
 

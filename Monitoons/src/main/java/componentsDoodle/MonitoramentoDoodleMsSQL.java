@@ -35,22 +35,14 @@ public class MonitoramentoDoodleMsSQL {
 
 
     public void comecarMonitoramentoDoodle(Usuario usuario) throws InterruptedException, IOException {
-        System.out.println("EU ENTREI NO COMECO DO METODO");
         // Inicialização dos objetos necessários
         Integer idComputador = usuario.getIdComputadorSQLServer();
-        System.out.println("IDCOMPUTADOR");
         Looca looca = new Looca();
-        System.out.println("LOOCA");
         ConexaoSQLServer conexao = new ConexaoSQLServer();
-        System.out.println("CONEXAO");
         JdbcTemplate jdbcTemplate = conexao.getConexaoDoBanco();
-        System.out.println("JDBC");
         InetAddress inetAddress = null;
-        System.out.println("INET SLA");
-        System.out.println(contadorVerificacoesMsSQL);
 
         if (contadorVerificacoesMsSQL < 1) {
-            System.out.println("Entrei no loop de cadastro de peças");
             SystemInfo systemInfo = new SystemInfo();
             HardwareAbstractionLayer hardware = systemInfo.getHardware();
             // Obter componentes cadastrados no banco de dados
@@ -358,17 +350,6 @@ public class MonitoramentoDoodleMsSQL {
                         alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoUso).getTipo(), registros.get(indexVideoUso).getValor(), registros.get(indexVideoUso).getValorFormatado(), registros.get(indexVideoUso).getUnidade(), indexVideoUso, "MODERADO", "GPU"));
                     }
                 }
-
-                if (gpuMemDisp != null) {
-                    if (gpuMemDisp < 1000) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "CRITICO", "GPU"));
-                    } else if (gpuMemDisp < 2000) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "INTERMEDIARIO", "GPU"));
-                    } else if (gpuMemDisp < 3000) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "MODERADO", "GPU"));
-                    }
-                }
-
             }
         } catch(
                 IOException e)
