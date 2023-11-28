@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MonitoramentoDoodleMsSQL {
-    private Integer contadorVerificacoes = 0;
+    private Integer contadorVerificacoesMsSQL = 0;
     private String processadorNome;
     private Map<Disco, Volume> discoVolumeMap;
     private List<GraphicsCard> gpus;
@@ -45,7 +45,7 @@ public class MonitoramentoDoodleMsSQL {
         SystemInfo systemInfo = new SystemInfo();
         HardwareAbstractionLayer hardware = systemInfo.getHardware();
 
-        if (contadorVerificacoes < 1) {
+        if (contadorVerificacoesMsSQL < 1) {
             System.out.println("Entrei no loop de cadastro de peças");
             // Obter componentes cadastrados no banco de dados
             List<Componente> componentesCadastrados = jdbcTemplate.query("SELECT * FROM componente", (rs, rowNum) -> {
@@ -242,7 +242,7 @@ public class MonitoramentoDoodleMsSQL {
                     System.out.println("Não tem placa de vídeo NVIDIA");;
                 }
             }
-            contadorVerificacoes++;
+            contadorVerificacoesMsSQL++;
         }
 
         // Lista para armazenar os registros a serem inseridos no banco de dados
