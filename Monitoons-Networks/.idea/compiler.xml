@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Monitoons-Networks" />
+        <module name="Monitoons" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Monitoons-Networks" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
