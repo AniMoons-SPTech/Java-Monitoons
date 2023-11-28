@@ -8,6 +8,7 @@ import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
 import conexao.Conexao;
 import conexao.ConexaoSQLServer;
+import gui.Log;
 import gui.Usuario;
 import jdk.jshell.execution.Util;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,6 +16,7 @@ import oshi.SystemInfo;
 import oshi.hardware.GraphicsCard;
 import oshi.hardware.HardwareAbstractionLayer;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -249,7 +251,7 @@ public class MonitoramentoDoodleMySQL {
         List<Alerta> alertas = new ArrayList<>();
 
         // Iterar sobre os discos para obter informações de leitura e escrita
-        for(Map.Entry<Disco, Volume> entrada :discoVolumeMap.entrySet()){
+        for (Map.Entry<Disco, Volume> entrada : discoVolumeMap.entrySet()) {
             Long velocidadeDeLeitura = entrada.getKey().getBytesDeLeitura();
             Long velocidadeDeEscrita = entrada.getKey().getBytesDeEscritas();
             Long espacoDisponivel = entrada.getValue().getDisponivel();
@@ -291,6 +293,7 @@ public class MonitoramentoDoodleMySQL {
         }
 
         //Iterar sobre as placas de vídeo para obter informações de uso da GPU
+        Double videoPorcetUso = null;
         try {
             Process process = Runtime.getRuntime().exec("nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.free --format=csv,noheader,nounits");
 
@@ -303,7 +306,7 @@ public class MonitoramentoDoodleMySQL {
                 Long gpuTotal = null;
                 Long gpuMemUso = null;
                 Long gpuMemDisp = null;
-                Double videoPorcetUso = null;
+                videoPorcetUso = null;
                 while ((line = reader.readLine()) != null) {
                     String[] memoryInfo = line.trim().split(",");
                     videoPorcetUso = Double.parseDouble(memoryInfo[0].trim());
@@ -342,11 +345,11 @@ public class MonitoramentoDoodleMySQL {
                 // Adicionar alertas de uso da GPU à lista
                 if (videoPorcetUso != null) {
                     if (videoPorcetUso > 90) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoUso).getTipo(), registros.get(indexVideoUso).getValor(), registros.get(indexVideoUso).getValorFormatado(), registros.get(indexVideoUso).getUnidade(), indexVideoUso,"CRITICO", "GPU"));
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoUso).getTipo(), registros.get(indexVideoUso).getValor(), registros.get(indexVideoUso).getValorFormatado(), registros.get(indexVideoUso).getUnidade(), indexVideoUso, "CRITICO", "GPU"));
                     } else if (videoPorcetUso > 80) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoUso).getTipo(), registros.get(indexVideoUso).getValor(), registros.get(indexVideoUso).getValorFormatado(), registros.get(indexVideoUso).getUnidade(), indexVideoUso,"INTERMEDIARIO", "GPU"));
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoUso).getTipo(), registros.get(indexVideoUso).getValor(), registros.get(indexVideoUso).getValorFormatado(), registros.get(indexVideoUso).getUnidade(), indexVideoUso, "INTERMEDIARIO", "GPU"));
                     } else if (videoPorcetUso > 70) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoUso).getTipo(), registros.get(indexVideoUso).getValor(), registros.get(indexVideoUso).getValorFormatado(), registros.get(indexVideoUso).getUnidade(), indexVideoUso,"MODERADO", "GPU"));
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoUso).getTipo(), registros.get(indexVideoUso).getValor(), registros.get(indexVideoUso).getValorFormatado(), registros.get(indexVideoUso).getUnidade(), indexVideoUso, "MODERADO", "GPU"));
                     }
                 }
 
@@ -354,9 +357,9 @@ public class MonitoramentoDoodleMySQL {
                     if (gpuMemDisp < 1000) {
                         alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "CRITICO", "GPU"));
                     } else if (gpuMemDisp < 2000) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp,"INTERMEDIARIO", "GPU"));
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "INTERMEDIARIO", "GPU"));
                     } else if (gpuMemDisp < 3000) {
-                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp,"MODERADO", "GPU"));
+                        alertas.add(new Alerta(idCompHasComp, registros.get(indexVideoMemDisp).getTipo(), registros.get(indexVideoMemDisp).getValor(), registros.get(indexVideoMemDisp).getValorFormatado(), registros.get(indexVideoMemDisp).getUnidade(), indexVideoMemDisp, "MODERADO", "GPU"));
                     }
                 }
 
@@ -386,12 +389,13 @@ public class MonitoramentoDoodleMySQL {
         }
 
         // Adicionar alertas de memória disponível e em uso à lista
-        if (memoriaDisponivel < 1) {
+        Double porcentagemMemoriaRam = (Utilitarios.formatBytesToDouble(memoriaEmUso / (memoriaDisponivel+memoriaEmUso)) * 100);
+        if (porcentagemMemoriaRam > 90) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "CRITICO", "RAM"));
-        } else if (memoriaDisponivel < 2) {
+        } else if (porcentagemMemoriaRam > 80) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "INTERMEDIARIO", "RAM"));
-        } else if (memoriaDisponivel < 3) {
-            alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(),indexMemDisp, "MODERADO", "RAM"));
+        } else if (porcentagemMemoriaRam > 70) {
+            alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "MODERADO", "RAM"));
         }
 
         // Obter IDs relacionados ao processador no banco de dados
@@ -414,12 +418,19 @@ public class MonitoramentoDoodleMySQL {
         // Adicionar alertas de uso da CPU à lista
         if (usoCpu != null) {
             if (usoCpu > 90) {
-                alertas.add(new Alerta(idCompHasCompProcessador, registros.get(indexUsoCpu).getTipo(), registros.get(indexUsoCpu).getValor(), registros.get(indexUsoCpu).getValorFormatado(), registros.get(indexUsoCpu).getUnidade(), indexUsoCpu,"CRITICO", "CPU"));
+                alertas.add(new Alerta(idCompHasCompProcessador, registros.get(indexUsoCpu).getTipo(), registros.get(indexUsoCpu).getValor(), registros.get(indexUsoCpu).getValorFormatado(), registros.get(indexUsoCpu).getUnidade(), indexUsoCpu, "CRITICO", "CPU"));
             } else if (usoCpu > 80) {
-                alertas.add(new Alerta(idCompHasCompProcessador, registros.get(indexUsoCpu).getTipo(), registros.get(indexUsoCpu).getValor(), registros.get(indexUsoCpu).getValorFormatado(), registros.get(indexUsoCpu).getUnidade(), indexUsoCpu,"INTERMEDIARIO", "CPU"));
+                alertas.add(new Alerta(idCompHasCompProcessador, registros.get(indexUsoCpu).getTipo(), registros.get(indexUsoCpu).getValor(), registros.get(indexUsoCpu).getValorFormatado(), registros.get(indexUsoCpu).getUnidade(), indexUsoCpu, "INTERMEDIARIO", "CPU"));
             } else if (usoCpu > 70) {
-                alertas.add(new Alerta(idCompHasCompProcessador, registros.get(indexUsoCpu).getTipo(), registros.get(indexUsoCpu).getValor(), registros.get(indexUsoCpu).getValorFormatado(), registros.get(indexUsoCpu).getUnidade(), indexUsoCpu,"MODERADO", "CPU"));
+                alertas.add(new Alerta(idCompHasCompProcessador, registros.get(indexUsoCpu).getTipo(), registros.get(indexUsoCpu).getValor(), registros.get(indexUsoCpu).getValorFormatado(), registros.get(indexUsoCpu).getUnidade(), indexUsoCpu, "MODERADO", "CPU"));
             }
+        }
+
+        Log log = new Log(GraphicsEnvironment.isHeadless());
+        if (videoPorcetUso != null){
+            log.escreverLog(usoCpu, videoPorcetUso, porcentagemMemoriaRam);
+        } else {
+            log.escreverLog(usoCpu, 0.0, porcentagemMemoriaRam);
         }
 
         // Iterar sobre os registros e alertas e inserir no banco de dados
@@ -428,7 +439,7 @@ public class MonitoramentoDoodleMySQL {
             if (registro.getValor() != null) {
                 Integer idRegistro = conexao.inserirERetornarIdGerado("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dadoFormatado, dadoUnidade, dataHora) VALUES (?, ?, ?, ?, ?, NOW())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor(), registro.getValorFormatado(), registro.getUnidade());
                 for (int j = 0; j < alertas.size(); j++) {
-                    if (alertas.get(j).getIndexRegistro() == i ) {
+                    if (alertas.get(j).getIndexRegistro() == i) {
                         conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, NOW())", idRegistro, alertas.get(j).getGrauAlerta(), alertas.get(j).getTipoComponente());
                     }
                 }
