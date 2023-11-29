@@ -100,7 +100,7 @@ public class Monitoramento {
             }
         } else {
             // Verificar se a relação entre computador e memória existe
-            Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorhascomponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'RAM'", Integer.class, memoriaNome)) > 0;
+            Boolean compHasCompExiste = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM computadorHasComponente WHERE fkComputador = ? AND fkComponente = ?", Integer.class, idComputador, jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'RAM'", Integer.class, memoriaNome)) > 0;
             if (!compHasCompExiste) {
                 // Se não existir, criar a relação
                 Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'RAM'", Integer.class, memoriaNome);
