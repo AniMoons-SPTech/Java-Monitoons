@@ -21,6 +21,7 @@ public class App {
 
             usuario = new Usuario(email, senha);
             plano = usuario.logar();
+            System.out.println(plano);
             if (plano != null) {
                 System.out.println("Seja bem vindo!");
                 logou = true;
