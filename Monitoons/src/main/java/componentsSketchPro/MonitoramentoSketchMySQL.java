@@ -1,5 +1,6 @@
 package componentsSketchPro;
 
+import Log.GerarLog;
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.discos.Disco;
 import com.github.britooo.looca.api.group.discos.Volume;
@@ -426,6 +427,8 @@ public class MonitoramentoSketchMySQL {
         } else {
             logJSON.escreverLog(usoCpu, 0.0, porcentagemMemoriaRam);
         }
+        GerarLog gerarLog = new GerarLog();
+
         // Iterar sobre os registros e alertas e inserir no banco de dados
         for (int i = 0; i < registros.size(); i++) {
             Registro registro = registros.get(i);
@@ -434,6 +437,7 @@ public class MonitoramentoSketchMySQL {
                 for (int j = 0; j < alertas.size(); j++) {
                     if (alertas.get(j).getIndexRegistro() == i) {
                         conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, NOW())", idRegistro, alertas.get(j).getGrauAlerta(), alertas.get(j).getTipoComponente());
+                        gerarLog.gravar(" Alerta - \n %s: O componente %s do computador do funcionário %s está com um alerta de grau %s. Recomendamos que você verifique a situação do computador".formatted(alertas.get(j).getDataHora(), alertas.get(j).getTipoComponente(), usuario.getNome(), alertas.get(j).getGrauAlerta()));
                     }
                 }
             }

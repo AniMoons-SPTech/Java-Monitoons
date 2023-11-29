@@ -6,6 +6,7 @@ components\Alerta.class
 components\Botao.class
 components\Usuario.class
 components\MonitoramentoDoodleMsSQL.class
+Log\GerarLog.class
 gui\App$1.class
 gui\LoginPanel.class
 components\Utilitarios.class
@@ -15,5 +16,6 @@ gui\TelaPanel.class
 components\Especificacao.class
 conexao\Conexao.class
 gui\App.class
+Log\Log.class
 components\Registro.class
 gui\CapturaPanel.class

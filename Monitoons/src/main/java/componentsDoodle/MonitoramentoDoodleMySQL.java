@@ -429,6 +429,7 @@ public class MonitoramentoDoodleMySQL {
                 for (int j = 0; j < alertas.size(); j++) {
                     if (alertas.get(j).getIndexRegistro() == i) {
                         conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, NOW())", idRegistro, alertas.get(j).getGrauAlerta(), alertas.get(j).getTipoComponente());
+                        gerarLog.gravar(" Alerta - \n %s: O componente %s do computador do funcionário %s está com um alerta de grau %s. Recomendamos que você verifique a situação do computador - %s".formatted(alertas.get(j).getDataHora(), alertas.get(j).getTipoComponente(), usuario.getNome(), alertas.get(j).getGrauAlerta(), registros.get(i).getValorFormatado()));
                     }
                 }
             }
