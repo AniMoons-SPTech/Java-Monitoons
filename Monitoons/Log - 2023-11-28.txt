@@ -1,0 +1,5 @@
+
+ Alerta - 
+ 2023-11-28T21:48:05.427927900: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,62 GB
+ Alerta - 
+ 2023-11-28T21:48:38.099324100: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,62 GB

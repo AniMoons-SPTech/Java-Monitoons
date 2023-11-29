@@ -1,5 +1,6 @@
 package componentsDoodle;
 
+import Log.GerarLog;
 import com.slack.api.Slack;
 import com.slack.api.methods.MethodsClient;
 import com.slack.api.methods.SlackApiException;
@@ -31,6 +32,7 @@ public class Alerta extends Registro{
         System.out.println("Eu estou entrando aquiii");
         var client = Slack.getInstance().methods();
         var logger = LoggerFactory.getLogger("alertas-gerados-monitoons");
+
         try {
             // Call the chat.postMessage method using the built-in WebClient
             var result = client.chatPostMessage(r -> r
