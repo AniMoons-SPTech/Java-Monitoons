@@ -85,7 +85,7 @@ public class Monitoramento {
             Integer idComponente = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'RAM'", Integer.class, memoriaNome);
 
             // Relacionar memória ao computador
-            jdbcTemplate.update("INSERT INTO computadorhascomponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
+            jdbcTemplate.update("INSERT INTO computadorHasComponente (fkComputador, fkComponente) VALUES (?, ?)", idComputador, idComponente);
             componentesCadastrados.add(new Componente(idComponente, "RAM", memoriaNome, List.of(
                     new Especificacao(idComponente, "Memória Total", Utilitarios.formatBytes(memoriaTotal))
             )));
