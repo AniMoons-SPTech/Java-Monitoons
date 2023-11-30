@@ -22,7 +22,7 @@ public class AppTeste {
         Boolean logou = false;
         Usuario usuario;
 
-        if (GraphicsEnvironment.isHeadless()) {
+        if (!GraphicsEnvironment.isHeadless()) {
             System.out.println("Bem vindo ao Monitoons! \n");
             String plano = "";
             do {
@@ -34,6 +34,7 @@ public class AppTeste {
 
                 usuario = new Usuario(email, senha);
                 plano = usuario.logar();
+                System.out.println(plano);
                 if (plano != null) {
                     System.out.println("Seja bem vindo!");
                     logou = true;
@@ -67,8 +68,7 @@ public class AppTeste {
                         }
                     };
                     timer.scheduleAtFixedRate(tarefa, 0, 15000);
-                } else if (plano.equals("Sketch Pro")) {
-                } else if (plano.equals("Sketch Pro")) {
+                } else if (plano.equals("SketchPro")) {
                     MonitoramentoSketchMySQL monitoramentoSketchMySQL = new MonitoramentoSketchMySQL();
                     MonitoramentoSketchMsSQL monitoramentoSketchMsSQL = new MonitoramentoSketchMsSQL();
                     TimerTask tarefa = new TimerTask() {

@@ -1,0 +1,176 @@
+ Alerta - 
+ 2023-11-30T11:46:49.304591300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:47:29.031852100: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:47:37.930818200: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:47:46.628639900: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:47:55.679518500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:48:04.617834300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:48:15.747884700: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:48:30.742702: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:48:45.702098400: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:49:00.774439600: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:49:15.713139: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:49:30.772307600: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:49:45.709458800: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:50:00.767205: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:50:15.751076400: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:50:30.736853500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:50:45.769385300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:51:00.734483500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:52:31.527988300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:54:25.641110200: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:55:05.749630500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:55:14.155116: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:55:23.175253300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:55:31.906342200: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:55:40.471797500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:56:15.248482400: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:56:52.502528500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:57:00.396510400: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:57:07.905135500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:57:15.910607500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:57:23.754265800: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:57:31.683359900: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:57:39.486447700: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:57:47.513679300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:57:55.439970600: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:58:03.295083600: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:58:10.907066300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:58:18.748300300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:58:26.221161700: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:58:34.223775100: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:58:42.125161900: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:58:50.189510900: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:58:57.986779800: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:59:05.955349900: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:59:14.035379900: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:59:22.140823200: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:59:29.808212500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:59:37.674429800: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:59:45.063752400: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T11:59:52.558202400: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:00:01.275781800: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:00:09.465750800: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:00:17.240264700: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:00:25.312253100: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:00:33.292613700: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:00:41.816751400: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:00:49.705002500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:00:57.525594: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:01:04.897614200: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:01:12.878375400: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:01:21.021416300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:01:28.805410500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:01:36.633543500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:01:44.563830400: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:01:52.390638100: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:02:00.284630900: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:02:07.874638300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,24 GB
+ Alerta - 
+ 2023-11-30T12:02:15.031126: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:02:22.348408300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,22 GB
+ Alerta - 
+ 2023-11-30T12:02:29.623602300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,21 GB
+ Alerta - 
+ 2023-11-30T12:02:37.269567: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:02:44.976238100: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,22 GB
+ Alerta - 
+ 2023-11-30T12:02:53.116145300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:03:02.491182500: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:03:10.432332700: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:03:18.271185200: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:03:26.270950200: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:03:33.757408600: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:03:41.481748800: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:03:49.315858600: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:03:57.521072900: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:04:05.142671400: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:04:13.102276600: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:04:20.735979900: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:04:28.543437100: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:04:36.192618300: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:04:44.153250800: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
+ Alerta - 
+ 2023-11-30T12:04:52.327096800: O componente DISCO do computador do funcionário Jp está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador - 70,23 GB
