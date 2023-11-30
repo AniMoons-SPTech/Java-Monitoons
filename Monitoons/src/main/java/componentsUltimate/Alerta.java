@@ -71,7 +71,6 @@ public class Alerta extends Registro{
                 %s
                 grauAlerta=%s,
                 tipoComponente=%s,
-                dataHora=%s
                 """.formatted(
                 this.grauAlerta,
                 this.tipoComponente

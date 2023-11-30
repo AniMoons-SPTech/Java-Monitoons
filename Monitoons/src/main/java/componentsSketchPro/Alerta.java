@@ -80,8 +80,7 @@ public class Alerta extends Registro{
         return """
                 %s
                 grauAlerta=%s,
-                tipoComponente=%s,
-                dataHora=%s
+                tipoComponente=%s
                 """.formatted(
                 this.grauAlerta,
                 this.tipoComponente
