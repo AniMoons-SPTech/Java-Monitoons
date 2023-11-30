@@ -242,7 +242,7 @@ public class Monitoramento {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Não foi possível obter informações da placa de vídeo");
         }
 
         // Iterar sobre as interfaces de rede e verificar se estão cadastradas no banco de dados
