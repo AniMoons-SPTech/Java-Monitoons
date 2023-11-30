@@ -39,7 +39,7 @@ public class Alerta extends Registro{
             String finalMensagem = mensagem;
             var result = client.chatPostMessage(r -> r
                     // The token you used to initialize your app
-                    .token("xoxb-6248106097664-6225291978755-qfx7EKjQcOsVzdFS2yGBuvIQ")
+                    .token("")
                     .channel("#alertas")
                     .text(finalMensagem));
             // You could also use a blocks[] array to send richer content
