@@ -79,9 +79,10 @@ public class Alerta extends Registro{
     public String toString(){
         return """
                 %s
-                grauAlerta=%s,
-                tipoComponente=%s
+                grauAlerta= %s,
+                tipoComponente= %s
                 """.formatted(
+                        super.toString(),
                 this.grauAlerta,
                 this.tipoComponente
         );

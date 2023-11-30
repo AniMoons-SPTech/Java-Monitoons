@@ -72,6 +72,7 @@ public class Alerta extends Registro{
                 grauAlerta=%s,
                 tipoComponente=%s
                 """.formatted(
+                        super.toString(),
                 this.grauAlerta,
                 this.tipoComponente
         );
