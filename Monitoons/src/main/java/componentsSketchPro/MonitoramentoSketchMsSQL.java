@@ -374,50 +374,31 @@ public class MonitoramentoSketchMsSQL {
     Integer idComponenteMemoria = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, memoriaNome);
     Integer idCompHasCompMemoria = jdbcTemplate.queryForObject("SELECT idCompHasComp FROM computadorHasComponente WHERE fkComputador = ? AND fkComponente = ? ", Integer.class, idComputador, idComponenteMemoria);
 
-    // Calcular e adicionar registros de memória disponível e em uso à lista
-    Long memoriaDisponivel = memoria.getDisponivel();
-    Long memoriaEmUso = memoria.getEmUso();
-        registros.add(new
+        Long memoriaDisponivel = memoria.getDisponivel();
+        Long memoriaEmUso = memoria.getEmUso();
+        registros.add(new Registro(idCompHasCompMemoria, "Memória Disponível", Utilitarios.formatBytesToDouble(memoriaDisponivel), Utilitarios.formatBytes(memoriaDisponivel), Utilitarios.getUnidadeBytes(memoriaDisponivel)));
+        registros.add(new Registro(idCompHasCompMemoria, "Memória em Uso", Utilitarios.formatBytesToDouble(memoriaEmUso), Utilitarios.formatBytes(memoriaEmUso), Utilitarios.getUnidadeBytes(memoriaEmUso)));
 
-    Registro(idCompHasCompMemoria, "Memória Disponível",Utilitarios.formatBytesToDouble(memoriaDisponivel),Utilitarios.
+        // Obter índice do registro de memória disponível
+        Integer indexMemDisp = 0;
 
-    formatBytes(memoriaDisponivel),Utilitarios.
-
-    getUnidadeBytes(memoriaDisponivel)));
-        registros.add(new
-
-    Registro(idCompHasCompMemoria, "Memória em Uso",Utilitarios.formatBytesToDouble(memoriaEmUso),Utilitarios.
-
-    formatBytes(memoriaEmUso),Utilitarios.
-
-    getUnidadeBytes(memoriaEmUso)));
-
-    // Obter índice do registro de memória disponível
-    Integer indexMemDisp = 0;
-
-        for(
-    Registro registro :registros)
-
-    {
-        if (registro.getTipo().equals("Memória Disponível")) {
-            indexMemDisp = registros.indexOf(registro);
+        for (Registro registro : registros) {
+            if (registro.getTipo().equals("Memória Disponível")) {
+                indexMemDisp = registros.indexOf(registro);
+            }
         }
-    }
+        Double memoriaUsoFormatada = (memoriaEmUso / 1024.0) / 1024.0;
+        Double memoriaDisponivelFormatada = (memoriaDisponivel / 1024.0) / 1024.0;
+        // Adicionar alertas de memória disponível e em uso à lista
+        Double porcentagemMemoriaRam =(memoriaUsoFormatada / (memoriaDisponivelFormatada + memoriaUsoFormatada)) * 100;
 
-    // Adicionar alertas de memória disponível e em uso à lista
-        if(memoriaDisponivel< 1)
-
-    {
-        alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "CRITICO", "RAM"));
-    } else if(memoriaDisponivel< 2)
-
-    {
-        alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "INTERMEDIARIO", "RAM"));
-    } else if(memoriaDisponivel< 3)
-
-    {
-        alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "MODERADO", "RAM"));
-    }
+        if (porcentagemMemoriaRam > 90) {
+            alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "CRITICO", "RAM"));
+        } else if (porcentagemMemoriaRam > 80) {
+            alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "INTERMEDIARIO", "RAM"));
+        } else if (porcentagemMemoriaRam > 70) {
+            alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "MODERADO", "RAM"));
+        }
 
     // Obter IDs relacionados ao processador no banco de dados
     Integer idComponenteProcessador = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);

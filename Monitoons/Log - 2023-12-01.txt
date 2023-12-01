@@ -1,0 +1,70 @@
+ Alerta - 
+ 2023-12-01T12:11:39.673810200: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:12:11.921922100: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:13:30.283753900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:14:01.201016400: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:15:04.818306200: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:20:01.507723600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:23:05.876425500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:25:25.693849200: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:26:00.375090900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:29:32.060322600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:29:32.072409900: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:30:05.069974900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:30:05.086961400: O componente RAM do computador do funcionário João Pedro está com um alerta de grau INTERMEDIARIO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:31:14.819763300: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:31:14.829770100: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:31:45.362457200: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:31:45.384545800: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:31:53.974105700: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:31:53.987615: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:32:02.767459900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:32:02.782472800: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:32:11.900989500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:32:11.921318: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:32:26.609293600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:32:26.625864100: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:32:41.591047800: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T12:32:41.608080300: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T13:22:35.290532800: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T13:22:35.290532800: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T13:23:09.243894500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T13:23:09.259584800: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T13:23:16.727149800: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T13:23:16.736422600: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T13:23:25.563395500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-12-01T13:23:25.584507400: O componente RAM do computador do funcionário João Pedro está com um alerta de grau CRITICO. Recomendamos que você verifique a situação do computador

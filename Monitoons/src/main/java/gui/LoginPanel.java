@@ -68,7 +68,7 @@ public class LoginPanel extends TelaPanel {
         if(plano != null){
             if(plano.equals("Doodle")){
                 trocarTela("Tela Monitoramento Doodle");
-            } else if(plano.equals("Sketch Pro")){
+            } else if(plano.equals("SketchPro")){
                 trocarTela("Tela Monitoramento Sketch Pro");
             } else if(plano.equals("Ultimate")){
                 trocarTela("Tela Monitoramento Ultimate");

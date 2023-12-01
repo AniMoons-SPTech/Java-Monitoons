@@ -79,7 +79,7 @@ public class Usuario {
             idUsuarioSQLServer = jdbcTemplateMsSQL.queryForObject("SELECT idUsuario FROM usuario WHERE email = ?", Integer.class, email);
             nome = jdbcTemplateMsSQL.queryForObject("SELECT nomeUsuario FROM usuario WHERE email = ?", String.class, email);
             plano = jdbcTemplateMsSQL.queryForObject("SELECT plano FROM usuario WHERE email = ?", String.class, email);
-
+            System.out.println(plano);
             Boolean existeComputador = jdbcTemplateMsSQL.queryForObject("SELECT COUNT(*) FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioSQLServer) > 0;
             Boolean existeComputadorMySQL = jdbcTemplateMySQL.queryForObject("SELECT COUNT(*) FROM computador WHERE fkUsuario = ?", Integer.class, idUsuarioMySQL) > 0;
 

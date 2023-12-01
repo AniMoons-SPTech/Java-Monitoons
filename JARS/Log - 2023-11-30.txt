@@ -278,3 +278,171 @@
  2023-11-30T14:21:03.095497: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
  Alerta - 
  2023-11-30T14:21:18.080392600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T15:37:30.447598600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T15:37:48.846807800: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:29:03.331429100: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:29:35.363633100: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:29:42.732905300: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:29:51.009037: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:30:02.114470200: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:30:17.089122700: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:30:32.087208600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:30:47.120094200: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:31:02.094177400: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:31:17.079762800: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:31:32.079436600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:31:47.085337100: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:32:02.077296800: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:32:17.124959700: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:32:32.135653300: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:32:47.113012900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:33:02.110854100: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:33:17.107486: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:33:32.089382900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:33:47.082742300: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:34:02.103848300: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:34:17.079740500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:34:32.081995900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:34:47.080650: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:35:02.071299: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:35:17.078512500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:35:32.083285500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:35:47.090244800: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:36:02.085340: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:36:17.097761400: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:36:32.099249600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:36:47.101740300: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:37:02.105955300: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:37:17.109273600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:37:32.109845: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:37:47.108373700: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:38:02.117511500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:38:17.100981: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:38:32.106931100: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:38:47.112896600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:39:02.106407600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:39:17.102730900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:39:32.125846200: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:39:47.129176500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:40:02.136010200: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:40:17.105951900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:40:32.111349400: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:40:47.099161900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:41:02.101630900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:41:17.105287700: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:41:32.100920: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:41:47.110219100: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:52:51.534830400: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:53:21.731787500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:53:30.088862800: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:53:38.082653100: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:53:50.424827100: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:54:05.427645800: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:54:20.408187300: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:54:35.417407800: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:54:50.412970300: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:55:05.438992200: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:55:20.407987500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:55:35.409216100: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:55:50.416988300: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:56:05.424473900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:56:20.419342500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:56:35.415285700: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:56:50.362008700: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:57:05.407560500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:57:20.408471600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:57:35.402953900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:57:50.474828800: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:58:05.400754400: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:58:20.385972600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:58:35.404532500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:58:50.402581900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:59:05.405385400: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:59:20.421371900: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:59:35.397096: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T18:59:50.410271600: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador
+ Alerta - 
+ 2023-11-30T19:00:05.412299500: O componente DISCO do computador do funcionário João Pedro está com um alerta de grau MODERADO. Recomendamos que você verifique a situação do computador

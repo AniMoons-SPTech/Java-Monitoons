@@ -22,7 +22,7 @@ public class AppTeste {
         Boolean logou = false;
         Usuario usuario;
 
-        if (!GraphicsEnvironment.isHeadless()) {
+        if (GraphicsEnvironment.isHeadless()) {
             System.out.println("Bem vindo ao Monitoons! \n");
             String plano = "";
             do {

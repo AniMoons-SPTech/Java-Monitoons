@@ -405,8 +405,11 @@ public class MonitoramentoUltimateMsSQL {
             }
         }
 
+        Double memoriaUsoFormatada = (memoriaEmUso / 1024.0) / 1024.0;
+        Double memoriaDisponivelFormatada = (memoriaDisponivel / 1024.0) / 1024.0;
         // Adicionar alertas de memória disponível e em uso à lista
-        Double porcentagemMemoriaRam = (Utilitarios.formatBytesToDouble(memoriaEmUso / (memoriaDisponivel+memoriaEmUso)) * 100);
+        Double porcentagemMemoriaRam =(memoriaUsoFormatada / (memoriaDisponivelFormatada + memoriaUsoFormatada)) * 100;
+
         if (porcentagemMemoriaRam > 90) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "CRITICO", "RAM"));
         } else if (porcentagemMemoriaRam > 80) {
@@ -414,6 +417,7 @@ public class MonitoramentoUltimateMsSQL {
         } else if (porcentagemMemoriaRam > 70) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "MODERADO", "RAM"));
         }
+
 
         // Obter IDs relacionados ao processador no banco de dados
         Integer idComponenteProcessador = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ?", Integer.class, processadorNome);

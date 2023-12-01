@@ -366,45 +366,28 @@ public class MonitoramentoDoodleMsSQL {
         // Calcular e adicionar registros de memória disponível e em uso à lista
         Long memoriaDisponivel = memoria.getDisponivel();
         Long memoriaEmUso = memoria.getEmUso();
-        registros.add(new
-
-                Registro(idCompHasCompMemoria, "Memória Disponível",Utilitarios.formatBytesToDouble(memoriaDisponivel),Utilitarios.
-
-                formatBytes(memoriaDisponivel),Utilitarios.
-
-                getUnidadeBytes(memoriaDisponivel)));
-        registros.add(new
-
-                Registro(idCompHasCompMemoria, "Memória em Uso",Utilitarios.formatBytesToDouble(memoriaEmUso),Utilitarios.
-
-                formatBytes(memoriaEmUso),Utilitarios.
-
-                getUnidadeBytes(memoriaEmUso)));
+        registros.add(new Registro(idCompHasCompMemoria, "Memória Disponível", Utilitarios.formatBytesToDouble(memoriaDisponivel), Utilitarios.formatBytes(memoriaDisponivel), Utilitarios.getUnidadeBytes(memoriaDisponivel)));
+        registros.add(new Registro(idCompHasCompMemoria, "Memória em Uso", Utilitarios.formatBytesToDouble(memoriaEmUso), Utilitarios.formatBytes(memoriaEmUso), Utilitarios.getUnidadeBytes(memoriaEmUso)));
 
         // Obter índice do registro de memória disponível
         Integer indexMemDisp = 0;
 
-        for(
-                Registro registro :registros)
-
-        {
+        for (Registro registro : registros) {
             if (registro.getTipo().equals("Memória Disponível")) {
                 indexMemDisp = registros.indexOf(registro);
             }
         }
 
+        Double memoriaUsoFormatada = (memoriaEmUso / 1024.0) / 1024.0;
+        Double memoriaDisponivelFormatada = (memoriaDisponivel / 1024.0) / 1024.0;
         // Adicionar alertas de memória disponível e em uso à lista
-        if(memoriaDisponivel< 1)
+        Double porcentagemMemoriaRam =(memoriaUsoFormatada / (memoriaDisponivelFormatada + memoriaUsoFormatada)) * 100;
 
-        {
+        if (porcentagemMemoriaRam > 90) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "CRITICO", "RAM"));
-        } else if(memoriaDisponivel< 2)
-
-        {
+        } else if (porcentagemMemoriaRam > 80) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "INTERMEDIARIO", "RAM"));
-        } else if(memoriaDisponivel< 3)
-
-        {
+        } else if (porcentagemMemoriaRam > 70) {
             alertas.add(new Alerta(idCompHasCompMemoria, registros.get(indexMemDisp).getTipo(), registros.get(indexMemDisp).getValor(), registros.get(indexMemDisp).getValorFormatado(), registros.get(indexMemDisp).getUnidade(), indexMemDisp, "MODERADO", "RAM"));
         }
 
