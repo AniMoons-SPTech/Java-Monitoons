@@ -29,6 +29,7 @@ public class Test {
         JdbcTemplate jdbcTemplate = conexao.getConexaoDoBanco();
         InetAddress inetAddress = null;
         SystemInfo systemInfo = new SystemInfo();
+        Log log = new Log("windows");
         HardwareAbstractionLayer hardware = systemInfo.getHardware();
 
 
@@ -318,7 +319,7 @@ public class Test {
                 }
 
             }
-
+            Double gpuUso = null;
             //Iterar sobre as placas de vídeo para obter informações de uso da GPU
             try {
                 Process process = Runtime.getRuntime().exec("nvidia-smi --query-gpu=utilization.gpu,memory.used,memory.free --format=csv,noheader,nounits");
@@ -335,6 +336,7 @@ public class Test {
                     while ((line = reader.readLine()) != null) {
                         String[] memoryInfo = line.trim().split(",");
                         videoPorcetUso = Double.parseDouble(memoryInfo[0].trim());
+                        gpuUso = videoPorcetUso;
                         gpuMemUso = Long.parseLong(memoryInfo[1].trim());
                         gpuMemDisp = Long.parseLong(memoryInfo[2].trim());
                     }
@@ -385,9 +387,11 @@ public class Test {
                     }
 
                 }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
 
             // Obter IDs relacionados à memória no banco de dados
             Integer idComponenteMemoria = jdbcTemplate.queryForObject("SELECT idComponente FROM componente WHERE nome = ? AND tipo = 'RAM'", Integer.class, memoriaNome);
@@ -444,12 +448,12 @@ public class Test {
                     registros.get(indexUsoCpu).addAlerta(new Alerta("MODERADO", "CPU"));
                 }
             }
-
             // Iterar sobre os registros e alertas e inserir no banco de dados
             for (Registro registro : registros) {
                 if (registro.getValor() != null) {
                     Integer idRegistro = conexao.inserirERetornarIdGerado("INSERT INTO registro (fkCompHasComp, tipo, dadoValor, dadoFormatado, dadoUnidade, dataHora) VALUES (?, ?, ?, ?, ?, NOW())", registro.getFkCompHasComp(), registro.getTipo(), registro.getValor(), registro.getValorFormatado(), registro.getUnidade());
                     if (registro.getAlerta() != null) {
+                        log.escreverLog(usoCpu,gpuUso,memoria.getEmUso());
                         conexao.inserirERetornarIdGerado("INSERT INTO alerta (fkRegistro, grauAlerta, tipoComponente, dataHora) VALUES (?, ?, ?, NOW())", idRegistro, registro.getAlerta().getGrauAlerta(), registro.getAlerta().getTipoComponente());
                     }
                 }
