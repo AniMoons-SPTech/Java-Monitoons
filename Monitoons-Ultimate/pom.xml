@@ -14,12 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>com.github.britooo</groupId>
-            <artifactId>looca-api</artifactId>
-            <version>2.2.0</version>
-        </dependency>
-    <!-- dependências do spring jdbc -->
+        <!-- dependências do spring jdbc -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
@@ -30,12 +25,47 @@
             <artifactId>commons-dbcp2</artifactId>
             <version>2.5.0</version>
         </dependency>
+        <!-- Driver do servidor de banco H2 -->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>12.4.1.jre11</version>
+        </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.1.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.britooo</groupId>
+            <artifactId>looca-api</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.13.0</version> <!-- Verifique a versão mais recente no site oficial do JNA -->
+        </dependency>
+        <dependency>
+            <groupId>com.github.oshi</groupId>
+            <artifactId>oshi-core</artifactId>
+            <version>6.1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>5.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.nativelibs4java</groupId>
+            <artifactId>jnaerator-runtime</artifactId>
+            <version>0.12</version> <!-- Use a versão mais recente disponível -->
+        </dependency>
+        <dependency>
+            <groupId>com.slack.api</groupId>
+            <artifactId>slack-api-client</artifactId>
+            <version>1.36.1</version>
+        </dependency>
     </dependencies>
 
 
